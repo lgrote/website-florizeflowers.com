@@ -1,0 +1,208 @@
+---
+// Optimized image component with lazy loading and responsive images
+// Uses Astro's built-in image optimization for better performance
+
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+export interface Props {
+  src: string | ImageMetadata;
+  alt: string;
+  width?: number;
+  height?: number;
+  loading?: 'lazy' | 'eager';
+  sizes?: string;
+  widths?: number[];
+  quality?: number;
+  format?: 'avif' | 'webp' | 'png' | 'jpg' | 'jpeg';
+  formats?: ('avif' | 'webp' | 'png' | 'jpg' | 'jpeg')[];
+  class?: string;
+  pictureClass?: string;
+  priority?: boolean;
+  placeholder?: 'blur' | 'dominantColor' | 'none';
+  decoding?: 'async' | 'auto' | 'sync';
+  fetchpriority?: 'high' | 'low' | 'auto';
+}
+
+const {
+  src,
+  alt,
+  width,
+  height,
+  loading = 'lazy',
+  sizes = '100vw',
+  widths = [320, 640, 768, 1024, 1280, 1600],
+  quality = 85,
+  format = 'webp',
+  formats = ['avif', 'webp'],
+  class: className = '',
+  pictureClass = '',
+  priority = false,
+  placeholder = 'blur',
+  decoding = 'async',
+  fetchpriority = 'auto'
+} = Astro.props;
+
+// Determine actual loading and fetch priority based on priority prop
+const actualLoading = priority ? 'eager' : loading;
+const actualFetchPriority = priority ? 'high' : fetchpriority;
+
+// Generate densities for high DPI displays
+const densities = [1, 2];
+---
+
+<picture class={pictureClass}>
+  {/* Generate source sets for modern formats */}
+  {formats.map((fmt) => (
+    <source
+      type={`image/${fmt}`}
+      srcset={widths.map(w => `${src}?w=${w}&fm=${fmt} ${w}w`).join(', ')}
+      sizes={sizes}
+    />
+  ))}
+
+  {/* Main image with built-in Astro optimization */}
+  {typeof src === 'string' ? (
+    <img
+      src={src}
+      alt={alt}
+      width={width}
+      height={height}
+      loading={actualLoading}
+      decoding={decoding}
+      fetchpriority={actualFetchPriority}
+      class={className}
+      data-optimized="true"
+    />
+  ) : (
+    <Image
+      src={src}
+      alt={alt}
+      width={width}
+      height={height}
+      loading={actualLoading}
+      decoding={decoding}
+      fetchpriority={actualFetchPriority}
+      quality={quality}
+      format={format}
+      widths={widths}
+      sizes={sizes}
+      densities={densities}
+      class={className}
+    />
+  )}
+</picture>
+
+<script>
+  // Progressive enhancement: Intersection Observer for lazy loading
+  // This provides better control and fallback for browsers without native lazy loading
+
+  if ('IntersectionObserver' in window) {
+    const images = document.querySelectorAll('img[loading="lazy"][data-optimized="true"]');
+
+    const imageObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const img = entry.target as HTMLImageElement;
+
+          // If the image has data-src, swap it with src
+          if (img.dataset.src) {
+            img.src = img.dataset.src;
+            img.removeAttribute('data-src');
+          }
+
+          // Add loaded class for animations
+          img.classList.add('image-loaded');
+
+          // Stop observing this image
+          observer.unobserve(img);
+        }
+      });
+    }, {
+      // Start loading when image is 200px away from viewport
+      rootMargin: '200px',
+      threshold: 0.01
+    });
+
+    images.forEach(img => imageObserver.observe(img));
+  }
+
+  // Blur-up effect for hero images
+  const heroImages = document.querySelectorAll('img[data-placeholder="blur"]');
+  heroImages.forEach(img => {
+    const imgElement = img as HTMLImageElement;
+
+    // Create a low-quality placeholder
+    if (imgElement.complete) {
+      imgElement.classList.add('image-loaded');
+    } else {
+      imgElement.addEventListener('load', () => {
+        imgElement.classList.add('image-loaded');
+      });
+    }
+  });
+</script>
+
+<style>
+  /* Smooth transition for lazy loaded images */
+  img[data-optimized="true"] {
+    transition: opacity 0.3s ease-in-out, filter 0.3s ease-in-out;
+  }
+
+  /* Initial state for blur placeholder */
+  img[data-placeholder="blur"]:not(.image-loaded) {
+    filter: blur(20px);
+    opacity: 0.8;
+  }
+
+  /* Loaded state */
+  img.image-loaded {
+    filter: none;
+    opacity: 1;
+  }
+
+  /* Aspect ratio preservation */
+  picture {
+    display: block;
+    position: relative;
+  }
+
+  picture img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Loading skeleton */
+  img[loading="lazy"]:not(.image-loaded) {
+    background: linear-gradient(
+      90deg,
+      #f0f0f0 25%,
+      #e0e0e0 50%,
+      #f0f0f0 75%
+    );
+    background-size: 200% 100%;
+    animation: loading 1.5s ease-in-out infinite;
+  }
+
+  @keyframes loading {
+    0% {
+      background-position: 200% 0;
+    }
+    100% {
+      background-position: -200% 0;
+    }
+  }
+
+  /* Responsive images container */
+  .responsive-image-container {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .responsive-image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+</style>

@@ -1,0 +1,474 @@
+---
+// Service Layout following FindFerries pattern with centralized data preparation
+// Includes all original features: tabs, TOC, sticky elements, and sections
+
+import type { CollectionEntry } from 'astro:content';
+import BaseLayout from './BaseLayout.astro';
+import BreadcrumbNavigation from '../components/navigation/BreadcrumbNavigation.astro';
+import ServiceHero from '../components/sections/ServiceHero.astro';
+import QuickSummary from '../components/sections/QuickSummary.astro';
+import ServiceOverview from '../components/sections/ServiceOverview.astro';
+import ProsConsGrid from '../components/sections/ProsConsGrid.astro';
+import ComparisonSection from '../components/sections/ComparisonSection.astro';
+import FinalRecommendation from '../components/sections/FinalRecommendation.astro';
+import RelatedReviews from '../components/sections/RelatedReviews.astro';
+import AffiliateBannerSection from '../components/sections/AffiliateBannerSection.astro';
+import StickyCTA from '../components/ui/StickyCTA.astro';
+import ReviewByline from '../components/ui/ReviewByline.astro';
+import AccordionFAQ from '../components/ui/AccordionFAQ.astro';
+import BestForCards from '../components/ui/BestForCards.astro';
+import PromoCode from '../components/ui/PromoCode.astro';
+import VSComparison from '../components/ui/VSComparison.astro';
+import StickyTOC from '../components/ui/StickyTOC.astro';
+import ReadingProgress from '../components/ui/ReadingProgress.astro';
+import TestingMetrics from '../components/ui/TestingMetrics.astro';
+import TabSection from '../components/ui/TabSection.astro';
+import { getAffiliateLink } from '../lib/sanity';
+import { generateServiceSchema } from '../utils/seo';
+
+interface TOCItem {
+  id: string;
+  text: string;
+  level: number;
+}
+
+export interface Props {
+  service: CollectionEntry<'services'>;
+}
+
+const { service } = Astro.props;
+const { Content } = await service.render();
+
+// Get affiliate link from Sanity (with fallback to content collection)
+const affiliateUrl = (await getAffiliateLink(service.data.service_id)) || service.data.affiliate_url || '#';
+
+// Breadcrumb items
+const breadcrumbItems = [
+  { label: 'Home', href: '/' },
+  { label: 'Services', href: '/services' },
+  { label: `${service.data.service_name} Review` },
+];
+
+// Generate structured data for SEO
+const serviceSchema = generateServiceSchema({
+  ...service.data,
+  affiliate_url: affiliateUrl
+});
+
+// Generate Table of Contents based on available sections (matches original exactly)
+const tocItems: TOCItem[] = [];
+
+// Service Overview
+if (service.data.overview_positioning && service.data.overview_content) {
+  tocItems.push({
+    id: 'overview',
+    text: 'Service Overview',
+    level: 2
+  });
+}
+
+// Best For Scenarios
+if (service.data.best_for_scenarios && service.data.best_for_scenarios.length > 0) {
+  tocItems.push({
+    id: 'perfect-for',
+    text: 'Perfect For',
+    level: 2
+  });
+}
+
+// Testing Metrics
+if (service.data.testing_metrics && service.data.testing_metrics.length > 0) {
+  tocItems.push({
+    id: 'testing-metrics',
+    text: 'Testing Results at a Glance',
+    level: 2
+  });
+}
+
+// Tab Sections - always present
+tocItems.push({
+  id: 'tab-review',
+  text: '📖 Complete Review',
+  level: 2
+});
+
+tocItems.push({
+  id: 'tab-quick-ref',
+  text: '⚡ Quick Reference',
+  level: 2
+});
+
+tocItems.push({
+  id: 'tab-comparisons',
+  text: '⚖️ How It Compares',
+  level: 2
+});
+
+tocItems.push({
+  id: 'tab-faqs',
+  text: '💡 FAQs & More',
+  level: 2
+});
+---
+
+<BaseLayout
+  title={service.data.title}
+  description={service.data.description}
+  keywords={service.data.keywords}
+  showBreadcrumbs={true}
+  structuredData={serviceSchema}
+>
+  <!-- Reading Progress Bar -->
+  <ReadingProgress />
+
+  <BreadcrumbNavigation slot="breadcrumbs" items={breadcrumbItems} />
+
+  <!-- Hero Section -->
+  <ServiceHero
+    title={`${service.data.service_name} Review 2025: ${service.data.winner_badge || 'Expert Analysis'}`}
+    subtitle={service.data.description}
+    rating={service.data.rating}
+    badge={service.data.winner_badge}
+    backgroundImage={service.data.hero_image}
+  />
+
+  <article>
+    <div class="container">
+      <!-- Quick Summary -->
+      <QuickSummary
+        bestFor={service.data.best_for || 'Quality flower delivery'}
+        priceRange={service.data.price_range}
+        delivery={service.data.summary_delivery || service.data.delivery_options.join(', ')}
+        rating={service.data.summary_rating || `${service.data.rating}/5`}
+        serviceName={service.data.service_name}
+        affiliateUrl={affiliateUrl}
+      />
+
+      <!-- Review Byline -->
+      <ReviewByline
+        datePublished={service.data.date_published}
+        dateModified={service.data.date_modified}
+        expertTested={true}
+      />
+
+      <!-- Promo Code (if exists) -->
+      {service.data.promo_code && (
+        <PromoCode
+          code={service.data.promo_code.code}
+          description={service.data.promo_code.description}
+          expiryDate={service.data.promo_code.expiry_date}
+          serviceName={service.data.service_name}
+          affiliateUrl={affiliateUrl}
+        />
+      )}
+
+      <!-- Service Overview (if structured data exists) -->
+      {service.data.overview_positioning && service.data.overview_content && (
+        <section id="overview">
+          <ServiceOverview
+            serviceName={service.data.service_name}
+            positioning={service.data.overview_positioning}
+            content={service.data.overview_content}
+          />
+        </section>
+      )}
+
+      <!-- Best For Scenarios (if exists) -->
+      {service.data.best_for_scenarios && service.data.best_for_scenarios.length > 0 && (
+        <section class="content-section" id="perfect-for">
+          <BestForCards
+            scenarios={service.data.best_for_scenarios}
+            title="Perfect For"
+          />
+        </section>
+      )}
+
+      <!-- Testing Metrics Dashboard (if data exists) - Prominently displayed -->
+      {service.data.testing_metrics && service.data.testing_metrics.length > 0 && (
+        <section class="content-section" id="testing-metrics">
+          <TestingMetrics
+            metrics={service.data.testing_metrics}
+            title="Testing Results at a Glance"
+          />
+        </section>
+      )}
+
+      <!-- Tabbed Content Sections -->
+      <section class="content-section" id="tabbed-content">
+        <TabSection tabs={[
+          { id: 'review', label: 'Complete Review', icon: '📖' },
+          { id: 'quick-ref', label: 'Quick Reference', icon: '⚡' },
+          { id: 'comparisons', label: 'How It Compares', icon: '⚖️' },
+          { id: 'faqs', label: 'FAQs & More', icon: '💡' }
+        ]}>
+          <!-- Tab 1: Complete Review -->
+          <div class="tab-panel active" role="tabpanel" data-tab-panel="review" id="tab-review">
+            <article class="tab-content-wrapper">
+              <div class="prose-content">
+                <Content />
+              </div>
+            </article>
+          </div>
+
+          <!-- Tab 2: Quick Reference -->
+          <div class="tab-panel" role="tabpanel" data-tab-panel="quick-ref" id="tab-quick-ref">
+            <div class="tab-content-wrapper">
+              {/* Pros & Cons */}
+              {service.data.pros && service.data.cons && (
+                <ProsConsGrid
+                  serviceName={service.data.service_name}
+                  prosTitle={service.data.pros_title || 'Strengths'}
+                  consTitle={service.data.cons_title || 'Considerations'}
+                  pros={service.data.pros}
+                  cons={service.data.cons}
+                />
+              )}
+
+              {!service.data.pros && !service.data.cons && (
+                <p class="empty-tab-message">Pros and cons analysis coming soon.</p>
+              )}
+            </div>
+          </div>
+
+          <!-- Tab 3: How It Compares -->
+          <div class="tab-panel" role="tabpanel" data-tab-panel="comparisons" id="tab-comparisons">
+            <div class="tab-content-wrapper">
+              {/* Feature Comparison */}
+              {service.data.feature_comparison && (
+                <div class="comparison-section">
+                  <VSComparison
+                    service1Name={service.data.service_name}
+                    service2Name={service.data.feature_comparison.competitor_name}
+                    features={service.data.feature_comparison.features.map(f => ({
+                      feature: f.feature,
+                      service1: f.service_value,
+                      service2: f.competitor_value
+                    }))}
+                    winner={service.data.feature_comparison.winner === 'service' ? 1 : service.data.feature_comparison.winner === 'competitor' ? 2 : undefined}
+                  />
+                </div>
+              )}
+
+              {/* Competitive Comparison */}
+              {service.data.comparisons && service.data.comparisons.length > 0 && (
+                <div class="comparison-section">
+                  <ComparisonSection
+                    serviceName={service.data.service_name}
+                    comparisons={service.data.comparisons}
+                    useCases={service.data.use_cases}
+                  />
+                </div>
+              )}
+
+              {!service.data.feature_comparison && (!service.data.comparisons || service.data.comparisons.length === 0) && (
+                <p class="empty-tab-message">Comparison analysis coming soon.</p>
+              )}
+            </div>
+          </div>
+
+          <!-- Tab 4: FAQs & More -->
+          <div class="tab-panel" role="tabpanel" data-tab-panel="faqs" id="tab-faqs">
+            <div class="tab-content-wrapper">
+              {/* FAQs */}
+              {service.data.faqs && service.data.faqs.length > 0 && (
+                <div class="faqs-wrapper">
+                  <AccordionFAQ items={service.data.faqs} />
+                </div>
+              )}
+
+              {/* Final Recommendation */}
+              {service.data.recommendation_sections && service.data.recommendation_sections.length > 0 && (
+                <div class="recommendation-wrapper">
+                  <FinalRecommendation
+                    serviceName={service.data.service_name}
+                    rating={service.data.rating}
+                    ratingLabel={service.data.winner_badge || 'Expert Tested'}
+                    sections={service.data.recommendation_sections}
+                    affiliateUrl={affiliateUrl}
+                    ctaText={service.data.recommendation_cta || `Visit ${service.data.service_name}`}
+                  />
+                </div>
+              )}
+
+              {/* Related Reviews */}
+              {service.data.related_reviews && service.data.related_reviews.length > 0 && (
+                <div class="related-wrapper">
+                  <RelatedReviews
+                    heading={service.data.related_heading || 'Compare with Other Services'}
+                    reviews={service.data.related_reviews}
+                  />
+                </div>
+              )}
+
+              {!service.data.faqs && !service.data.recommendation_sections && !service.data.related_reviews && (
+                <p class="empty-tab-message">Additional information coming soon.</p>
+              )}
+            </div>
+          </div>
+        </TabSection>
+      </section>
+
+      <!-- Affiliate Banner Section -->
+      <div class="max-w-4xl mx-auto">
+        <AffiliateBannerSection
+          serviceId={service.data.service_id}
+          serviceName={service.data.service_name}
+          affiliateUrl={affiliateUrl}
+        />
+      </div>
+    </div>
+  </article>
+
+  <!-- Sticky CTA Bar -->
+  <StickyCTA
+    serviceName={service.data.service_name}
+    affiliateUrl={affiliateUrl}
+    rating={service.data.rating}
+  />
+
+  <!-- Sticky Table of Contents -->
+  {tocItems.length > 0 && (
+    <StickyTOC items={tocItems} />
+  )}
+</BaseLayout>
+
+<style>
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+
+  .content-section {
+    margin: 3rem 0;
+  }
+
+  /* Tab panel visibility - critical for tab switching */
+  .tab-panel {
+    display: none;
+    animation: fadeIn 0.3s ease-in;
+  }
+
+  .tab-panel.active {
+    display: block;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .tab-content-wrapper {
+    padding: 2rem 0;
+  }
+
+  .prose-content {
+    max-width: 65ch;
+    margin: 0 auto;
+  }
+
+  .prose-content :global(h2) {
+    font-size: 1.875rem;
+    font-weight: 700;
+    color: var(--florize-green, #4a7c59);
+    margin: 2rem 0 1rem 0;
+  }
+
+  .prose-content :global(h3) {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #1f2937;
+    margin: 1.5rem 0 0.75rem 0;
+  }
+
+  .prose-content :global(p) {
+    font-size: 1.0625rem;
+    line-height: 1.7;
+    color: #374151;
+    margin: 0 0 1.25rem 0;
+  }
+
+  .prose-content :global(ul),
+  .prose-content :global(ol) {
+    margin: 0 0 1.25rem 0;
+    padding-left: 1.5rem;
+  }
+
+  .prose-content :global(li) {
+    margin: 0 0 0.5rem 0;
+  }
+
+  .prose-content :global(strong) {
+    font-weight: 700;
+    color: #1f2937;
+  }
+
+  .prose-content :global(a) {
+    color: var(--florize-green, #4a7c59);
+    text-decoration: underline;
+  }
+
+  .prose-content :global(a:hover) {
+    color: #6fa581;
+  }
+
+  .empty-tab-message {
+    text-align: center;
+    color: #6b7280;
+    padding: 3rem 1rem;
+    font-size: 1.125rem;
+  }
+
+  .comparison-section {
+    margin: 2rem 0;
+  }
+
+  .faqs-wrapper,
+  .recommendation-wrapper,
+  .related-wrapper {
+    margin: 2rem 0;
+  }
+
+  .faqs-wrapper + .recommendation-wrapper,
+  .recommendation-wrapper + .related-wrapper {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 2px solid #e5e7eb;
+  }
+
+  @media (max-width: 768px) {
+    .container {
+      padding: 0 0.75rem;
+    }
+
+    .content-section {
+      margin: 2rem 0;
+    }
+
+    .tab-content-wrapper {
+      padding: 1rem 0;
+    }
+
+    .prose-content {
+      max-width: 100%;
+    }
+
+    .prose-content :global(h2) {
+      font-size: 1.5rem;
+    }
+
+    .prose-content :global(h3) {
+      font-size: 1.25rem;
+    }
+
+    .prose-content :global(p) {
+      font-size: 1rem;
+    }
+  }
+</style>

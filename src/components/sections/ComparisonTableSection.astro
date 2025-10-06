@@ -1,0 +1,35 @@
+---
+import ComparisonTable from '../ui/ComparisonTable.astro';
+import Button from '../ui/Button.astro';
+import type { CollectionEntry } from 'astro:content';
+
+export interface Props {
+  services: CollectionEntry<'services'>[];
+  heading?: string;
+  maxServices?: number;
+  showViewAllButton?: boolean;
+}
+
+const {
+  services,
+  heading = "Top UK Flower Delivery Services - Expert Comparison 2025",
+  maxServices = 5,
+  showViewAllButton = true
+} = Astro.props;
+---
+
+<section id="comparison" class="section-padding bg-cream-white">
+  <div class="container">
+    <h2 class="text-3xl font-bold text-florize-green mb-8 text-center">
+      {heading}
+    </h2>
+
+    <ComparisonTable services={services} maxServices={maxServices} />
+
+    {showViewAllButton && (
+      <div class="text-center mt-8">
+        <Button href="/services" variant="primary" size="lg" text="View All Service Reviews" />
+      </div>
+    )}
+  </div>
+</section>

@@ -1,0 +1,86 @@
+---
+import Button from '../ui/Button.astro';
+import AffiliateBanner from '../ui/AffiliateBanner.astro';
+
+export interface Props {
+  className?: string;
+}
+
+const { className = '' } = Astro.props;
+---
+
+<section class={`section-padding ${className}`} aria-labelledby="selection-heading">
+  <div class="container">
+    <div class="max-w-6xl mx-auto">
+      <h2 id="selection-heading" class="text-3xl font-bold text-florize-green mb-6 text-center">
+        Quick Selection Guide - Find Your Perfect Service
+      </h2>
+      <p class="text-center text-lg text-gray-700 mb-8 max-w-4xl mx-auto">
+        Not sure which service is right for you? Use our expert recommendations based on your specific needs and budget.
+      </p>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <!-- Left Column -->
+        <div class="space-y-6">
+          <div>
+            <h3 class="text-xl font-bold text-florize-green mb-3">Best for Budget-Conscious Customers</h3>
+            <p class="text-gray-700 mb-3">
+              <strong>Prestige Flowers</strong> offers the best value with arrangements starting from £19.99. While the quality isn't premium, their flowers are fresh and well-arranged, making them perfect for everyday occasions without breaking the bank.
+            </p>
+            <Button href="/services/prestige-flowers" variant="secondary" size="md" text="Read Full Review" />
+          </div>
+
+          <div>
+            <h3 class="text-xl font-bold text-florize-green mb-3">Best for Luxury & Premium Needs</h3>
+            <p class="text-gray-700 mb-3">
+              <strong>Flowerbx</strong> delivers stunning designer arrangements that rival high-end florists. Their premium flower selection and sophisticated designs make them ideal for important occasions where quality matters most.
+            </p>
+            <Button href="/services/flowerbx" variant="secondary" size="md" text="Read Full Review" />
+          </div>
+
+          <div>
+            <h3 class="text-xl font-bold text-florize-green mb-3">Best for Premium Quality & Subscriptions</h3>
+            <p class="text-gray-700 mb-3">
+              <strong>Appleyard Flowers</strong> combines exceptional premium quality with convenient subscription services. London customers enjoy same-day delivery, while their 11,846+ reviews and 4.6/5 rating prove consistent excellence.
+            </p>
+            <Button href="/services/appleyard-flowers" variant="secondary" size="md" text="Read Full Review" />
+          </div>
+
+          <!-- Affiliate Banners - Left Column -->
+          <AffiliateBanner serviceId="myflowers" className="mt-6" />
+          <AffiliateBanner serviceId="blossoming-gifts" />
+        </div>
+
+        <!-- Right Column -->
+        <div class="space-y-6">
+          <div>
+            <h3 class="text-xl font-bold text-florize-green mb-3">Best for Convenience & Innovation</h3>
+            <p class="text-gray-700 mb-3">
+              <strong>Bloom & Wild</strong> revolutionized flower delivery with their letterbox service. No missed deliveries, extended bloom life, and B Corp certification make them perfect for busy lifestyles.
+            </p>
+            <Button href="/services/bloom-wild" variant="secondary" size="md" text="Read Full Review" />
+          </div>
+
+          <div>
+            <h3 class="text-xl font-bold text-florize-green mb-3">Best for Reliability & Trust</h3>
+            <p class="text-gray-700 mb-3">
+              <strong>Interflora</strong> remains the gold standard with their massive 40,000+ florist network and 7-day freshness guarantee. When you need absolute reliability, they're the safest choice for any occasion.
+            </p>
+            <Button href="/services/interflora" variant="secondary" size="md" text="Read Full Review" />
+          </div>
+
+          <!-- Affiliate Banner - Right Column -->
+          <AffiliateBanner serviceId="appleyard-flowers" className="mt-6" />
+
+          <div>
+            <h3 class="text-xl font-bold text-florize-green mb-3">Best for Specific Occasions</h3>
+            <p class="text-gray-700 mb-3">
+              Different occasions call for different approaches. Browse our detailed occasion guides for expert recommendations on the best services and flower types for birthdays, anniversaries, sympathy, and more.
+            </p>
+            <Button href="/occasions" variant="secondary" size="md" text="View Occasion Guides" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

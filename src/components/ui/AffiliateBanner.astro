@@ -1,0 +1,52 @@
+---
+/**
+ * AffiliateBanner Component
+ *
+ * Renders a single affiliate banner from HTML code.
+ * The HTML is rendered directly and wrapped in a styled container.
+ */
+
+export interface Props {
+  serviceId: string;
+  htmlCode: string;
+  description?: string;
+  class?: string;
+}
+
+const { serviceId, htmlCode, description, class: className = '' } = Astro.props;
+---
+
+<div class={`affiliate-banner ${className}`}>
+  <div
+    class="affiliate-banner-container rounded-lg border-2 border-gray-200 hover:border-green-400 hover:shadow-lg transition-all duration-200 overflow-hidden bg-white p-4"
+  >
+    <Fragment set:html={htmlCode} />
+  </div>
+</div>
+
+<style>
+  .affiliate-banner {
+    position: relative;
+  }
+
+  .affiliate-banner-container {
+    text-align: center;
+  }
+
+  /* Style nested affiliate links */
+  .affiliate-banner-container :global(a) {
+    display: inline-block;
+    text-decoration: none;
+  }
+
+  .affiliate-banner-container :global(a:focus) {
+    outline: 2px solid #16a34a;
+    outline-offset: 2px;
+  }
+
+  .affiliate-banner-container :global(img) {
+    display: inline-block;
+    max-width: 100%;
+    height: auto;
+  }
+</style>

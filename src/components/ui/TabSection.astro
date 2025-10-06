@@ -1,0 +1,215 @@
+---
+export interface Tab {
+  id: string;
+  label: string;
+  icon?: string;
+}
+
+export interface Props {
+  tabs: Tab[];
+  defaultTab?: string;
+}
+
+const {
+  tabs,
+  defaultTab
+} = Astro.props;
+
+const activeTab = defaultTab || tabs[0]?.id;
+---
+
+<div class="tab-section" data-tab-section>
+  <div class="tab-nav-wrapper">
+    <div class="tab-nav" role="tablist">
+      {tabs.map((tab, index) => (
+        <button
+          class={`tab-button ${index === 0 ? 'active' : ''}`}
+          role="tab"
+          aria-selected={index === 0 ? 'true' : 'false'}
+          data-tab={tab.id}
+        >
+          {tab.icon && <span class="tab-icon">{tab.icon}</span>}
+          <span class="tab-label">{tab.label}</span>
+        </button>
+      ))}
+    </div>
+  </div>
+
+  <div class="tab-content-wrapper">
+    <slot />
+  </div>
+</div>
+
+<script>
+  function initTabSections() {
+    const tabSections = document.querySelectorAll('[data-tab-section]');
+
+    tabSections.forEach(section => {
+      const tabButtons = section.querySelectorAll('[data-tab]');
+      const tabPanels = section.querySelectorAll('[data-tab-panel]');
+
+      tabButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          const targetTab = button.getAttribute('data-tab');
+
+          // Update button states
+          tabButtons.forEach(btn => {
+            btn.classList.remove('active');
+            btn.setAttribute('aria-selected', 'false');
+          });
+          button.classList.add('active');
+          button.setAttribute('aria-selected', 'true');
+
+          // Update panel visibility
+          tabPanels.forEach(panel => {
+            const panelId = panel.getAttribute('data-tab-panel');
+            if (panelId === targetTab) {
+              panel.classList.add('active');
+            } else {
+              panel.classList.remove('active');
+            }
+          });
+        });
+      });
+    });
+  }
+
+  // Initialize on page load
+  document.addEventListener('DOMContentLoaded', initTabSections);
+
+  // Re-initialize after page transitions
+  document.addEventListener('astro:page-load', initTabSections);
+</script>
+
+<style>
+  .tab-section {
+    margin: 2rem 0;
+  }
+
+  .tab-nav-wrapper {
+    border-bottom: 2px solid #e5e7eb;
+    margin-bottom: 2rem;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .tab-nav {
+    display: flex;
+    gap: 0.5rem;
+    min-width: min-content;
+    padding-bottom: 0;
+  }
+
+  .tab-button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.875rem 1.5rem;
+    background: none;
+    border: none;
+    color: #6b7280;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.2s;
+    white-space: nowrap;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+  }
+
+  .tab-button:hover {
+    color: var(--florize-green, #4a7c59);
+    background: #f0f8f4;
+  }
+
+  .tab-button.active {
+    color: var(--florize-green, #4a7c59);
+    border-bottom-color: var(--florize-green, #4a7c59);
+  }
+
+  .tab-icon {
+    font-size: 1.125rem;
+    line-height: 1;
+  }
+
+  .tab-label {
+    line-height: 1;
+  }
+
+  .tab-content-wrapper {
+    position: relative;
+  }
+
+  .tab-panel {
+    display: none;
+    animation: fadeIn 0.3s ease-in;
+  }
+
+  .tab-panel.active {
+    display: block;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Custom scrollbar for tab nav */
+  .tab-nav-wrapper::-webkit-scrollbar {
+    height: 4px;
+  }
+
+  .tab-nav-wrapper::-webkit-scrollbar-track {
+    background: #f3f4f6;
+  }
+
+  .tab-nav-wrapper::-webkit-scrollbar-thumb {
+    background: #d1d5db;
+    border-radius: 2px;
+  }
+
+  .tab-nav-wrapper::-webkit-scrollbar-thumb:hover {
+    background: #9ca3af;
+  }
+
+  @media (max-width: 768px) {
+    .tab-nav {
+      gap: 0.25rem;
+    }
+
+    .tab-button {
+      padding: 0.75rem 1rem;
+      font-size: 0.875rem;
+    }
+
+    .tab-icon {
+      font-size: 1rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .tab-button {
+      padding: 0.75rem 0.875rem;
+      font-size: 0.8125rem;
+    }
+
+    .tab-label {
+      display: none;
+    }
+
+    .tab-button .tab-icon {
+      font-size: 1.25rem;
+    }
+
+    .tab-button:not(.tab-icon) .tab-label {
+      display: inline;
+    }
+  }
+</style>

@@ -1,0 +1,232 @@
+---
+import LazyBackgroundImage from '../ui/LazyBackgroundImage.astro';
+
+export interface Props {
+  title: string;
+  subtitle?: string;
+  primaryCta?: {
+    text: string;
+    href: string;
+  };
+  secondaryCta?: {
+    text: string;
+    href: string;
+  };
+  backgroundImage?: string;
+  className?: string;
+}
+
+const {
+  title,
+  subtitle,
+  primaryCta,
+  secondaryCta,
+  backgroundImage,
+  className = ''
+} = Astro.props;
+
+const bgStyle = !backgroundImage
+  ? 'background: linear-gradient(135deg, #4a7c59 0%, #3d6849 100%);'
+  : undefined;
+---
+
+{backgroundImage ? (
+  <LazyBackgroundImage
+    src={backgroundImage}
+    alt={title}
+    class={`hero-section ${className}`}
+    overlay={true}
+    overlayOpacity={0.4}
+    priority={true}
+  >
+    <div class="hero-content">
+      <h1 id="hero-heading">{title}</h1>
+      {subtitle && (
+        <p class="hero-subtitle">{subtitle}</p>
+      )}
+
+      <slot name="content" />
+
+      {(primaryCta || secondaryCta || Astro.slots.has('cta')) && (
+        <div class="hero-cta">
+          <slot name="cta">
+            {primaryCta && (
+              <a href={primaryCta.href} class="cta-primary">{primaryCta.text}</a>
+            )}
+            {secondaryCta && (
+              <a href={secondaryCta.href} class="cta-secondary">{secondaryCta.text}</a>
+            )}
+          </slot>
+        </div>
+      )}
+    </div>
+  </LazyBackgroundImage>
+) : (
+  <section class={`hero-section ${className}`} style={bgStyle} aria-labelledby="hero-heading">
+    <div class="hero-content">
+      <h1 id="hero-heading">{title}</h1>
+      {subtitle && (
+        <p class="hero-subtitle">{subtitle}</p>
+      )}
+
+      <slot name="content" />
+
+      {(primaryCta || secondaryCta || Astro.slots.has('cta')) && (
+        <div class="hero-cta">
+          <slot name="cta">
+            {primaryCta && (
+              <a href={primaryCta.href} class="cta-primary">{primaryCta.text}</a>
+            )}
+            {secondaryCta && (
+              <a href={secondaryCta.href} class="cta-secondary">{secondaryCta.text}</a>
+            )}
+          </slot>
+        </div>
+      )}
+    </div>
+  </section>
+)}
+
+<style>
+  .hero-section {
+    position: relative;
+    min-height: 90vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    color: white;
+    text-align: center;
+    overflow: hidden;
+  }
+
+  .hero-section::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.4), rgba(74, 124, 89, 0.3));
+    z-index: 1;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 1000px;
+    padding: 3rem 2rem;
+  }
+
+  .hero-content h1 {
+    font-size: 4.5rem;
+    font-weight: 700;
+    text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.9);
+    margin-bottom: 2rem;
+    color: white;
+    line-height: 1.1;
+  }
+
+  .hero-subtitle {
+    font-size: 1.5rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    margin-bottom: 2.5rem;
+    color: white;
+    line-height: 1.6;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .hero-cta {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .cta-primary,
+  .cta-secondary {
+    display: inline-block;
+    padding: 1.25rem 2.5rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    font-size: 1.25rem;
+  }
+
+  .cta-primary {
+    background-color: #4a7c59;
+    color: white;
+    border: 2px solid #4a7c59;
+  }
+
+  .cta-primary:hover {
+    background-color: #3d6849;
+    border-color: #3d6849;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  }
+
+  .cta-secondary {
+    background-color: transparent;
+    color: white;
+    border: 2px solid white;
+  }
+
+  .cta-secondary:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .hero-section {
+      min-height: 75vh;
+      background-attachment: scroll;
+    }
+
+    .hero-content {
+      padding: 2.5rem 1.5rem;
+    }
+
+    .hero-content h1 {
+      font-size: 3rem;
+    }
+
+    .hero-subtitle {
+      font-size: 1.25rem;
+    }
+
+    .hero-cta {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .cta-primary,
+    .cta-secondary {
+      width: 100%;
+      text-align: center;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .hero-section {
+      min-height: 70vh;
+    }
+
+    .hero-content h1 {
+      font-size: 2.5rem;
+    }
+
+    .hero-subtitle {
+      font-size: 1.125rem;
+    }
+  }
+</style>

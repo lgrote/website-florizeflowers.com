@@ -1,0 +1,17 @@
+---
+import { getActiveHeaderTags } from '../../lib/sanity';
+
+let headerTags: string[] = [];
+
+try {
+  headerTags = await getActiveHeaderTags();
+} catch (error) {
+  console.warn('Could not load global headers:', error);
+  headerTags = [];
+}
+---
+
+<!-- Inject global header tags from Sanity -->
+{headerTags.map((tag) => (
+  <Fragment set:html={tag} />
+))}

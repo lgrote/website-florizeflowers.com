@@ -1,0 +1,368 @@
+---
+export interface TOCItem {
+  id: string;
+  text: string;
+  level: number;
+}
+
+export interface Props {
+  items: TOCItem[];
+}
+
+const { items } = Astro.props;
+---
+
+<aside class="sticky-toc" id="sticky-toc">
+  <div class="toc-toggle" id="toc-toggle">
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+      <path d="M3 4h14M3 10h14M3 16h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+    <span>Table of Contents</span>
+  </div>
+
+  <nav class="toc-nav" id="toc-nav">
+    <h3 class="toc-title">On This Page</h3>
+    <ul class="toc-list">
+      {items.map((item) => (
+        <li class={`toc-item level-${item.level}`}>
+          <a href={`#${item.id}`} class="toc-link" data-toc-link={item.id}>
+            {item.text}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </nav>
+</aside>
+
+<script>
+  function initStickyTOC() {
+    const toc = document.getElementById('sticky-toc');
+    const tocToggle = document.getElementById('toc-toggle');
+    const tocNav = document.getElementById('toc-nav');
+    const tocLinks = document.querySelectorAll('[data-toc-link]');
+
+    if (!toc || !tocToggle || !tocNav) return;
+
+    // Toggle mobile TOC
+    tocToggle.addEventListener('click', () => {
+      toc.classList.toggle('open');
+    });
+
+    // Close TOC when clicking outside on mobile
+    document.addEventListener('click', (e) => {
+      if (window.innerWidth <= 1024 &&
+          !toc.contains(e.target as Node) &&
+          toc.classList.contains('open')) {
+        toc.classList.remove('open');
+      }
+    });
+
+    // Highlight active section on scroll
+    const sections = Array.from(tocLinks).map(link => {
+      const id = link.getAttribute('data-toc-link');
+      return id ? document.getElementById(id) : null;
+    }).filter(Boolean) as HTMLElement[];
+
+    function highlightActiveSection() {
+      const scrollY = window.scrollY;
+      const windowHeight = window.innerHeight;
+
+      let activeSection: HTMLElement | null = null;
+
+      // Find the current section
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const section = sections[i];
+        const rect = section.getBoundingClientRect();
+        const sectionTop = rect.top + scrollY;
+
+        if (scrollY >= sectionTop - 100) {
+          activeSection = section;
+          break;
+        }
+      }
+
+      // Check if we're in the tabbed content section
+      const tabbedSection = document.getElementById('tabbed-content');
+      const activeTab = document.querySelector('.tab-panel.active');
+      let activeTabId: string | null = null;
+
+      if (tabbedSection && activeTab) {
+        const tabbedRect = tabbedSection.getBoundingClientRect();
+        const tabbedTop = tabbedRect.top + scrollY;
+
+        // If we're viewing the tabbed section, highlight the active tab
+        if (scrollY >= tabbedTop - 100) {
+          activeTabId = activeTab.id;
+        }
+      }
+
+      // Update active link
+      tocLinks.forEach(link => {
+        const id = link.getAttribute('data-toc-link');
+
+        // Highlight tab if we're in tabbed section
+        if (activeTabId && id === activeTabId) {
+          link.classList.add('active');
+        }
+        // Otherwise highlight regular section
+        else if (!activeTabId && id === activeSection?.id) {
+          link.classList.add('active');
+        } else {
+          link.classList.remove('active');
+        }
+      });
+    }
+
+    // Smooth scroll to section
+    tocLinks.forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const id = link.getAttribute('data-toc-link');
+        const target = id ? document.getElementById(id) : null;
+
+        if (target) {
+          // Check if this is a tab link (ID starts with "tab-")
+          if (id && id.startsWith('tab-')) {
+            // Extract the tab ID (e.g., "tab-review" -> "review")
+            const tabId = id.replace('tab-', '');
+
+            // Find and click the corresponding tab button
+            const tabButton = document.querySelector(`[data-tab="${tabId}"]`) as HTMLElement;
+            if (tabButton) {
+              tabButton.click();
+
+              // Give the tab a moment to switch, then scroll to the tabbed content section
+              setTimeout(() => {
+                const tabbedSection = document.getElementById('tabbed-content');
+                if (tabbedSection) {
+                  const offsetTop = tabbedSection.getBoundingClientRect().top + window.scrollY - 80;
+                  window.scrollTo({
+                    top: offsetTop,
+                    behavior: 'smooth'
+                  });
+                }
+              }, 50);
+            }
+          } else {
+            // Regular section scroll
+            const offsetTop = target.getBoundingClientRect().top + window.scrollY - 80;
+            window.scrollTo({
+              top: offsetTop,
+              behavior: 'smooth'
+            });
+          }
+
+          // Close mobile TOC after clicking
+          if (window.innerWidth <= 1024) {
+            toc.classList.remove('open');
+          }
+        }
+      });
+    });
+
+    // Listen to scroll
+    let ticking = false;
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          highlightActiveSection();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    });
+
+    // Listen to tab switches (update TOC highlighting when tabs change)
+    const tabButtons = document.querySelectorAll('[data-tab]');
+    tabButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        // Wait a moment for the tab switch animation to complete
+        setTimeout(() => {
+          highlightActiveSection();
+        }, 50);
+      });
+    });
+
+    // Initial highlight
+    highlightActiveSection();
+  }
+
+  // Initialize on page load
+  document.addEventListener('DOMContentLoaded', initStickyTOC);
+
+  // Re-initialize after page transitions
+  document.addEventListener('astro:page-load', initStickyTOC);
+</script>
+
+<style>
+  .sticky-toc {
+    position: fixed;
+    top: 100px;
+    right: 2rem;
+    width: 280px;
+    max-height: calc(100vh - 140px);
+    z-index: 40;
+  }
+
+  .toc-toggle {
+    display: none;
+  }
+
+  .toc-nav {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    overflow-y: auto;
+    max-height: calc(100vh - 140px);
+  }
+
+  .toc-title {
+    font-size: 0.875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--florize-green, #4a7c59);
+    margin: 0 0 1rem 0;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid var(--florize-green, #4a7c59);
+  }
+
+  .toc-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .toc-item {
+    margin: 0;
+  }
+
+  .toc-item.level-2 {
+    margin-left: 0;
+  }
+
+  .toc-item.level-3 {
+    margin-left: 1rem;
+  }
+
+  .toc-link {
+    display: block;
+    padding: 0.5rem 0.75rem;
+    color: #6b7280;
+    text-decoration: none;
+    font-size: 0.875rem;
+    line-height: 1.4;
+    border-left: 3px solid transparent;
+    margin-left: -0.75rem;
+    transition: all 0.2s;
+  }
+
+  .toc-link:hover {
+    color: var(--florize-green, #4a7c59);
+    background: #f0f8f4;
+    border-left-color: var(--florize-green, #4a7c59);
+  }
+
+  .toc-link.active {
+    color: var(--florize-green, #4a7c59);
+    font-weight: 600;
+    background: #f0f8f4;
+    border-left-color: var(--florize-green, #4a7c59);
+  }
+
+  /* Custom scrollbar */
+  .toc-nav::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .toc-nav::-webkit-scrollbar-track {
+    background: #f3f4f6;
+    border-radius: 3px;
+  }
+
+  .toc-nav::-webkit-scrollbar-thumb {
+    background: #d1d5db;
+    border-radius: 3px;
+  }
+
+  .toc-nav::-webkit-scrollbar-thumb:hover {
+    background: #9ca3af;
+  }
+
+  /* Mobile/Tablet - Floating Toggle Button */
+  @media (max-width: 1024px) {
+    .sticky-toc {
+      position: fixed;
+      top: auto;
+      bottom: 5rem;
+      right: 1rem;
+      width: auto;
+      max-height: none;
+    }
+
+    .toc-toggle {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--florize-green, #4a7c59);
+      color: white;
+      border: none;
+      border-radius: 24px;
+      padding: 0.75rem 1.25rem;
+      font-weight: 600;
+      font-size: 0.875rem;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(74, 124, 89, 0.3);
+      transition: all 0.2s;
+    }
+
+    .toc-toggle:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(74, 124, 89, 0.4);
+    }
+
+    .toc-toggle svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .toc-nav {
+      display: none;
+      position: absolute;
+      bottom: 60px;
+      right: 0;
+      width: 280px;
+      max-height: 400px;
+      margin-bottom: 0.5rem;
+    }
+
+    .sticky-toc.open .toc-nav {
+      display: block;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .toc-nav {
+      width: calc(100vw - 2rem);
+      right: -1rem;
+    }
+
+    .toc-toggle span {
+      display: none;
+    }
+
+    .toc-toggle {
+      padding: 0.75rem;
+      border-radius: 50%;
+    }
+  }
+
+  /* Hide on very wide screens where content is too narrow */
+  @media (min-width: 1920px) {
+    .sticky-toc {
+      right: calc((100vw - 1536px) / 2 + 2rem);
+    }
+  }
+</style>

@@ -1,0 +1,325 @@
+---
+// Lazy loading background image component for hero sections and banners
+// Implements progressive loading with blur-up effect
+
+export interface Props {
+  src: string;
+  mobileSrc?: string;
+  alt?: string;
+  class?: string;
+  overlay?: boolean;
+  overlayOpacity?: number;
+  loading?: 'lazy' | 'eager';
+  priority?: boolean;
+  children?: any;
+}
+
+const {
+  src,
+  mobileSrc,
+  alt = '',
+  class: className = '',
+  overlay = true,
+  overlayOpacity = 0.4,
+  loading = 'lazy',
+  priority = false,
+  children
+} = Astro.props;
+
+// Generate unique ID for this instance
+const uniqueId = `bg-${Math.random().toString(36).substr(2, 9)}`;
+---
+
+<div
+  class={`lazy-bg-container ${className}`}
+  id={uniqueId}
+  data-bg-src={src}
+  data-bg-mobile={mobileSrc || src}
+  data-loading={loading}
+  data-priority={priority}
+  role="img"
+  aria-label={alt}
+>
+  {/* Low quality placeholder for blur-up effect */}
+  <div class="bg-placeholder"></div>
+
+  {/* Optional overlay */}
+  {overlay && (
+    <div
+      class="bg-overlay"
+      style={`opacity: ${overlayOpacity}`}
+    />
+  )}
+
+  {/* Content */}
+  <div class="bg-content">
+    <slot />
+  </div>
+</div>
+
+<script>
+  interface BackgroundImageElement extends HTMLElement {
+    dataset: {
+      bgSrc: string;
+      bgMobile: string;
+      loading: string;
+      priority: string;
+    };
+  }
+
+  class LazyBackgroundLoader {
+    private observer: IntersectionObserver | null = null;
+    private loadedImages: Set<string> = new Set();
+
+    constructor() {
+      this.init();
+    }
+
+    init() {
+      // Check for IntersectionObserver support
+      if ('IntersectionObserver' in window) {
+        this.observer = new IntersectionObserver(
+          this.handleIntersection.bind(this),
+          {
+            rootMargin: '100px',
+            threshold: 0.01
+          }
+        );
+
+        this.observeImages();
+      } else {
+        // Fallback: load all images immediately
+        this.loadAllImages();
+      }
+
+      // Load priority images immediately
+      this.loadPriorityImages();
+    }
+
+    observeImages() {
+      const lazyBgs = document.querySelectorAll<BackgroundImageElement>(
+        '.lazy-bg-container[data-loading="lazy"]:not([data-loaded])'
+      );
+
+      lazyBgs.forEach(bg => {
+        if (this.observer) {
+          this.observer.observe(bg);
+        }
+      });
+    }
+
+    loadPriorityImages() {
+      const priorityBgs = document.querySelectorAll<BackgroundImageElement>(
+        '.lazy-bg-container[data-priority="true"]:not([data-loaded])'
+      );
+
+      priorityBgs.forEach(bg => {
+        this.loadBackgroundImage(bg);
+      });
+    }
+
+    handleIntersection(entries: IntersectionObserverEntry[]) {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const bg = entry.target as BackgroundImageElement;
+          this.loadBackgroundImage(bg);
+
+          if (this.observer) {
+            this.observer.unobserve(bg);
+          }
+        }
+      });
+    }
+
+    loadBackgroundImage(element: BackgroundImageElement) {
+      const src = this.getImageSource(element);
+
+      if (!src || this.loadedImages.has(src)) {
+        element.setAttribute('data-loaded', 'true');
+        return;
+      }
+
+      // Create a new image to preload
+      const img = new Image();
+
+      img.onload = () => {
+        // Apply the background image
+        element.style.backgroundImage = `url(${src})`;
+        element.classList.add('bg-loaded');
+        element.setAttribute('data-loaded', 'true');
+        this.loadedImages.add(src);
+
+        // Remove placeholder after transition
+        setTimeout(() => {
+          const placeholder = element.querySelector('.bg-placeholder');
+          if (placeholder) {
+            placeholder.remove();
+          }
+        }, 300);
+      };
+
+      img.onerror = () => {
+        console.error(`Failed to load background image: ${src}`);
+        element.classList.add('bg-error');
+      };
+
+      img.src = src;
+    }
+
+    getImageSource(element: BackgroundImageElement): string {
+      // Use mobile source for small screens
+      const isMobile = window.innerWidth <= 768;
+      return isMobile ? element.dataset.bgMobile : element.dataset.bgSrc;
+    }
+
+    loadAllImages() {
+      const allBgs = document.querySelectorAll<BackgroundImageElement>(
+        '.lazy-bg-container:not([data-loaded])'
+      );
+
+      allBgs.forEach(bg => {
+        this.loadBackgroundImage(bg);
+      });
+    }
+
+    // Handle responsive image switching
+    handleResize = () => {
+      const loadedBgs = document.querySelectorAll<BackgroundImageElement>(
+        '.lazy-bg-container[data-loaded="true"]'
+      );
+
+      loadedBgs.forEach(bg => {
+        const currentSrc = bg.style.backgroundImage.slice(5, -2); // Remove url(" and ")
+        const newSrc = this.getImageSource(bg);
+
+        if (currentSrc !== newSrc) {
+          this.loadBackgroundImage(bg);
+        }
+      });
+    };
+
+    destroy() {
+      if (this.observer) {
+        this.observer.disconnect();
+      }
+      window.removeEventListener('resize', this.handleResize);
+    }
+  }
+
+  // Initialize on DOM ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+      const loader = new LazyBackgroundLoader();
+
+      // Handle responsive images
+      let resizeTimer: number;
+      window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(loader.handleResize, 250);
+      });
+    });
+  } else {
+    const loader = new LazyBackgroundLoader();
+
+    let resizeTimer: number;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(loader.handleResize, 250);
+    });
+  }
+</script>
+
+<style>
+  .lazy-bg-container {
+    position: relative;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    transition: opacity 0.3s ease-in-out;
+    overflow: hidden;
+  }
+
+  /* Placeholder with gradient animation */
+  .bg-placeholder {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+      135deg,
+      #f5f5f5 0%,
+      #e8e8e8 50%,
+      #f5f5f5 100%
+    );
+    background-size: 200% 200%;
+    animation: shimmer 2s ease-in-out infinite;
+    z-index: 1;
+  }
+
+  @keyframes shimmer {
+    0% {
+      background-position: 0% 0%;
+    }
+    50% {
+      background-position: 100% 100%;
+    }
+    100% {
+      background-position: 0% 0%;
+    }
+  }
+
+  /* Blur effect during loading */
+  .lazy-bg-container:not(.bg-loaded) {
+    filter: blur(8px);
+    transform: scale(1.02);
+  }
+
+  /* Loaded state */
+  .lazy-bg-container.bg-loaded {
+    filter: none;
+    transform: scale(1);
+  }
+
+  /* Smooth transition */
+  .lazy-bg-container {
+    transition: filter 0.3s ease-out, transform 0.3s ease-out;
+  }
+
+  /* Overlay */
+  .bg-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 2;
+  }
+
+  /* Content container */
+  .bg-content {
+    position: relative;
+    z-index: 3;
+  }
+
+  /* Error state */
+  .lazy-bg-container.bg-error {
+    background: #f0f0f0;
+  }
+
+  .lazy-bg-container.bg-error::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60px;
+    height: 60px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23999' stroke-width='2'%3E%3Crect x='3' y='3' width='18' height='18' rx='2' ry='2'/%3E%3Cline x1='9' y1='9' x2='15' y2='15'/%3E%3Cline x1='15' y1='9' x2='9' y2='15'/%3E%3C/svg%3E");
+    background-size: contain;
+    background-repeat: no-repeat;
+    opacity: 0.3;
+    z-index: 1;
+  }
+</style>

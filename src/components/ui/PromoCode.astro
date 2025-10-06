@@ -1,0 +1,276 @@
+---
+export interface Props {
+  code: string;
+  description: string;
+  expiryDate?: string;
+  serviceName: string;
+  affiliateUrl: string;
+}
+
+const {
+  code,
+  description,
+  expiryDate,
+  serviceName,
+  affiliateUrl
+} = Astro.props;
+---
+
+<div class="promo-code-box">
+  <div class="promo-header">
+    <div class="promo-icon">🎁</div>
+    <h3 class="promo-title">Exclusive Offer</h3>
+  </div>
+
+  <div class="promo-content">
+    <p class="promo-description">{description}</p>
+
+    <div class="code-container">
+      <div class="code-display" data-promo-code>
+        <span class="code-label">Promo Code:</span>
+        <span class="code-value" id="promo-code-text">{code}</span>
+      </div>
+      <button class="copy-button" data-copy-button aria-label="Copy promo code">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <path d="M8 3C7.44772 3 7 3.44772 7 4V12C7 12.5523 7.44772 13 8 13H16C16.5523 13 17 12.5523 17 12V4C17 3.44772 16.5523 3 16 3H8ZM7 14C5.89543 14 5 13.1046 5 12V5H4C3.44772 5 3 5.44772 3 6V16C3 16.5523 3.44772 17 4 17H12C12.5523 17 13 16.5523 13 16V15H8C7.44772 15 7 14.5523 7 14Z" fill="currentColor"/>
+        </svg>
+        <span class="copy-text">Copy</span>
+        <span class="copied-text">Copied!</span>
+      </button>
+    </div>
+
+    {expiryDate && (
+      <p class="expiry-date">
+        <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
+          <path d="M10 18C14.4183 18 18 14.4183 18 10C18 5.58172 14.4183 2 10 2C5.58172 2 2 5.58172 2 10C2 14.4183 5.58172 18 10 18ZM11 6C11 5.44772 10.5523 5 10 5C9.44772 5 9 5.44772 9 6V10C9 10.2652 9.10536 10.5196 9.29289 10.7071L12.1213 13.5355C12.5118 13.9261 13.145 13.9261 13.5355 13.5355C13.9261 13.145 13.9261 12.5118 13.5355 12.1213L11 9.58579V6Z" fill="currentColor"/>
+        </svg>
+        Expires: {expiryDate}
+      </p>
+    )}
+
+    <a
+      href={affiliateUrl}
+      target="_blank"
+      rel="nofollow sponsored"
+      class="claim-button"
+    >
+      Claim Offer at {serviceName} →
+    </a>
+  </div>
+</div>
+
+<script>
+  function initPromoCopy() {
+    const copyButtons = document.querySelectorAll('[data-copy-button]');
+
+    copyButtons.forEach(button => {
+      button.addEventListener('click', async () => {
+        const codeText = button.parentElement?.querySelector('#promo-code-text')?.textContent;
+        if (!codeText) return;
+
+        try {
+          await navigator.clipboard.writeText(codeText);
+
+          // Show "Copied!" feedback
+          button.classList.add('copied');
+          setTimeout(() => {
+            button.classList.remove('copied');
+          }, 2000);
+        } catch (err) {
+          console.error('Failed to copy:', err);
+        }
+      });
+    });
+  }
+
+  // Initialize on page load
+  document.addEventListener('DOMContentLoaded', initPromoCopy);
+
+  // Re-initialize after page transitions
+  document.addEventListener('astro:page-load', initPromoCopy);
+</script>
+
+<style>
+  .promo-code-box {
+    background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+    border: 3px solid #fbbf24;
+    border-radius: 12px;
+    padding: 2rem;
+    margin: 2rem 0;
+    box-shadow: 0 8px 24px rgba(251, 191, 36, 0.2);
+  }
+
+  .promo-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .promo-icon {
+    font-size: 2.5rem;
+  }
+
+  .promo-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #92400e;
+    margin: 0;
+  }
+
+  .promo-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .promo-description {
+    font-size: 1rem;
+    color: #78350f;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .code-container {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .code-display {
+    flex: 1;
+    min-width: 200px;
+    background: white;
+    border: 2px dashed #fbbf24;
+    border-radius: 8px;
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .code-label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #92400e;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .code-value {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #b45309;
+    font-family: 'Courier New', monospace;
+    letter-spacing: 0.1em;
+  }
+
+  .copy-button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.875rem 1.5rem;
+    background: white;
+    border: 2px solid #fbbf24;
+    border-radius: 8px;
+    color: #92400e;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+  }
+
+  .copy-button:hover {
+    background: #fbbf24;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(251, 191, 36, 0.3);
+  }
+
+  .copy-button .copied-text {
+    display: none;
+  }
+
+  .copy-button.copied .copy-text {
+    display: none;
+  }
+
+  .copy-button.copied .copied-text {
+    display: inline;
+  }
+
+  .copy-button.copied {
+    background: #10b981;
+    border-color: #10b981;
+    color: white;
+  }
+
+  .expiry-date {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    color: #92400e;
+    margin: 0;
+  }
+
+  .expiry-date svg {
+    color: #d97706;
+  }
+
+  .claim-button {
+    display: inline-block;
+    background: linear-gradient(135deg, #d4af37 0%, #b89530 100%);
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 8px;
+    font-size: 1.0625rem;
+    font-weight: 700;
+    text-decoration: none;
+    text-align: center;
+    transition: all 0.2s;
+    box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+  }
+
+  .claim-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(212, 175, 55, 0.4);
+  }
+
+  @media (max-width: 768px) {
+    .promo-code-box {
+      padding: 1.5rem;
+    }
+
+    .promo-header {
+      flex-direction: column;
+      text-align: center;
+      gap: 0.75rem;
+    }
+
+    .promo-icon {
+      font-size: 2rem;
+    }
+
+    .promo-title {
+      font-size: 1.25rem;
+    }
+
+    .code-container {
+      flex-direction: column;
+      width: 100%;
+    }
+
+    .code-display,
+    .copy-button {
+      width: 100%;
+      justify-content: center;
+    }
+
+    .claim-button {
+      width: 100%;
+      padding: 0.875rem 1.5rem;
+    }
+  }
+</style>

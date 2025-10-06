@@ -1,0 +1,179 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import BreadcrumbNavigation from '../components/navigation/BreadcrumbNavigation.astro';
+import HeroSection from '../components/sections/HeroSection.astro';
+import Card from '../components/ui/Card.astro';
+
+// Breadcrumb items
+const breadcrumbItems = [
+  { label: 'Home', href: '/' },
+  { label: 'Guides' },
+];
+---
+
+<BaseLayout
+  title="Flower Buying Guides - Expert Tips for UK Customers | Florize"
+  description="Complete flower buying guides for UK customers. Expert tips on flower care, seasonal selection, budget planning, and getting the best value from flower delivery services."
+  showBreadcrumbs={true}
+>
+  <BreadcrumbNavigation slot="breadcrumbs" items={breadcrumbItems} />
+  <!-- Hero Section -->
+  <HeroSection
+    title="Expert Flower Buying Guides"
+    subtitle="Master the art of flower selection with professional tips and insider knowledge"
+    primaryCta={{ text: "Start Learning", href: "#essential-guides" }}
+    secondaryCta={{ text: "Quick Tips", href: "#quick-tips" }}
+    backgroundImage="/images/hero-flowers-professional.jpg"
+  />
+
+  <!-- Guides Overview -->
+  <section class="section-padding">
+    <div class="container">
+      <h2 class="text-3xl font-bold text-florize-green mb-6 text-center">Your Complete Flower Buying Education</h2>
+      <p class="text-lg text-gray-700 mb-8 max-w-4xl mx-auto text-center">
+        Whether you're a first-time flower buyer or looking to improve your gifting skills, our comprehensive guides provide the knowledge you need to make perfect choices every time.
+      </p>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-8">
+        <Card className="text-center">
+          <h3 class="text-xl font-bold text-florize-green mb-3">Save Money</h3>
+          <p class="text-gray-700">
+            Learn timing strategies, promotional patterns, and value comparison techniques to get premium flowers at the best possible prices throughout the year.
+          </p>
+        </Card>
+
+        <Card className="text-center">
+          <h3 class="text-xl font-bold text-florize-green mb-3">Choose Better</h3>
+          <p class="text-gray-700">
+            Understand flower meanings, seasonal availability, and quality indicators to select arrangements that perfectly match your occasion and recipient.
+          </p>
+        </Card>
+
+        <Card className="text-center">
+          <h3 class="text-xl font-bold text-florize-green mb-3">Care Properly</h3>
+          <p class="text-gray-700">
+            Extend flower life with expert care techniques, proper placement advice, and maintenance tips that keep arrangements beautiful for longer.
+          </p>
+        </Card>
+      </div>
+    </div>
+  </section>
+
+  <!-- Essential Guides -->
+  <section id="essential-guides" class="section-padding bg-cream-white">
+    <div class="container">
+      <h2 class="text-3xl font-bold text-florize-green mb-6 text-center">Essential Buying Guides</h2>
+      <p class="text-lg text-gray-700 mb-8 max-w-4xl mx-auto text-center">
+        Master these fundamental aspects of flower buying to make confident, informed decisions every time.
+      </p>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <Card>
+          <h3 class="text-xl font-bold text-florize-green mb-3">Choosing the Right Service</h3>
+          <p class="text-gray-700 mb-4">
+            Navigate the crowded UK flower delivery market with confidence using our comprehensive service selection framework.
+          </p>
+          <ul class="text-sm text-gray-600 space-y-2">
+            <li>• Budget vs. quality analysis across price tiers</li>
+            <li>• Delivery area coverage and reliability factors</li>
+            <li>• Service specialisation and strength assessment</li>
+            <li>• Customer service and guarantee comparison</li>
+          </ul>
+        </Card>
+
+        <Card>
+          <h3 class="text-xl font-bold text-florize-green mb-3">Seasonal Selection Strategy</h3>
+          <p class="text-gray-700 mb-4">
+            Maximise flower quality and value by understanding UK seasonal patterns, availability cycles, and optimal timing.
+          </p>
+          <ul class="text-sm text-gray-600 space-y-2">
+            <li>• Spring flowers: Tulips, daffodils, and early roses</li>
+            <li>• Summer peak season: Premium variety availability</li>
+            <li>• Autumn transitions: Hardy flowers and colour shifts</li>
+            <li>• Winter specialities: Festive arrangements</li>
+          </ul>
+        </Card>
+
+        <Card>
+          <h3 class="text-xl font-bold text-florize-green mb-3">Care & Longevity Mastery</h3>
+          <p class="text-gray-700 mb-4">
+            Transform your flowers from short-lived decorations into long-lasting displays with professional care techniques.
+          </p>
+          <ul class="text-sm text-gray-600 space-y-2">
+            <li>• Immediate care upon delivery for maximum freshness</li>
+            <li>• Proper cutting, conditioning, and water management</li>
+            <li>• Optimal placement for different flower types</li>
+            <li>• Daily maintenance routines that extend life</li>
+          </ul>
+        </Card>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quick Tips Section -->
+  <section id="quick-tips" class="section-padding">
+    <div class="container">
+      <h2 class="text-3xl font-bold text-florize-green mb-6 text-center">Quick Tips & Best Practices</h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+        <Card>
+          <h3 class="text-xl font-bold text-florize-green mb-3">Smart Shopping Strategies</h3>
+          <div class="text-gray-700 space-y-3">
+            <p>
+              <strong>Promotional Timing:</strong> Black Friday offers 20-30% discounts, while post-Valentine's and post-Mother's Day periods see significant price reductions.
+            </p>
+            <p>
+              <strong>Seasonal Arbitrage:</strong> Purchasing during low-demand periods can save 40-60% compared to peak times.
+            </p>
+            <p>
+              <strong>Service Selection:</strong> Match service to occasion to optimise both cost and impact.
+            </p>
+          </div>
+        </Card>
+
+        <Card>
+          <h3 class="text-xl font-bold text-florize-green mb-3">Popular Flower Types</h3>
+          <div class="text-gray-700 space-y-3">
+            <p>
+              <strong>Roses:</strong> Red (passionate love), Pink (gentle affection), White (purity). Best for romance, anniversaries. Lasts 7-14 days.
+            </p>
+            <p>
+              <strong>Tulips:</strong> Perfect love, fresh starts. Best for spring occasions. Lasts 5-8 days.
+            </p>
+            <p>
+              <strong>Lilies:</strong> Purity and sophistication. Best for sympathy, weddings. Lasts 7-10 days.
+            </p>
+          </div>
+        </Card>
+      </div>
+    </div>
+  </section>
+
+  <!-- Related Resources -->
+  <section class="section-padding bg-cream-white">
+    <div class="container">
+      <h2 class="text-3xl font-bold text-florize-green mb-6 text-center">Related Resources</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+        <Card className="flex flex-col justify-between">
+          <div>
+            <h3 class="text-xl font-bold text-florize-green mb-3">Service Reviews</h3>
+            <p class="text-gray-700 mb-4">
+              Read our expert reviews of the UK's top flower delivery services to find the perfect match for your needs.
+            </p>
+          </div>
+          <a href="/services" class="btn btn-primary text-center">Browse Service Reviews</a>
+        </Card>
+
+        <Card className="flex flex-col justify-between">
+          <div>
+            <h3 class="text-xl font-bold text-florize-green mb-3">Occasion Guides</h3>
+            <p class="text-gray-700 mb-4">
+              Find specific recommendations for birthdays, anniversaries, weddings, and other special occasions.
+            </p>
+          </div>
+          <a href="/occasions" class="btn btn-primary text-center">View Occasion Guides</a>
+        </Card>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

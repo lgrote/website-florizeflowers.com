@@ -1,0 +1,27 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ServiceCard from '../../components/ui/ServiceCard.astro';
+
+const services = await getCollection('services');
+const sortedServices = services.sort((a, b) => b.data.rating - a.data.rating);
+---
+
+<BaseLayout
+  title="All Flower Delivery Service Reviews | Florize"
+  description="Complete reviews of UK flower delivery services. Compare Interflora, Bloom & Wild, Prestige Flowers and more."
+>
+  <div class="py-12">
+    <div class="container">
+      <h1 class="text-4xl md:text-5xl font-bold text-florize-green mb-8 text-center">
+        All Service Reviews
+      </h1>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {sortedServices.map((service) => (
+          <ServiceCard service={service} />
+        ))}
+      </div>
+    </div>
+  </div>
+</BaseLayout>

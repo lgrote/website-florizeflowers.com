@@ -1,0 +1,55 @@
+---
+import ImageCard from '../ui/ImageCard.astro';
+
+export interface Props {
+  className?: string;
+}
+
+const { className = '' } = Astro.props;
+
+const updates = [
+  {
+    image: '/images/seasonal/valentine-updates.jpg',
+    imageAlt: "Beautiful Valentine's Day flower arrangements for seasonal updates",
+    title: 'January 2025 Updates',
+    description: "We've added 3 new services to our testing roster and updated pricing across all major providers. Valentine's Day preparations are in full swing with special seasonal arrangements now available."
+  },
+  {
+    image: '/images/seasonal/mothers-day-prep.jpg',
+    imageAlt: "Premium Mother's Day flower arrangements for seasonal preparation",
+    title: "Mother's Day 2025 Prep",
+    description: "Planning ahead for Mother's Day (30th March)? Our early testing shows exceptional quality from Interflora and Flowerbx this season. Book early to avoid disappointment."
+  },
+  {
+    image: '/images/seasonal/winter-quality.jpg',
+    imageAlt: 'Winter flower quality assessment and seasonal testing report',
+    title: 'Winter Quality Report',
+    description: 'Our winter testing revealed significant quality variations among budget services. Prestige Flowers and Flying Flowers maintained consistent standards throughout the colder months.'
+  }
+];
+---
+
+<section class={`section-padding bg-cream-white ${className}`} aria-labelledby="updates-heading">
+  <div class="container">
+    <div class="max-w-6xl mx-auto text-center">
+      <h2 id="updates-heading" class="text-3xl font-bold text-florize-green mb-6">
+        Latest Service Updates & Seasonal Recommendations
+      </h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-8">
+        {updates.map((update) => (
+          <ImageCard
+            image={update.image}
+            imageAlt={update.imageAlt}
+            title={update.title}
+            description={update.description}
+          />
+        ))}
+      </div>
+
+      <p class="mt-8 text-lg text-gray-700 max-w-4xl mx-auto">
+        Stay updated with our latest testing results, seasonal recommendations, and new service launches by visiting our comparison pages regularly.
+      </p>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,191 @@
+---
+export interface MenuItem {
+  label: string;
+  href: string;
+  divider?: boolean;
+}
+
+export interface Props {
+  label: string;
+  href: string;
+  items: MenuItem[];
+  className?: string;
+}
+
+const { label, href, items, className = '' } = Astro.props;
+---
+
+<div class="dropdown-container relative {className}">
+  <a
+    href={href}
+    class="dropdown-trigger nav-link hover:text-bloom-pink transition-colors flex items-center gap-1"
+    aria-haspopup="true"
+    aria-expanded="false"
+  >
+    {label}
+    <svg
+      class="dropdown-icon w-4 h-4 transition-transform duration-200"
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+    >
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+    </svg>
+  </a>
+
+  <div class="dropdown-menu hidden absolute top-full left-0 bg-florize-green shadow-lg rounded-lg overflow-hidden min-w-[240px] z-50">
+    <ul class="py-2 mt-2">
+      {items.map((item) => (
+        item.divider ? (
+          <li class="divider border-t border-white/20 my-2"></li>
+        ) : (
+          <li>
+            <a
+              href={item.href}
+              class="dropdown-item block px-4 py-2 text-white hover:bg-white/10 transition-colors"
+            >
+              {item.label}
+            </a>
+          </li>
+        )
+      ))}
+    </ul>
+  </div>
+</div>
+
+<style>
+  .dropdown-container {
+    position: relative;
+  }
+
+  /* Create invisible bridge to prevent hover gap */
+  .dropdown-container::before {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    height: 8px;
+    background: transparent;
+  }
+
+  .dropdown-menu {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+    pointer-events: none;
+  }
+
+  .dropdown-container:hover .dropdown-menu,
+  .dropdown-container:focus-within .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    display: block;
+    pointer-events: auto;
+  }
+
+  .dropdown-container:hover .dropdown-icon,
+  .dropdown-container:focus-within .dropdown-icon {
+    transform: rotate(180deg);
+  }
+
+  .dropdown-item strong {
+    font-weight: 600;
+  }
+
+  /* Mobile: Show on click instead of hover */
+  @media (max-width: 768px) {
+    .dropdown-menu {
+      position: static;
+      margin-top: 0.5rem;
+      box-shadow: none;
+      border-radius: 0;
+    }
+  }
+</style>
+
+<script>
+  // Enhanced dropdown functionality for keyboard navigation and mobile
+  document.addEventListener('DOMContentLoaded', () => {
+    const dropdowns = document.querySelectorAll('.dropdown-container');
+
+    dropdowns.forEach((dropdown) => {
+      const trigger = dropdown.querySelector('.dropdown-trigger');
+      const menu = dropdown.querySelector('.dropdown-menu');
+      const items = dropdown.querySelectorAll('.dropdown-item');
+
+      if (!trigger || !menu) return;
+
+      let isOpen = false;
+
+      // Keyboard navigation
+      trigger.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          isOpen = !isOpen;
+          trigger.setAttribute('aria-expanded', String(isOpen));
+          menu.classList.toggle('hidden', !isOpen);
+        } else if (e.key === 'Escape') {
+          isOpen = false;
+          trigger.setAttribute('aria-expanded', 'false');
+          menu.classList.add('hidden');
+        }
+      });
+
+      // Arrow key navigation within menu
+      items.forEach((item, index) => {
+        item.addEventListener('keydown', (e) => {
+          if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            const next = items[index + 1] as HTMLElement;
+            if (next) next.focus();
+          } else if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            const prev = items[index - 1] as HTMLElement;
+            if (prev) prev.focus();
+            else trigger.focus();
+          } else if (e.key === 'Escape') {
+            isOpen = false;
+            menu.classList.add('hidden');
+            trigger.setAttribute('aria-expanded', 'false');
+            trigger.focus();
+          }
+        });
+      });
+
+      // Click outside to close (but not on menu items themselves)
+      document.addEventListener('click', (e) => {
+        const target = e.target as Node;
+        if (!dropdown.contains(target)) {
+          isOpen = false;
+          menu.classList.add('hidden');
+          trigger.setAttribute('aria-expanded', 'false');
+        }
+      });
+
+      // Prevent menu from closing when clicking inside
+      menu.addEventListener('click', (e) => {
+        // Only close if clicking on an actual link, not the menu itself
+        if ((e.target as HTMLElement).tagName === 'A') {
+          isOpen = false;
+        } else {
+          e.stopPropagation();
+        }
+      });
+
+      // Mobile touch support
+      if ('ontouchstart' in window) {
+        trigger.addEventListener('click', (e) => {
+          if (window.innerWidth <= 768) {
+            e.preventDefault();
+            isOpen = !isOpen;
+            menu.classList.toggle('hidden', !isOpen);
+            trigger.setAttribute('aria-expanded', String(isOpen));
+          }
+        });
+      }
+    });
+  });
+</script>

@@ -1,0 +1,85 @@
+---
+import OptimizedImage from './OptimizedImage.astro';
+
+export interface Props {
+  image: string;
+  imageAlt: string;
+  title: string;
+  description: string;
+  className?: string;
+}
+
+const {
+  image,
+  imageAlt,
+  title,
+  description,
+  className = ''
+} = Astro.props;
+---
+
+<div class={`image-card ${className}`}>
+  <OptimizedImage
+    src={image}
+    alt={imageAlt}
+    width={400}
+    height={200}
+    loading="lazy"
+    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+    quality={80}
+    class="card-image"
+  />
+  <h3 class="card-title">{title}</h3>
+  <p class="card-description">{description}</p>
+</div>
+
+<style>
+  .image-card {
+    background: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .image-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  }
+
+  .card-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    display: block;
+  }
+
+  .card-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #4a7c59;
+    margin: 1.5rem 1.5rem 0.75rem;
+  }
+
+  .card-description {
+    color: #374151;
+    line-height: 1.6;
+    margin: 0 1.5rem 1.5rem;
+  }
+
+  @media (max-width: 768px) {
+    .card-image {
+      height: 150px;
+    }
+
+    .card-title {
+      font-size: 1.125rem;
+      margin: 1rem 1rem 0.5rem;
+    }
+
+    .card-description {
+      font-size: 0.875rem;
+      margin: 0 1rem 1rem;
+    }
+  }
+</style>

@@ -1,0 +1,290 @@
+---
+// Lazy loading wrapper for heavy components
+// Loads components only when they're about to enter the viewport
+
+export interface Props {
+  componentPath: string;
+  fallback?: string;
+  rootMargin?: string;
+  threshold?: number;
+  class?: string;
+  props?: Record<string, any>;
+}
+
+const {
+  componentPath,
+  fallback = 'Loading...',
+  rootMargin = '200px',
+  threshold = 0.01,
+  class: className = '',
+  props = {}
+} = Astro.props;
+
+// Generate unique ID for this instance
+const componentId = `lazy-${Math.random().toString(36).substr(2, 9)}`;
+---
+
+<div
+  id={componentId}
+  class={`lazy-component ${className}`}
+  data-component={componentPath}
+  data-props={JSON.stringify(props)}
+  data-root-margin={rootMargin}
+  data-threshold={threshold}
+>
+  <div class="lazy-component-placeholder">
+    {typeof fallback === 'string' ? (
+      <div class="lazy-loading-text">{fallback}</div>
+    ) : (
+      <div class="lazy-loading-spinner">
+        <div class="spinner"></div>
+      </div>
+    )}
+  </div>
+</div>
+
+<script>
+  interface LazyComponentElement extends HTMLElement {
+    dataset: {
+      component: string;
+      props: string;
+      rootMargin: string;
+      threshold: string;
+      loaded?: string;
+    };
+  }
+
+  class LazyComponentLoader {
+    private observer: IntersectionObserver | null = null;
+    private loadedComponents: Set<string> = new Set();
+
+    constructor() {
+      this.init();
+    }
+
+    init() {
+      if ('IntersectionObserver' in window) {
+        // Get all lazy components that haven't been loaded
+        const lazyComponents = document.querySelectorAll<LazyComponentElement>(
+          '.lazy-component:not([data-loaded="true"])'
+        );
+
+        // Create an observer for each component with its specific settings
+        lazyComponents.forEach(component => {
+          const observer = new IntersectionObserver(
+            (entries) => this.handleIntersection(entries, observer),
+            {
+              rootMargin: component.dataset.rootMargin || '200px',
+              threshold: parseFloat(component.dataset.threshold || '0.01')
+            }
+          );
+
+          observer.observe(component);
+        });
+      } else {
+        // Fallback: load all components immediately
+        this.loadAllComponents();
+      }
+    }
+
+    handleIntersection(entries: IntersectionObserverEntry[], observer: IntersectionObserver) {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const component = entry.target as LazyComponentElement;
+          this.loadComponent(component);
+          observer.unobserve(component);
+        }
+      });
+    }
+
+    async loadComponent(element: LazyComponentElement) {
+      const componentPath = element.dataset.component;
+      const props = JSON.parse(element.dataset.props || '{}');
+
+      if (!componentPath || element.dataset.loaded === 'true') {
+        return;
+      }
+
+      try {
+        // Dynamic import based on component path
+        const module = await this.importComponent(componentPath);
+
+        if (module && module.default) {
+          // Replace placeholder with actual component
+          const componentHTML = await this.renderComponent(module.default, props);
+          element.innerHTML = componentHTML;
+          element.dataset.loaded = 'true';
+          element.classList.add('component-loaded');
+          this.loadedComponents.add(componentPath);
+
+          // Execute any scripts in the loaded component
+          this.executeScripts(element);
+        }
+      } catch (error) {
+        console.error(`Failed to load component ${componentPath}:`, error);
+        element.innerHTML = '<div class="error-message">Failed to load component</div>';
+        element.classList.add('component-error');
+      }
+    }
+
+    async importComponent(path: string) {
+      // Map component paths to actual imports
+      const componentMap: Record<string, () => Promise<any>> = {
+        'FlowerRecommendationCards': () => import('../ui/FlowerRecommendationCards.astro'),
+        'ColorPsychology': () => import('../ui/ColorPsychology.astro'),
+        'SeasonalCalendar': () => import('../ui/SeasonalCalendar.astro'),
+        'ComparisonTable': () => import('../ui/ComparisonTable.astro'),
+        'TestingMetrics': () => import('../ui/TestingMetrics.astro'),
+        'RelatedReviews': () => import('../sections/RelatedReviews.astro'),
+        'AffiliateBannerSection': () => import('../sections/AffiliateBannerSection.astro'),
+        // Add more heavy components here
+      };
+
+      const importer = componentMap[path];
+      if (importer) {
+        return await importer();
+      }
+
+      // Fallback for dynamic path
+      return await import(/* @vite-ignore */ path);
+    }
+
+    async renderComponent(Component: any, props: Record<string, any>) {
+      // For Astro components, we need to handle rendering differently
+      // This is a simplified version - in production, you'd use Astro's proper rendering
+      if (Component.render) {
+        const result = await Component.render(props);
+        return result.html;
+      }
+
+      // Fallback for simple components
+      return `<div class="loaded-component">${JSON.stringify(props)}</div>`;
+    }
+
+    executeScripts(container: HTMLElement) {
+      // Find and execute any script tags in the loaded content
+      const scripts = container.querySelectorAll('script');
+      scripts.forEach(oldScript => {
+        const newScript = document.createElement('script');
+
+        // Copy attributes
+        Array.from(oldScript.attributes).forEach(attr => {
+          newScript.setAttribute(attr.name, attr.value);
+        });
+
+        // Copy content
+        newScript.textContent = oldScript.textContent;
+
+        // Replace old script with new one to execute it
+        oldScript.parentNode?.replaceChild(newScript, oldScript);
+      });
+    }
+
+    loadAllComponents() {
+      const components = document.querySelectorAll<LazyComponentElement>(
+        '.lazy-component:not([data-loaded="true"])'
+      );
+
+      components.forEach(component => {
+        this.loadComponent(component);
+      });
+    }
+
+    destroy() {
+      if (this.observer) {
+        this.observer.disconnect();
+      }
+    }
+  }
+
+  // Initialize on DOM ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+      new LazyComponentLoader();
+    });
+  } else {
+    new LazyComponentLoader();
+  }
+</script>
+
+<style>
+  .lazy-component {
+    position: relative;
+    min-height: 100px;
+    transition: opacity 0.3s ease;
+  }
+
+  .lazy-component-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: inherit;
+    padding: 2rem;
+  }
+
+  .lazy-loading-text {
+    color: #6b7280;
+    font-size: 0.875rem;
+    text-align: center;
+  }
+
+  .lazy-loading-spinner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid #e5e7eb;
+    border-top-color: var(--florize-green, #4a7c59);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .lazy-component.component-loaded {
+    opacity: 1;
+  }
+
+  .lazy-component.component-error {
+    opacity: 0.5;
+  }
+
+  .error-message {
+    color: #ef4444;
+    text-align: center;
+    padding: 1rem;
+    background: #fef2f2;
+    border-radius: 8px;
+    border: 1px solid #fecaca;
+  }
+
+  /* Skeleton loading animation */
+  .lazy-component:not(.component-loaded) .lazy-component-placeholder {
+    background: linear-gradient(
+      90deg,
+      #f3f4f6 25%,
+      #e5e7eb 50%,
+      #f3f4f6 75%
+    );
+    background-size: 200% 100%;
+    animation: skeleton 1.5s ease-in-out infinite;
+    border-radius: 8px;
+  }
+
+  @keyframes skeleton {
+    0% {
+      background-position: 200% 0;
+    }
+    100% {
+      background-position: -200% 0;
+    }
+  }
+</style>

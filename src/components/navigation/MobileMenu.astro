@@ -1,0 +1,163 @@
+---
+// Mobile menu component with hamburger toggle
+---
+
+<div class="mobile-menu-container md:hidden">
+  <button
+    id="mobile-menu-button"
+    type="button"
+    class="mobile-menu-toggle"
+    aria-label="Toggle mobile menu"
+    aria-expanded="false"
+  >
+    <svg
+      class="hamburger-icon"
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M4 6h16M4 12h16M4 18h16"
+      ></path>
+    </svg>
+    <svg
+      class="close-icon hidden"
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M6 18L18 6M6 6l12 12"
+      ></path>
+    </svg>
+  </button>
+
+  <nav id="mobile-menu" class="mobile-menu hidden">
+    <ul class="mobile-menu-list">
+      <li><a href="/" class="mobile-menu-link">Home</a></li>
+      <li><a href="/services" class="mobile-menu-link">Services</a></li>
+      <li><a href="/occasions" class="mobile-menu-link">Occasions</a></li>
+      <li><a href="/guides" class="mobile-menu-link">Guides</a></li>
+      <li><a href="/about" class="mobile-menu-link">About</a></li>
+      <li><a href="/contact" class="mobile-menu-link">Contact</a></li>
+    </ul>
+  </nav>
+</div>
+
+<style>
+  .mobile-menu-container {
+    position: relative;
+  }
+
+  .mobile-menu-toggle {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .hamburger-icon,
+  .close-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  .mobile-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: #4a7c59;
+    border-radius: 0.5rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    margin-top: 0.5rem;
+    min-width: 200px;
+    z-index: 50;
+  }
+
+  .mobile-menu-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .mobile-menu-link {
+    display: block;
+    padding: 1rem 1.5rem;
+    color: white;
+    text-decoration: none;
+    transition: background-color 0.2s;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .mobile-menu-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .mobile-menu-list li:last-child .mobile-menu-link {
+    border-bottom: none;
+  }
+
+  .hidden {
+    display: none;
+  }
+</style>
+
+<script>
+  // Mobile menu toggle functionality
+  document.addEventListener('DOMContentLoaded', () => {
+    const button = document.getElementById('mobile-menu-button');
+    const menu = document.getElementById('mobile-menu');
+    const hamburgerIcon = button?.querySelector('.hamburger-icon');
+    const closeIcon = button?.querySelector('.close-icon');
+
+    if (!button || !menu || !hamburgerIcon || !closeIcon) return;
+
+    button.addEventListener('click', () => {
+      const isExpanded = button.getAttribute('aria-expanded') === 'true';
+
+      // Toggle menu visibility
+      menu.classList.toggle('hidden');
+
+      // Toggle icons
+      hamburgerIcon.classList.toggle('hidden');
+      closeIcon.classList.toggle('hidden');
+
+      // Update ARIA attribute
+      button.setAttribute('aria-expanded', String(!isExpanded));
+    });
+
+    // Close menu when clicking outside
+    document.addEventListener('click', (event) => {
+      const target = event.target as Node;
+      if (!button.contains(target) && !menu.contains(target)) {
+        menu.classList.add('hidden');
+        hamburgerIcon.classList.remove('hidden');
+        closeIcon.classList.add('hidden');
+        button.setAttribute('aria-expanded', 'false');
+      }
+    });
+
+    // Close menu when clicking a link
+    const menuLinks = menu.querySelectorAll('a');
+    menuLinks.forEach((link) => {
+      link.addEventListener('click', () => {
+        menu.classList.add('hidden');
+        hamburgerIcon.classList.remove('hidden');
+        closeIcon.classList.add('hidden');
+        button.setAttribute('aria-expanded', 'false');
+      });
+    });
+  });
+</script>

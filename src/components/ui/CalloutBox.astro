@@ -1,0 +1,85 @@
+---
+export interface Props {
+  variant?: 'info' | 'warning' | 'tip' | 'success';
+  title?: string;
+  className?: string;
+}
+
+const {
+  variant = 'info',
+  title,
+  className = ''
+} = Astro.props;
+
+const variantStyles = {
+  info: {
+    bg: 'bg-blue-50',
+    border: 'border-blue-200',
+    icon: 'ℹ️',
+    iconColor: 'text-blue-600',
+    titleColor: 'text-blue-900'
+  },
+  warning: {
+    bg: 'bg-amber-50',
+    border: 'border-amber-200',
+    icon: '⚠️',
+    iconColor: 'text-amber-600',
+    titleColor: 'text-amber-900'
+  },
+  tip: {
+    bg: 'bg-green-50',
+    border: 'border-green-200',
+    icon: '💡',
+    iconColor: 'text-green-600',
+    titleColor: 'text-green-900'
+  },
+  success: {
+    bg: 'bg-emerald-50',
+    border: 'border-emerald-200',
+    icon: '✓',
+    iconColor: 'text-emerald-600',
+    titleColor: 'text-emerald-900'
+  }
+};
+
+const style = variantStyles[variant];
+---
+
+<div class={`callout-box ${style.bg} border-l-4 ${style.border} p-4 md:p-6 rounded-r-lg my-6 ${className}`}>
+  <div class="flex items-start gap-3">
+    <span class={`text-2xl ${style.iconColor} flex-shrink-0`} aria-hidden="true">{style.icon}</span>
+    <div class="flex-1">
+      {title && (
+        <h4 class={`font-semibold text-lg mb-2 ${style.titleColor}`}>{title}</h4>
+      )}
+      <div class="callout-content text-gray-700 leading-relaxed">
+        <slot />
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .callout-content :global(p) {
+    margin-bottom: 0.75rem;
+  }
+
+  .callout-content :global(p:last-child) {
+    margin-bottom: 0;
+  }
+
+  .callout-content :global(strong) {
+    color: inherit;
+    font-weight: 600;
+  }
+
+  .callout-content :global(ul) {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    padding-left: 1.25rem;
+  }
+
+  .callout-content :global(li) {
+    margin-bottom: 0.25rem;
+  }
+</style>

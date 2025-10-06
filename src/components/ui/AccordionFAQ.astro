@@ -1,0 +1,205 @@
+---
+export interface FAQItem {
+  question: string;
+  answer: string;
+}
+
+export interface Props {
+  title?: string;
+  items: FAQItem[];
+  className?: string;
+}
+
+const {
+  title,
+  items,
+  className = ''
+} = Astro.props;
+---
+
+<div class={`accordion-faq ${className}`}>
+  {title && (
+    <h3 class="accordion-title">{title}</h3>
+  )}
+
+  <div class="accordion-items">
+    {items.map((item, index) => (
+      <div class="accordion-item" data-accordion-item>
+        <button
+          class="accordion-button"
+          data-accordion-button
+          aria-expanded="false"
+          aria-controls={`accordion-content-${index}`}
+        >
+          <span class="accordion-question">{item.question}</span>
+          <svg
+            class="accordion-icon"
+            width="20"
+            height="20"
+            viewBox="0 0 20 20"
+            fill="none"
+            aria-hidden="true"
+          >
+            <path
+              d="M5 7.5L10 12.5L15 7.5"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </button>
+        <div
+          class="accordion-content"
+          id={`accordion-content-${index}`}
+          data-accordion-content
+          aria-hidden="true"
+        >
+          <div class="accordion-content-inner" set:html={item.answer} />
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+
+<script>
+  // Client-side accordion functionality
+  function initAccordion() {
+    const buttons = document.querySelectorAll('[data-accordion-button]');
+
+    buttons.forEach(button => {
+      button.addEventListener('click', () => {
+        const item = button.closest('[data-accordion-item]');
+        const content = item?.querySelector('[data-accordion-content]');
+        const isExpanded = button.getAttribute('aria-expanded') === 'true';
+
+        // Toggle current item
+        button.setAttribute('aria-expanded', String(!isExpanded));
+        content?.setAttribute('aria-hidden', String(isExpanded));
+        item?.classList.toggle('active');
+      });
+    });
+  }
+
+  // Initialize on page load
+  document.addEventListener('DOMContentLoaded', initAccordion);
+
+  // Re-initialize after page transitions (for SPA-like behavior)
+  document.addEventListener('astro:page-load', initAccordion);
+</script>
+
+<style>
+  .accordion-faq {
+    margin: 2rem 0;
+  }
+
+  .accordion-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--florize-green, #4a7c59);
+    margin: 0 0 1.5rem 0;
+  }
+
+  .accordion-items {
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .accordion-item {
+    border-bottom: 1px solid #e5e7eb;
+    background: white;
+    transition: background-color 0.2s ease;
+  }
+
+  .accordion-item:last-child {
+    border-bottom: none;
+  }
+
+  .accordion-item.active {
+    background: #f9fafb;
+  }
+
+  .accordion-button {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.25rem 1.5rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.2s ease;
+  }
+
+  .accordion-button:hover {
+    background: #f9fafb;
+  }
+
+  .accordion-item.active .accordion-button {
+    background: #f0f8f4;
+  }
+
+  .accordion-question {
+    flex: 1;
+    font-size: 1.0625rem;
+    font-weight: 600;
+    color: #1f2937;
+  }
+
+  .accordion-icon {
+    flex-shrink: 0;
+    color: var(--florize-green, #4a7c59);
+    transition: transform 0.3s ease;
+  }
+
+  .accordion-item.active .accordion-icon {
+    transform: rotate(180deg);
+  }
+
+  .accordion-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+  }
+
+  .accordion-item.active .accordion-content {
+    max-height: 1000px; /* Large enough for most content */
+  }
+
+  .accordion-content-inner {
+    padding: 0 1.5rem 1.5rem 1.5rem;
+    color: #6b7280;
+    line-height: 1.7;
+  }
+
+  .accordion-content-inner :global(p) {
+    margin-bottom: 0.75rem;
+  }
+
+  .accordion-content-inner :global(p:last-child) {
+    margin-bottom: 0;
+  }
+
+  .accordion-content-inner :global(strong) {
+    color: #374151;
+    font-weight: 600;
+  }
+
+  @media (max-width: 768px) {
+    .accordion-button {
+      padding: 1rem;
+    }
+
+    .accordion-question {
+      font-size: 0.9375rem;
+    }
+
+    .accordion-content-inner {
+      padding: 0 1rem 1rem 1rem;
+      font-size: 0.9375rem;
+    }
+  }
+</style>

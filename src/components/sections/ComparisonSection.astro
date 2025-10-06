@@ -1,0 +1,92 @@
+---
+export interface Comparison {
+  competitor: string;
+  category: string;
+  description: string;
+}
+
+export interface UseCase {
+  label: string;
+  description: string;
+}
+
+export interface Props {
+  serviceName: string;
+  comparisons: Comparison[];
+  useCases?: {
+    heading: string;
+    scenarios: UseCase[];
+  };
+}
+
+const {
+  serviceName,
+  comparisons,
+  useCases
+} = Astro.props;
+---
+
+<section class="content-section">
+  <h2>How {serviceName} Compares</h2>
+
+  {comparisons.map((comp) => (
+    <Fragment>
+      <h3>vs. {comp.competitor} ({comp.category})</h3>
+      <p>{comp.description}</p>
+    </Fragment>
+  ))}
+
+  {useCases && (
+    <Fragment>
+      <h3>{useCases.heading}</h3>
+      <ul class="use-cases-list">
+        {useCases.scenarios.map((scenario) => (
+          <li>
+            <strong>{scenario.label}:</strong> {scenario.description}
+          </li>
+        ))}
+      </ul>
+    </Fragment>
+  )}
+</section>
+
+<style>
+  .content-section h3 {
+    color: #4a7c59;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .content-section p {
+    margin-bottom: 1.5rem;
+    line-height: 1.8;
+    color: #2c2c2c;
+  }
+
+  .use-cases-list {
+    list-style: none;
+    padding: 0;
+    margin-top: 1.5rem;
+  }
+
+  .use-cases-list li {
+    margin-bottom: 1rem;
+    padding-left: 1.5rem;
+    position: relative;
+    line-height: 1.7;
+  }
+
+  .use-cases-list li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: #4a7c59;
+    font-weight: bold;
+  }
+
+  .use-cases-list strong {
+    color: #4a7c59;
+  }
+</style>

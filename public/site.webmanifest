@@ -1,0 +1,22 @@
+{
+    "name": "Florize Flowers - UK Flower Delivery Reviews",
+    "short_name": "Florize",
+    "description": "Expert UK flower delivery service reviews and comparisons",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#4a7c59",
+    "orientation": "portrait",
+    "icons": [
+        {
+            "src": "/images/florize-android-chrome-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "/images/florize-android-chrome-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ]
+}

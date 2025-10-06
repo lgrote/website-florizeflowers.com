@@ -1,0 +1,756 @@
+---
+// Occasion Layout following FindFerries pattern with centralized data preparation
+// Includes all original features: tabs, visual components, and sections
+
+import type { CollectionEntry } from 'astro:content';
+import BaseLayout from './BaseLayout.astro';
+import BreadcrumbNavigation from '../components/navigation/BreadcrumbNavigation.astro';
+import HeroSection from '../components/sections/HeroSection.astro';
+import InfoGrid from '../components/ui/InfoGrid.astro';
+import CalloutBox from '../components/ui/CalloutBox.astro';
+import FeatureList from '../components/ui/FeatureList.astro';
+import TimelineCard from '../components/ui/TimelineCard.astro';
+import TestingMetrics from '../components/ui/TestingMetrics.astro';
+import FlowerRecommendationCards from '../components/ui/FlowerRecommendationCards.astro';
+import ColorPsychology from '../components/ui/ColorPsychology.astro';
+import SeasonalCalendar from '../components/ui/SeasonalCalendar.astro';
+import TabSection from '../components/ui/TabSection.astro';
+import StickyTOC from '../components/ui/StickyTOC.astro';
+import ReadingProgress from '../components/ui/ReadingProgress.astro';
+import AccordionFAQ from '../components/ui/AccordionFAQ.astro';
+
+interface TOCItem {
+  id: string;
+  text: string;
+  level: number;
+}
+
+export interface Props {
+  occasion: CollectionEntry<'occasions'>;
+}
+
+const { occasion } = Astro.props;
+const { Content } = await occasion.render();
+
+// Breadcrumb items
+const breadcrumbItems = [
+  { label: 'Home', href: '/' },
+  { label: 'Occasions', href: '/occasions' },
+  { label: occasion.data.occasion_name },
+];
+
+// Determine background image based on occasion
+const occasionImages: Record<string, string> = {
+  'mothers-day': '/images/mothers-day-flowers-professional.jpg',
+  'valentines-day': '/images/valentines-day-flowers.jpg',
+  'birthday': '/images/birthday-flowers.jpg',
+  'anniversary': '/images/anniversary-flowers.jpg',
+  'wedding': '/images/wedding-flowers.jpg',
+  'funeral': '/images/funeral-flowers.jpg',
+  'new-baby': '/images/new-baby-flowers.jpg',
+  'graduation': '/images/graduation-flowers.jpg',
+  'get-well': '/images/get-well-flowers.jpg',
+  'thank-you': '/images/thank-you-flowers.jpg',
+  'housewarming': '/images/housewarming-flowers.jpg',
+  'corporate': '/images/corporate-flowers.jpg',
+};
+
+const backgroundImage = occasionImages[occasion.data.occasion_id] || '/images/hero-flowers-bright.jpg';
+
+// Prepare budget guide items for InfoGrid
+const budgetItems = occasion.data.budget_guide ? [
+  {
+    title: 'Budget-Friendly',
+    content: occasion.data.budget_guide.budget_friendly
+  },
+  {
+    title: 'Mid-Range',
+    content: occasion.data.budget_guide.mid_range
+  },
+  {
+    title: 'Luxury',
+    content: occasion.data.budget_guide.luxury
+  }
+] : [];
+
+// Generate Table of Contents based on available sections
+const tocItems: TOCItem[] = [];
+
+if (occasion.data.stats && occasion.data.stats.length > 0) {
+  tocItems.push({
+    id: 'at-a-glance',
+    text: 'At a Glance',
+    level: 2
+  });
+}
+
+if (occasion.data.flower_recommendations && occasion.data.flower_recommendations.length > 0) {
+  tocItems.push({
+    id: 'flower-recommendations',
+    text: 'Flower Recommendations',
+    level: 2
+  });
+}
+
+if (occasion.data.color_meanings && occasion.data.color_meanings.length > 0) {
+  tocItems.push({
+    id: 'color-meanings',
+    text: 'Flower Color Meanings',
+    level: 2
+  });
+}
+
+if (occasion.data.seasonal_guide && occasion.data.seasonal_guide.length > 0) {
+  tocItems.push({
+    id: 'seasonal-guide',
+    text: 'Seasonal Guide',
+    level: 2
+  });
+}
+
+// Generate structured data for SEO
+const occasionStructuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: occasion.data.title,
+  description: occasion.data.description,
+  image: occasion.data.hero_image,
+  datePublished: new Date().toISOString(),
+  dateModified: new Date().toISOString(),
+  author: {
+    '@type': 'Organization',
+    name: 'Florize Flowers'
+  },
+  publisher: {
+    '@type': 'Organization',
+    name: 'Florize Flowers',
+    logo: {
+      '@type': 'ImageObject',
+      url: 'https://florizeflowers.com/logo.png'
+    }
+  },
+  mainEntityOfPage: {
+    '@type': 'WebPage',
+    '@id': `https://florizeflowers.com/occasions/${occasion.data.occasion_id}`
+  }
+};
+
+// How-to structured data for occasion guide
+const howToStructuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'HowTo',
+  name: `How to Choose Flowers for ${occasion.data.occasion_name}`,
+  description: occasion.data.description,
+  image: occasion.data.hero_image,
+  totalTime: 'PT10M',
+  estimatedCost: occasion.data.budget_guide ? {
+    '@type': 'MonetaryAmount',
+    currency: 'GBP',
+    value: occasion.data.budget_guide.mid_range
+  } : undefined,
+  supply: occasion.data.recommended_flowers?.map(flower => ({
+    '@type': 'HowToSupply',
+    name: flower.flower
+  })),
+  step: [
+    {
+      '@type': 'HowToStep',
+      name: 'Consider the recipient',
+      text: 'Think about the recipient\'s preferences and the message you want to convey'
+    },
+    {
+      '@type': 'HowToStep',
+      name: 'Choose appropriate flowers',
+      text: `Select from recommended flowers: ${occasion.data.recommended_flowers?.map(f => f.flower).join(', ')}`
+    },
+    {
+      '@type': 'HowToStep',
+      name: 'Set your budget',
+      text: 'Determine your budget range based on the occasion and relationship'
+    },
+    {
+      '@type': 'HowToStep',
+      name: 'Select a delivery service',
+      text: 'Choose from our recommended services based on your needs'
+    }
+  ]
+};
+
+// Combine all structured data
+const structuredData = [occasionStructuredData, howToStructuredData];
+---
+
+<BaseLayout
+  title={occasion.data.title}
+  description={occasion.data.description}
+  keywords={occasion.data.keywords}
+  showBreadcrumbs={true}
+  structuredData={structuredData}
+>
+  <BreadcrumbNavigation slot="breadcrumbs" items={breadcrumbItems} />
+
+  <!-- Reading Progress Bar -->
+  <ReadingProgress />
+
+  <!-- Hero Section -->
+  <HeroSection
+    title={occasion.data.occasion_name}
+    subtitle={occasion.data.description}
+    backgroundImage={backgroundImage}
+  />
+
+  <main id="main-content">
+    <div class="container">
+      <!-- Budget Guide (if exists) -->
+      {budgetItems.length > 0 && (
+        <section class="content-section">
+          <h2>Budget Guide</h2>
+          <InfoGrid items={budgetItems} columns={3} variant="budget" />
+        </section>
+      )}
+
+      <!-- Recommended Flowers (if exists) -->
+      {occasion.data.recommended_flowers && occasion.data.recommended_flowers.length > 0 && (
+        <section class="content-section bg-light">
+          <h2>Recommended Flowers</h2>
+          <div class="recommended-flowers-grid">
+            {occasion.data.recommended_flowers.map((flower) => (
+              <div class="flower-recommendation">
+                <h3>{flower.flower}</h3>
+                <p>{flower.reason}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      <!-- Stats (if exists) -->
+      {occasion.data.stats && occasion.data.stats.length > 0 && (
+        <section id="at-a-glance" class="content-section">
+          <TestingMetrics
+            metrics={occasion.data.stats}
+            title={`${occasion.data.occasion_name} at a Glance`}
+          />
+        </section>
+      )}
+
+      <!-- Flower Recommendations (if exists) -->
+      {occasion.data.flower_recommendations && occasion.data.flower_recommendations.length > 0 && (
+        <section id="flower-recommendations" class="content-section">
+          <FlowerRecommendationCards
+            recommendations={occasion.data.flower_recommendations}
+          />
+        </section>
+      )}
+
+      <!-- Color Psychology (if exists) -->
+      {occasion.data.color_meanings && occasion.data.color_meanings.length > 0 && (
+        <section id="color-meanings" class="content-section">
+          <ColorPsychology
+            colors={occasion.data.color_meanings}
+          />
+        </section>
+      )}
+
+      <!-- Seasonal Guide (if exists) -->
+      {occasion.data.seasonal_guide && occasion.data.seasonal_guide.length > 0 && (
+        <section id="seasonal-guide" class="content-section">
+          <SeasonalCalendar
+            seasons={occasion.data.seasonal_guide}
+          />
+        </section>
+      )}
+
+      <!-- Tabbed Content Sections -->
+      <section class="content-section">
+        <TabSection tabs={[
+          { id: 'guide', label: 'Complete Guide', icon: '📖' },
+          { id: 'services', label: 'Top Services', icon: '🏆' },
+          { id: 'timeline', label: 'Planning Timeline', icon: '📅' },
+          { id: 'tips', label: 'Tips & FAQs', icon: '💡' }
+        ]}>
+          <!-- Tab 1: Complete Guide -->
+          <div class="tab-panel active" role="tabpanel" data-tab-panel="guide">
+            <article class="tab-content-wrapper">
+              <div class="prose-content">
+                <Content />
+              </div>
+            </article>
+          </div>
+
+          <!-- Tab 2: Top Services -->
+          <div class="tab-panel" role="tabpanel" data-tab-panel="services">
+            <div class="tab-content-wrapper">
+              {occasion.data.service_features && occasion.data.service_features.length > 0 ? (
+                <>
+                  <h2>Top Flower Delivery Services for {occasion.data.occasion_name}</h2>
+                  <FeatureList
+                    features={occasion.data.service_features}
+                    columns={2}
+                  />
+                </>
+              ) : (
+                <p class="empty-tab-message">No service recommendations available for this occasion.</p>
+              )}
+            </div>
+          </div>
+
+          <!-- Tab 3: Planning Timeline -->
+          <div class="tab-panel" role="tabpanel" data-tab-panel="timeline">
+            <div class="tab-content-wrapper">
+              {occasion.data.delivery_timeline && occasion.data.delivery_timeline.length > 0 && (
+                <TimelineCard
+                  title="Order Planning Timeline"
+                  steps={occasion.data.delivery_timeline}
+                />
+              )}
+
+              {occasion.data.delivery_locations && occasion.data.delivery_locations.length > 0 && (
+                <div class="delivery-locations">
+                  <h2>Delivery Location Tips</h2>
+                  <div class="locations-grid">
+                    {occasion.data.delivery_locations.map((location) => (
+                      <div class="location-card">
+                        <h3>{location.location}</h3>
+                        <ul>
+                          {location.tips.map((tip) => (
+                            <li>{tip}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {!occasion.data.delivery_timeline && !occasion.data.delivery_locations && (
+                <p class="empty-tab-message">No planning timeline available for this occasion.</p>
+              )}
+            </div>
+          </div>
+
+          <!-- Tab 4: Tips & Ideas -->
+          <div class="tab-panel" role="tabpanel" data-tab-panel="tips">
+            <div class="tab-content-wrapper">
+              {/* Gift Enhancements */}
+              {occasion.data.gift_enhancements && occasion.data.gift_enhancements.length > 0 && (
+                <div class="gift-enhancements">
+                  <h2>Additional Gift Enhancements</h2>
+                  <div class="enhancements-grid">
+                    {occasion.data.gift_enhancements.map((item) => (
+                      <div class="enhancement-card">
+                        <h4>{item.item}</h4>
+                        <p class="description">{item.description}</p>
+                        <p class="price-range">{item.priceRange}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Card Messages */}
+              {occasion.data.card_messages && occasion.data.card_messages.length > 0 && (
+                <div class="card-messages">
+                  <h2>Personalized Card Messages</h2>
+                  <div class="messages-grid">
+                    {occasion.data.card_messages.map((msg) => (
+                      <div class="message-card">
+                        <h4>For {msg.recipient}</h4>
+                        <p class="message-text">"{msg.message}"</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Special Scenarios */}
+              {occasion.data.special_scenarios && occasion.data.special_scenarios.length > 0 && (
+                <div class="special-scenarios">
+                  <h2>Special Scenarios</h2>
+                  <div class="scenarios-grid">
+                    {occasion.data.special_scenarios.map((scenario) => (
+                      <div class="scenario-card">
+                        {scenario.icon && <div class="scenario-icon">{scenario.icon}</div>}
+                        <h4>{scenario.title}</h4>
+                        <ul>
+                          {scenario.tips.map((tip) => (
+                            <li>{tip}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Cost Saving Tips */}
+              {occasion.data.cost_saving_tips && occasion.data.cost_saving_tips.length > 0 && (
+                <div class="cost-saving">
+                  <h2>Cost-Saving Tips</h2>
+                  <ul class="cost-tips-list">
+                    {occasion.data.cost_saving_tips.map((tip) => (
+                      <li>{tip}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {/* Callouts */}
+              {occasion.data.callouts && occasion.data.callouts.length > 0 && occasion.data.callouts.map((callout) => (
+                <CalloutBox variant={callout.variant} title={callout.title}>
+                  <div set:html={callout.content} />
+                </CalloutBox>
+              ))}
+
+              {/* FAQs */}
+              {occasion.data.faqs && occasion.data.faqs.length > 0 && (
+                <div class="faqs-wrapper">
+                  <h2>Frequently Asked Questions</h2>
+                  <AccordionFAQ items={occasion.data.faqs} />
+                </div>
+              )}
+            </div>
+          </div>
+        </TabSection>
+      </section>
+    </div>
+
+    <!-- Sticky Table of Contents -->
+    {tocItems.length > 0 && (
+      <StickyTOC items={tocItems} />
+    )}
+  </main>
+</BaseLayout>
+
+<style>
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+
+  .content-section {
+    margin: 3rem 0;
+  }
+
+  .content-section.bg-light {
+    background-color: #f9fafb;
+    padding: 2rem;
+    border-radius: 12px;
+  }
+
+  .recommended-flowers-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin: 2rem 0;
+  }
+
+  .flower-recommendation {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    border: 1px solid #e5e5e5;
+  }
+
+  .flower-recommendation h3 {
+    color: var(--florize-green, #4a7c59);
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .flower-recommendation p {
+    color: #666;
+    line-height: 1.6;
+  }
+
+  .prose-content {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .prose-content :global(h2) {
+    color: var(--florize-green, #4a7c59);
+    font-size: 2rem;
+    margin-top: 3rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .prose-content :global(h3) {
+    color: var(--florize-green, #4a7c59);
+    font-size: 1.5rem;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  .prose-content :global(h4) {
+    color: var(--text-charcoal, #2c2c2c);
+    font-size: 1.25rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .prose-content :global(p) {
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+  }
+
+  .prose-content :global(ul) {
+    margin-bottom: 1.5rem;
+    padding-left: 1.5rem;
+  }
+
+  .prose-content :global(li) {
+    margin-bottom: 0.5rem;
+    line-height: 1.6;
+  }
+
+  .prose-content :global(strong) {
+    color: var(--florize-green, #4a7c59);
+    font-weight: 600;
+  }
+
+  /* Tab panel visibility - critical for tab switching */
+  .tab-panel {
+    display: none;
+    animation: fadeIn 0.3s ease-in;
+  }
+
+  .tab-panel.active {
+    display: block;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .tab-content-wrapper {
+    min-height: 200px;
+    padding: 2rem 0;
+  }
+
+  .tab-content-wrapper h2 {
+    color: var(--florize-green, #4a7c59);
+    font-size: 1.75rem;
+    margin-bottom: 1.5rem;
+    margin-top: 0;
+  }
+
+  .faqs-wrapper {
+    margin-top: 2rem;
+  }
+
+  .faqs-wrapper:first-child {
+    margin-top: 0;
+  }
+
+  .empty-tab-message {
+    text-align: center;
+    color: #6b7280;
+    padding: 3rem 1rem;
+    font-style: italic;
+  }
+
+  /* Delivery Locations */
+  .delivery-locations {
+    margin-top: 2rem;
+  }
+
+  .locations-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+  }
+
+  .location-card {
+    background: #f9fafb;
+    padding: 1.5rem;
+    border-radius: 12px;
+    border-left: 4px solid var(--florize-green, #4a7c59);
+  }
+
+  .location-card h3 {
+    color: var(--florize-green, #4a7c59);
+    font-size: 1.125rem;
+    margin: 0 0 1rem 0;
+  }
+
+  .location-card ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .location-card li {
+    padding: 0.5rem 0;
+    padding-left: 1.5rem;
+    position: relative;
+    color: #374151;
+  }
+
+  .location-card li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: var(--florize-green, #4a7c59);
+    font-weight: bold;
+  }
+
+  /* Gift Enhancements */
+  .gift-enhancements, .card-messages, .special-scenarios, .cost-saving {
+    margin: 2.5rem 0;
+  }
+
+  .enhancements-grid, .messages-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.25rem;
+    margin-top: 1.5rem;
+  }
+
+  .enhancement-card, .message-card {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 1.5rem;
+    transition: all 0.3s;
+  }
+
+  .enhancement-card:hover, .message-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transform: translateY(-2px);
+  }
+
+  .enhancement-card h4, .message-card h4 {
+    color: var(--florize-green, #4a7c59);
+    font-size: 1.125rem;
+    margin: 0 0 0.75rem 0;
+  }
+
+  .enhancement-card .description, .message-text {
+    color: #6b7280;
+    font-size: 0.9375rem;
+    margin: 0.5rem 0;
+    line-height: 1.6;
+  }
+
+  .enhancement-card .price-range {
+    color: var(--florize-green, #4a7c59);
+    font-weight: 600;
+    margin-top: 0.75rem;
+  }
+
+  .message-text {
+    font-style: italic;
+    color: #374151;
+  }
+
+  /* Special Scenarios */
+  .scenarios-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+  }
+
+  .scenario-card {
+    background: linear-gradient(135deg, #f0f8f4 0%, #ffffff 100%);
+    border: 1px solid #d1e5db;
+    border-radius: 12px;
+    padding: 1.5rem;
+  }
+
+  .scenario-icon {
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+
+  .scenario-card h4 {
+    color: var(--florize-green, #4a7c59);
+    font-size: 1.125rem;
+    margin: 0 0 1rem 0;
+    text-align: center;
+  }
+
+  .scenario-card ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .scenario-card li {
+    padding: 0.5rem 0;
+    padding-left: 1.5rem;
+    position: relative;
+    color: #374151;
+    font-size: 0.9375rem;
+  }
+
+  .scenario-card li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--florize-green, #4a7c59);
+  }
+
+  /* Cost Saving Tips */
+  .cost-tips-list {
+    list-style: none;
+    padding: 0;
+    margin: 1.5rem 0;
+  }
+
+  .cost-tips-list li {
+    background: #fffbeb;
+    border-left: 4px solid #f59e0b;
+    padding: 1rem 1.5rem;
+    margin-bottom: 1rem;
+    border-radius: 8px;
+    color: #374151;
+  }
+
+  .cost-tips-list li::before {
+    content: "💰";
+    margin-right: 0.75rem;
+  }
+
+  @media (max-width: 768px) {
+    .container {
+      padding: 0 0.75rem;
+    }
+
+    .content-section {
+      margin: 2rem 0;
+    }
+
+    .recommended-flowers-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .tab-content-wrapper h2 {
+      font-size: 1.5rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .locations-grid, .enhancements-grid, .messages-grid, .scenarios-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .prose-content :global(h2) {
+      font-size: 1.5rem;
+    }
+
+    .prose-content :global(h3) {
+      font-size: 1.25rem;
+    }
+  }
+</style>

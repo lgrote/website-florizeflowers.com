@@ -1,0 +1,128 @@
+---
+// Dynamic content prose section
+// Renders markdown or HTML content with proper styling
+
+import type { ContentProseSection } from '../../../types/content';
+
+export interface Props {
+  section: ContentProseSection;
+  className?: string;
+}
+
+const { section, className = '' } = Astro.props;
+---
+
+<section class={`content-prose-section ${className}`}>
+  {section.title && (
+    <h2 class="prose-title">{section.title}</h2>
+  )}
+
+  <div class="prose-content" set:html={section.content} />
+</section>
+
+<style>
+  .content-prose-section {
+    padding: 2rem 0;
+  }
+
+  .prose-title {
+    font-size: 1.875rem;
+    font-weight: 700;
+    color: var(--florize-green, #4a7c59);
+    margin: 0 0 1.5rem 0;
+  }
+
+  .prose-content {
+    font-size: 1.0625rem;
+    line-height: 1.8;
+    color: #374151;
+  }
+
+  .prose-content :global(p) {
+    margin: 0 0 1.25rem 0;
+  }
+
+  .prose-content :global(h3) {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--florize-green, #4a7c59);
+    margin: 2rem 0 1rem 0;
+  }
+
+  .prose-content :global(h4) {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1f2937;
+    margin: 1.5rem 0 0.75rem 0;
+  }
+
+  .prose-content :global(ul),
+  .prose-content :global(ol) {
+    margin: 0 0 1.25rem 0;
+    padding-left: 1.5rem;
+  }
+
+  .prose-content :global(li) {
+    margin: 0 0 0.5rem 0;
+  }
+
+  .prose-content :global(blockquote) {
+    border-left: 4px solid var(--florize-green, #4a7c59);
+    padding-left: 1.5rem;
+    margin: 1.5rem 0;
+    font-style: italic;
+    color: #6b7280;
+  }
+
+  .prose-content :global(a) {
+    color: var(--florize-green, #4a7c59);
+    text-decoration: underline;
+    transition: color 0.2s ease;
+  }
+
+  .prose-content :global(a:hover) {
+    color: #6fa581;
+  }
+
+  .prose-content :global(strong) {
+    font-weight: 700;
+    color: #1f2937;
+  }
+
+  .prose-content :global(em) {
+    font-style: italic;
+  }
+
+  .prose-content :global(code) {
+    background: #f3f4f6;
+    padding: 0.125rem 0.375rem;
+    border-radius: 4px;
+    font-size: 0.875em;
+    font-family: 'Courier New', monospace;
+  }
+
+  .prose-content :global(pre) {
+    background: #1f2937;
+    color: #f3f4f6;
+    padding: 1rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin: 1.5rem 0;
+  }
+
+  .prose-content :global(pre code) {
+    background: transparent;
+    padding: 0;
+    font-size: 0.875rem;
+  }
+
+  @media (max-width: 768px) {
+    .prose-title {
+      font-size: 1.5rem;
+    }
+
+    .prose-content {
+      font-size: 1rem;
+    }
+  }
+</style>

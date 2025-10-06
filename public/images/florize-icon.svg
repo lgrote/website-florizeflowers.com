@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="120" height="120" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+  
+  <!-- Flower petals positioned behind magnifying glass -->
+  <g transform="translate(60, 60)">
+    <!-- 6 oval petals in soft peach color, arranged symmetrically -->
+    <ellipse cx="0" cy="-26" rx="12" ry="20" fill="#F4B5A0" transform="rotate(0)"/>
+    <ellipse cx="0" cy="-26" rx="12" ry="20" fill="#F4B5A0" transform="rotate(60)"/>
+    <ellipse cx="0" cy="-26" rx="12" ry="20" fill="#F4B5A0" transform="rotate(120)"/>
+    <ellipse cx="0" cy="-26" rx="12" ry="20" fill="#F4B5A0" transform="rotate(180)"/>
+    <ellipse cx="0" cy="-26" rx="12" ry="20" fill="#F4B5A0" transform="rotate(240)"/>
+    <ellipse cx="0" cy="-26" rx="12" ry="20" fill="#F4B5A0" transform="rotate(300)"/>
+  </g>
+  
+  <!-- Magnifying glass -->
+  <g transform="translate(60, 60)">
+    <!-- Glass circle background -->
+    <circle cx="0" cy="0" r="20" fill="#ffffff"/>
+    <!-- Glass circle border -->
+    <circle cx="0" cy="0" r="20" fill="none" stroke="#4a7c59" stroke-width="3.5"/>
+    
+    <!-- Handle extending down-right -->
+    <path d="M 13 17 L 26 30 L 30 26 L 17 13 Z" fill="#4a7c59" stroke="#4a7c59" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+    
+    <!-- Checkmark extending beyond the circle -->
+    <path d="M -11 -3 L 0 8 L 21 -12" fill="none" stroke="#4a7c59" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  
+</svg>

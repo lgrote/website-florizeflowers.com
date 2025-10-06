@@ -1,0 +1,352 @@
+---
+// Dynamic tab content section
+// Renders tabbed content from content section data
+
+import type { TabContentSection } from '../../../types/content';
+
+export interface Props {
+  section: TabContentSection;
+  className?: string;
+}
+
+const { section, className = '' } = Astro.props;
+
+// Parse content for each tab based on its structure
+function parseTabContent(content: any) {
+  if (typeof content === 'string') {
+    return { type: 'html', content };
+  }
+  if (typeof content === 'object') {
+    return { type: 'structured', content };
+  }
+  return { type: 'unknown', content: '' };
+}
+---
+
+<section class={`tab-content-section ${className}`}>
+  {section.title && (
+    <h2 class="section-title">{section.title}</h2>
+  )}
+
+  <div class="tab-container" data-tab-section>
+    <div class="tab-nav-wrapper">
+      <div class="tab-nav" role="tablist">
+        {section.tabs.map((tab, index) => (
+          <button
+            class={`tab-button ${index === 0 ? 'active' : ''}`}
+            role="tab"
+            aria-selected={index === 0 ? 'true' : 'false'}
+            data-tab={tab.id}
+          >
+            <span class="tab-label">{tab.label}</span>
+          </button>
+        ))}
+      </div>
+    </div>
+
+    <div class="tab-content-wrapper">
+      {section.tabs.map((tab, index) => {
+        const parsedContent = parseTabContent(tab.content);
+        return (
+          <div
+            class={`tab-panel ${index === 0 ? 'active' : ''}`}
+            data-tab-panel={tab.id}
+            role="tabpanel"
+          >
+            {parsedContent.type === 'html' && (
+              <div class="tab-content-html" set:html={parsedContent.content} />
+            )}
+            {parsedContent.type === 'structured' && (
+              <div class="tab-content-structured">
+                {renderStructuredContent(parsedContent.content)}
+              </div>
+            )}
+          </div>
+        );
+      })}
+    </div>
+  </div>
+</section>
+
+{/* Helper function to render structured content */}
+{function renderStructuredContent(content: any) {
+  // Handle different structured content types
+  if (Array.isArray(content)) {
+    return (
+      <div class="structured-list">
+        {content.map(item => (
+          <div class="structured-item">
+            {typeof item === 'string' ? (
+              <p>{item}</p>
+            ) : (
+              Object.entries(item).map(([key, value]) => (
+                <div class="structured-field">
+                  <span class="field-label">{key}:</span>
+                  <span class="field-value">{String(value)}</span>
+                </div>
+              ))
+            )}
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  if (typeof content === 'object' && content !== null) {
+    return (
+      <div class="structured-object">
+        {Object.entries(content).map(([key, value]) => (
+          <div class="structured-field">
+            <span class="field-label">{key}:</span>
+            <span class="field-value">{String(value)}</span>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  return <p>{String(content)}</p>;
+}}
+
+<script>
+  function initDynamicTabs() {
+    const tabSections = document.querySelectorAll('[data-tab-section]');
+
+    tabSections.forEach(section => {
+      const tabButtons = section.querySelectorAll('[data-tab]');
+      const tabPanels = section.querySelectorAll('[data-tab-panel]');
+
+      tabButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          const targetTab = button.getAttribute('data-tab');
+
+          // Update button states
+          tabButtons.forEach(btn => {
+            btn.classList.remove('active');
+            btn.setAttribute('aria-selected', 'false');
+          });
+          button.classList.add('active');
+          button.setAttribute('aria-selected', 'true');
+
+          // Update panel visibility
+          tabPanels.forEach(panel => {
+            const panelId = panel.getAttribute('data-tab-panel');
+            if (panelId === targetTab) {
+              panel.classList.add('active');
+            } else {
+              panel.classList.remove('active');
+            }
+          });
+        });
+      });
+    });
+  }
+
+  // Initialize on page load
+  document.addEventListener('DOMContentLoaded', initDynamicTabs);
+
+  // Re-initialize after page transitions
+  document.addEventListener('astro:page-load', initDynamicTabs);
+</script>
+
+<style>
+  .tab-content-section {
+    padding: 2rem 0;
+  }
+
+  .section-title {
+    font-size: 1.875rem;
+    font-weight: 700;
+    color: var(--florize-green, #4a7c59);
+    text-align: center;
+    margin: 0 0 2rem 0;
+  }
+
+  .tab-container {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  }
+
+  .tab-nav-wrapper {
+    background: #f9fafb;
+    border-bottom: 2px solid #e5e7eb;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .tab-nav {
+    display: flex;
+    min-width: min-content;
+  }
+
+  .tab-button {
+    flex: 1;
+    padding: 1rem 1.5rem;
+    background: none;
+    border: none;
+    color: #6b7280;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.2s;
+    white-space: nowrap;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+  }
+
+  .tab-button:hover {
+    color: var(--florize-green, #4a7c59);
+    background: rgba(74, 124, 89, 0.05);
+  }
+
+  .tab-button.active {
+    color: var(--florize-green, #4a7c59);
+    background: white;
+    border-bottom-color: var(--florize-green, #4a7c59);
+  }
+
+  .tab-label {
+    line-height: 1;
+  }
+
+  .tab-content-wrapper {
+    padding: 2rem;
+  }
+
+  .tab-panel {
+    display: none;
+    animation: fadeIn 0.3s ease-in;
+  }
+
+  .tab-panel.active {
+    display: block;
+  }
+
+  /* HTML content styles */
+  .tab-content-html {
+    font-size: 1.0625rem;
+    line-height: 1.7;
+    color: #374151;
+  }
+
+  .tab-content-html :global(p) {
+    margin: 0 0 1rem 0;
+  }
+
+  .tab-content-html :global(p:last-child) {
+    margin-bottom: 0;
+  }
+
+  .tab-content-html :global(ul),
+  .tab-content-html :global(ol) {
+    margin: 0 0 1rem 0;
+    padding-left: 1.5rem;
+  }
+
+  .tab-content-html :global(li) {
+    margin: 0 0 0.5rem 0;
+  }
+
+  .tab-content-html :global(h3) {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--florize-green, #4a7c59);
+    margin: 1.5rem 0 0.75rem 0;
+  }
+
+  .tab-content-html :global(h3:first-child) {
+    margin-top: 0;
+  }
+
+  /* Structured content styles */
+  .structured-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .structured-item {
+    padding: 1rem;
+    background: #f9fafb;
+    border-radius: 8px;
+    border-left: 3px solid var(--florize-green, #4a7c59);
+  }
+
+  .structured-field {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .structured-field:last-child {
+    margin-bottom: 0;
+  }
+
+  .field-label {
+    font-weight: 600;
+    color: #4b5563;
+    text-transform: capitalize;
+  }
+
+  .field-value {
+    color: #374151;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Custom scrollbar for tab nav */
+  .tab-nav-wrapper::-webkit-scrollbar {
+    height: 4px;
+  }
+
+  .tab-nav-wrapper::-webkit-scrollbar-track {
+    background: #f3f4f6;
+  }
+
+  .tab-nav-wrapper::-webkit-scrollbar-thumb {
+    background: #d1d5db;
+    border-radius: 2px;
+  }
+
+  .tab-nav-wrapper::-webkit-scrollbar-thumb:hover {
+    background: #9ca3af;
+  }
+
+  @media (max-width: 768px) {
+    .section-title {
+      font-size: 1.5rem;
+    }
+
+    .tab-button {
+      padding: 0.875rem 1rem;
+      font-size: 0.875rem;
+    }
+
+    .tab-content-wrapper {
+      padding: 1.5rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .tab-button {
+      padding: 0.75rem;
+      font-size: 0.8125rem;
+    }
+
+    .tab-content-wrapper {
+      padding: 1rem;
+    }
+  }
+</style>

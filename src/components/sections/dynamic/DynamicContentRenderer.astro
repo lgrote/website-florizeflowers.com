@@ -1,0 +1,116 @@
+---
+// Main dynamic content renderer component
+// Automatically renders the correct component based on content section type
+
+import type { ContentSection } from '../../../types/content';
+import { shouldRenderSection } from '../../../utils/contentRenderer';
+
+// Import all dynamic section components
+import FeaturesGrid from './FeaturesGrid.astro';
+import ContentProse from './ContentProse.astro';
+import QuickFacts from './QuickFacts.astro';
+import AssessmentSection from './AssessmentSection.astro';
+import TabContentSection from './TabContentSection.astro';
+
+// Import existing static components that can be used dynamically
+import ProsConsGrid from '../ProsConsGrid.astro';
+import AccordionFAQ from '../../ui/AccordionFAQ.astro';
+import ComparisonSection from '../ComparisonSection.astro';
+
+export interface Props {
+  sections: ContentSection[];
+  className?: string;
+}
+
+const { sections, className = '' } = Astro.props;
+
+// Filter out sections that shouldn't be rendered
+const renderableSections = sections.filter(shouldRenderSection);
+---
+
+<div class={`dynamic-content-container ${className}`}>
+  {renderableSections.map((section) => {
+    switch (section.type) {
+      case 'features_grid':
+        return <FeaturesGrid section={section} />;
+
+      case 'content_prose':
+        return <ContentProse section={section} />;
+
+      case 'quick_facts':
+        return <QuickFacts section={section} />;
+
+      case 'assessment':
+        return <AssessmentSection section={section} />;
+
+      case 'pros_cons':
+        return section.pros && section.cons ? (
+          <ProsConsGrid
+            prosTitle={section.title?.includes('&') ? section.title.split('&')[0].trim() : 'Strengths'}
+            consTitle={section.title?.includes('&') ? section.title.split('&')[1].trim() : 'Considerations'}
+            pros={section.pros}
+            cons={section.cons}
+          />
+        ) : null;
+
+      case 'faq':
+        return section.questions ? (
+          <AccordionFAQ
+            title={section.title}
+            items={section.questions}
+          />
+        ) : null;
+
+      case 'comparison':
+        return section.competitors ? (
+          <ComparisonSection
+            competitors={section.competitors}
+            title={section.title}
+          />
+        ) : null;
+
+      case 'tab_content':
+        return section.tabs && section.tabs.length > 0 ? (
+          <TabContentSection section={section} />
+        ) : null;
+
+      default:
+        // Fallback for unknown section types
+        console.warn(`Unknown content section type: ${section.type}`);
+        return (
+          <div class="unknown-section">
+            <p>Content section type "{section.type}" is not yet implemented.</p>
+          </div>
+        );
+    }
+  })}
+</div>
+
+<style>
+  .dynamic-content-container {
+    /* Container for all dynamic content sections */
+  }
+
+  .dynamic-content-container > :global(section) {
+    margin-bottom: 3rem;
+  }
+
+  .dynamic-content-container > :global(section:last-child) {
+    margin-bottom: 0;
+  }
+
+  .unknown-section {
+    padding: 2rem;
+    background: #fef3c7;
+    border: 1px solid #fbbf24;
+    border-radius: 8px;
+    text-align: center;
+    color: #92400e;
+  }
+
+  @media (max-width: 768px) {
+    .dynamic-content-container > :global(section) {
+      margin-bottom: 2rem;
+    }
+  }
+</style>

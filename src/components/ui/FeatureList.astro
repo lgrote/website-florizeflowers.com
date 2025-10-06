@@ -1,0 +1,141 @@
+---
+export interface Feature {
+  icon?: string;
+  title: string;
+  description: string;
+}
+
+export interface Props {
+  features: Feature[];
+  columns?: 1 | 2 | 3;
+  variant?: 'default' | 'compact';
+  className?: string;
+}
+
+const {
+  features,
+  columns = 2,
+  variant = 'default',
+  className = ''
+} = Astro.props;
+---
+
+<div class={`feature-list feature-list-${columns} variant-${variant} ${className}`}>
+  {features.map((feature) => (
+    <div class="feature-item">
+      {feature.icon && (
+        <div class="feature-icon">{feature.icon}</div>
+      )}
+      <div class="feature-content">
+        <h4 class="feature-title">{feature.title}</h4>
+        <p class="feature-description">{feature.description}</p>
+      </div>
+    </div>
+  ))}
+</div>
+
+<style>
+  .feature-list {
+    display: grid;
+    gap: 1.5rem;
+    margin: 2rem 0;
+  }
+
+  .feature-list-1 {
+    grid-template-columns: 1fr;
+  }
+
+  .feature-list-2 {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  }
+
+  .feature-list-3 {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  }
+
+  .feature-item {
+    display: flex;
+    gap: 1rem;
+    padding: 1.25rem;
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+  }
+
+  .feature-item:hover {
+    border-color: var(--florize-green, #4a7c59);
+    box-shadow: 0 4px 12px rgba(74, 124, 89, 0.1);
+    transform: translateY(-2px);
+  }
+
+  .feature-icon {
+    font-size: 2rem;
+    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #f0f8f4 0%, #e8f5e9 100%);
+    border-radius: 8px;
+  }
+
+  .feature-content {
+    flex: 1;
+  }
+
+  .feature-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--florize-green, #4a7c59);
+    margin: 0 0 0.5rem 0;
+  }
+
+  .feature-description {
+    font-size: 0.9375rem;
+    color: #6b7280;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  /* Compact variant */
+  .variant-compact .feature-item {
+    padding: 1rem;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .variant-compact .feature-icon {
+    font-size: 1.5rem;
+    width: 36px;
+    height: 36px;
+  }
+
+  .variant-compact .feature-title {
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .variant-compact .feature-description {
+    font-size: 0.875rem;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .feature-list-2,
+    .feature-list-3 {
+      grid-template-columns: 1fr;
+    }
+
+    .feature-item {
+      padding: 1rem;
+    }
+
+    .feature-icon {
+      width: 40px;
+      height: 40px;
+      font-size: 1.5rem;
+    }
+  }
+</style>

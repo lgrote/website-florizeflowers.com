@@ -1,0 +1,108 @@
+---
+export interface ProConItem {
+  label: string;
+  description: string;
+}
+
+export interface Props {
+  serviceName: string;
+  prosTitle?: string;
+  consTitle?: string;
+  pros: ProConItem[];
+  cons: ProConItem[];
+}
+
+const {
+  serviceName,
+  prosTitle = "Premium Excellence",
+  consTitle = "Premium Limitations",
+  pros,
+  cons
+} = Astro.props;
+---
+
+<section class="content-section">
+  <h2>{serviceName}: {prosTitle} & {consTitle}</h2>
+
+  <div class="pros-cons-grid">
+    <div class="pros-section">
+      <h3 class="pros-title">✅ {prosTitle}</h3>
+      <ul>
+        {pros.map((item) => (
+          <li><strong>{item.label}:</strong> {item.description}</li>
+        ))}
+      </ul>
+    </div>
+
+    <div class="cons-section">
+      <h3 class="cons-title">❌ {consTitle}</h3>
+      <ul>
+        {cons.map((item) => (
+          <li><strong>{item.label}:</strong> {item.description}</li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+  .pros-cons-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-top: 2rem;
+  }
+
+  .pros-section, .cons-section {
+    background: white;
+    padding: 2rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  }
+
+  .pros-title, .cons-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: #2c2c2c;
+  }
+
+  .pros-section ul, .cons-section ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .pros-section li, .cons-section li {
+    margin-bottom: 1rem;
+    padding-left: 1.5rem;
+    position: relative;
+    line-height: 1.6;
+  }
+
+  .pros-section li::before {
+    content: '•';
+    position: absolute;
+    left: 0;
+    color: #4a7c59;
+    font-weight: bold;
+  }
+
+  .cons-section li::before {
+    content: '•';
+    position: absolute;
+    left: 0;
+    color: #e85d75;
+    font-weight: bold;
+  }
+
+  .pros-section strong, .cons-section strong {
+    color: #4a7c59;
+  }
+
+  @media (max-width: 768px) {
+    .pros-cons-grid {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+  }
+</style>

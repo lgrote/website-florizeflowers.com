@@ -1,0 +1,169 @@
+---
+export interface Props {
+  title?: string;
+  icon?: string;
+  variant?: 'default' | 'success' | 'info' | 'metric';
+}
+
+const {
+  title,
+  icon,
+  variant = 'default'
+} = Astro.props;
+
+const variantClasses = {
+  default: 'variant-default',
+  success: 'variant-success',
+  info: 'variant-info',
+  metric: 'variant-metric'
+};
+---
+
+<div class={`highlight-box ${variantClasses[variant]}`}>
+  {(title || icon) && (
+    <div class="highlight-header">
+      {icon && <span class="highlight-icon">{icon}</span>}
+      {title && <h4 class="highlight-title">{title}</h4>}
+    </div>
+  )}
+  <div class="highlight-content">
+    <slot />
+  </div>
+</div>
+
+<style>
+  .highlight-box {
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+    border-left: 4px solid;
+  }
+
+  .highlight-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+  }
+
+  .highlight-icon {
+    font-size: 1.5rem;
+    line-height: 1;
+  }
+
+  .highlight-title {
+    font-size: 1.125rem;
+    font-weight: 700;
+    margin: 0;
+    line-height: 1.3;
+  }
+
+  .highlight-content {
+    font-size: 0.9375rem;
+    line-height: 1.6;
+  }
+
+  .highlight-content > :first-child {
+    margin-top: 0;
+  }
+
+  .highlight-content > :last-child {
+    margin-bottom: 0;
+  }
+
+  /* Default variant - Neutral */
+  .variant-default {
+    background: #f9fafb;
+    border-left-color: #9ca3af;
+  }
+
+  .variant-default .highlight-title {
+    color: #374151;
+  }
+
+  .variant-default .highlight-icon {
+    color: #6b7280;
+  }
+
+  /* Success variant - Green */
+  .variant-success {
+    background: #f0f8f4;
+    border-left-color: var(--florize-green, #4a7c59);
+  }
+
+  .variant-success .highlight-title {
+    color: var(--florize-green, #4a7c59);
+  }
+
+  .variant-success .highlight-icon {
+    color: var(--florize-green, #4a7c59);
+  }
+
+  /* Info variant - Blue */
+  .variant-info {
+    background: #eff6ff;
+    border-left-color: #3b82f6;
+  }
+
+  .variant-info .highlight-title {
+    color: #1e40af;
+  }
+
+  .variant-info .highlight-icon {
+    color: #3b82f6;
+  }
+
+  /* Metric variant - Gold */
+  .variant-metric {
+    background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 50%, #fffbeb 100%);
+    border-left-color: #f59e0b;
+    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.1);
+  }
+
+  .variant-metric .highlight-title {
+    color: #92400e;
+  }
+
+  .variant-metric .highlight-icon {
+    color: #f59e0b;
+  }
+
+  /* List styling within highlight boxes */
+  .highlight-content ul,
+  .highlight-content ol {
+    margin: 0.75rem 0;
+    padding-left: 1.5rem;
+  }
+
+  .highlight-content li {
+    margin: 0.5rem 0;
+  }
+
+  .highlight-content p {
+    margin: 0.75rem 0;
+  }
+
+  .highlight-content strong {
+    font-weight: 600;
+    color: inherit;
+  }
+
+  @media (max-width: 768px) {
+    .highlight-box {
+      padding: 1.25rem;
+      margin: 1.25rem 0;
+    }
+
+    .highlight-title {
+      font-size: 1rem;
+    }
+
+    .highlight-icon {
+      font-size: 1.25rem;
+    }
+
+    .highlight-content {
+      font-size: 0.875rem;
+    }
+  }
+</style>

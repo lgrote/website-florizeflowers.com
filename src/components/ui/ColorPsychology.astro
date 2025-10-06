@@ -1,0 +1,174 @@
+---
+export interface ColorMeaning {
+  color: string;
+  hex: string;
+  meaning: string;
+  emotions: string[];
+  bestFor: string;
+}
+
+export interface Props {
+  colors: ColorMeaning[];
+  title?: string;
+}
+
+const {
+  colors,
+  title = "Flower Color Meanings"
+} = Astro.props;
+---
+
+<div class="color-psychology">
+  <h3 class="color-title">{title}</h3>
+  <div class="colors-grid">
+    {colors.map((color) => (
+      <div class="color-card">
+        <div class="color-swatch" style={`background-color: ${color.hex}`}></div>
+        <h4 class="color-name">{color.color}</h4>
+        <p class="color-meaning">{color.meaning}</p>
+        <div class="color-emotions">
+          {color.emotions.map((emotion) => (
+            <span class="emotion-tag">{emotion}</span>
+          ))}
+        </div>
+        <div class="color-best-for">
+          <span class="best-for-label">Best for:</span>
+          <span class="best-for-value">{color.bestFor}</span>
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+
+<style>
+  .color-psychology {
+    background: linear-gradient(135deg, #f9fafb 0%, #ffffff 100%);
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    padding: 2rem;
+    margin: 2rem 0;
+  }
+
+  .color-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--florize-green, #4a7c59);
+    text-align: center;
+    margin: 0 0 2rem 0;
+  }
+
+  .colors-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.25rem;
+  }
+
+  .color-card {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    transition: all 0.3s;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .color-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(74, 124, 89, 0.15);
+  }
+
+  .color-swatch {
+    width: 100%;
+    height: 80px;
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .color-name {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: #1f2937;
+    margin: 0;
+    text-align: center;
+  }
+
+  .color-meaning {
+    font-size: 0.875rem;
+    color: #6b7280;
+    text-align: center;
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  .color-emotions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+    margin: 0.5rem 0;
+  }
+
+  .emotion-tag {
+    background: #f3f4f6;
+    color: #4b5563;
+    font-size: 0.75rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+    font-weight: 500;
+  }
+
+  .color-best-for {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid #f3f4f6;
+  }
+
+  .best-for-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #9ca3af;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .best-for-value {
+    font-size: 0.875rem;
+    color: #374151;
+    font-weight: 500;
+  }
+
+  @media (max-width: 768px) {
+    .color-psychology {
+      padding: 1.5rem;
+    }
+
+    .color-title {
+      font-size: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .colors-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+    }
+
+    .color-card {
+      padding: 1.25rem;
+    }
+
+    .color-swatch {
+      height: 60px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .colors-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

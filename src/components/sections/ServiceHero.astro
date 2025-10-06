@@ -1,0 +1,122 @@
+---
+export interface Props {
+  title: string;
+  subtitle: string;
+  rating: number;
+  badge?: string;
+  backgroundImage?: string;
+}
+
+const { title, subtitle, rating, badge, backgroundImage } = Astro.props;
+
+const backgroundStyle = backgroundImage
+  ? `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('${backgroundImage}') center/cover`
+  : 'linear-gradient(135deg, #4a7c59 0%, #3d6849 100%)';
+---
+
+<section class="hero-section" style={`background: ${backgroundStyle};`}>
+  <div class="hero-content">
+    <h1>{title}</h1>
+    <p class="hero-subtitle">{subtitle}</p>
+    <div class="rating-summary">
+      <div class="rating-stars">⭐⭐⭐⭐⭐</div>
+      <span class="rating-text">{rating}/5{badge ? ` - ${badge}` : ''}</span>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero-section {
+    position: relative;
+    min-height: 50vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-size: cover !important;
+    background-position: center !important;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    color: white;
+    text-align: center;
+    overflow: hidden;
+    margin-bottom: 3rem;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 800px;
+    padding: 2rem 1.5rem;
+  }
+
+  .hero-content h1 {
+    font-size: 3.5rem;
+    font-weight: 700;
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.9);
+    margin-bottom: 1.5rem;
+    color: white;
+    line-height: 1.2;
+  }
+
+  .hero-subtitle {
+    font-size: 1.25rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    margin-bottom: 2rem;
+    color: white;
+    line-height: 1.6;
+  }
+
+  .rating-summary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .rating-stars {
+    font-size: 1.25rem;
+    color: #d4af37;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  }
+
+  .rating-text {
+    font-weight: 600;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .hero-section {
+      min-height: 40vh;
+      background-attachment: scroll;
+    }
+
+    .hero-content h1 {
+      font-size: 2.5rem;
+    }
+
+    .hero-subtitle {
+      font-size: 1.125rem;
+    }
+
+    .rating-stars {
+      font-size: 1.1rem;
+    }
+
+    .rating-text {
+      font-size: 1rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .hero-content h1 {
+      font-size: 2rem;
+    }
+
+    .hero-subtitle {
+      font-size: 1rem;
+    }
+  }
+</style>

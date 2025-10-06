@@ -1,0 +1,174 @@
+---
+export interface MetricItem {
+  icon: string;
+  label: string;
+  value: string;
+  description?: string;
+}
+
+export interface Props {
+  metrics: MetricItem[];
+  title?: string;
+}
+
+const {
+  metrics,
+  title = "Testing at a Glance"
+} = Astro.props;
+---
+
+<div class="testing-metrics">
+  <h3 class="metrics-title">{title}</h3>
+  <div class="metrics-grid">
+    {metrics.map((metric) => (
+      <div class="metric-card">
+        <div class="metric-icon">{metric.icon}</div>
+        <div class="metric-content">
+          <div class="metric-value">{metric.value}</div>
+          <div class="metric-label">{metric.label}</div>
+          {metric.description && (
+            <div class="metric-description">{metric.description}</div>
+          )}
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+
+<style>
+  .testing-metrics {
+    background: linear-gradient(135deg, #f0f8f4 0%, #ffffff 100%);
+    border: 1px solid #d1e5db;
+    border-radius: 16px;
+    padding: 2rem;
+    margin: 2rem 0;
+  }
+
+  .metrics-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--florize-green, #4a7c59);
+    text-align: center;
+    margin: 0 0 1.5rem 0;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 1.25rem;
+  }
+
+  .metric-card {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    transition: all 0.3s;
+  }
+
+  .metric-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(74, 124, 89, 0.15);
+  }
+
+  .metric-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .metric-content {
+    width: 100%;
+  }
+
+  .metric-value {
+    font-size: 1.875rem;
+    font-weight: 700;
+    color: var(--florize-green, #4a7c59);
+    margin-bottom: 0.5rem;
+    line-height: 1.2;
+  }
+
+  .metric-label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+  }
+
+  .metric-description {
+    font-size: 0.75rem;
+    color: #9ca3af;
+    line-height: 1.4;
+    margin-top: 0.5rem;
+  }
+
+  @media (max-width: 1024px) {
+    .metrics-grid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .testing-metrics {
+      padding: 1.5rem;
+    }
+
+    .metrics-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+    }
+
+    .metric-card {
+      padding: 1.25rem;
+    }
+
+    .metric-icon {
+      font-size: 2rem;
+    }
+
+    .metric-value {
+      font-size: 1.5rem;
+    }
+
+    .metric-label {
+      font-size: 0.75rem;
+    }
+
+    .metrics-title {
+      font-size: 1rem;
+      margin-bottom: 1.25rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .metrics-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .metric-card {
+      flex-direction: row;
+      text-align: left;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .metric-icon {
+      font-size: 2.5rem;
+      margin-bottom: 0;
+      flex-shrink: 0;
+    }
+
+    .metric-content {
+      flex: 1;
+    }
+  }
+</style>

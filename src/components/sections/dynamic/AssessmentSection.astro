@@ -1,0 +1,228 @@
+---
+// Assessment section component
+// Displays expert conclusions and recommendations
+
+import type { AssessmentSection } from '../../../types/content';
+import Button from '../../ui/Button.astro';
+
+export interface Props {
+  section: AssessmentSection;
+  className?: string;
+  affiliateUrl?: string;
+}
+
+const { section, className = '', affiliateUrl } = Astro.props;
+---
+
+<section class={`assessment-section ${className}`}>
+  {section.title && (
+    <h2 class="section-title">{section.title}</h2>
+  )}
+
+  <div class="assessment-content">
+    {section.expert_conclusion && (
+      <div class="expert-conclusion">
+        <h3 class="conclusion-title">
+          {section.expert_conclusion.title}
+          {section.expert_conclusion.rating_display && (
+            <span class="rating-display">{section.expert_conclusion.rating_display}</span>
+          )}
+        </h3>
+        {section.expert_conclusion.subtitle && (
+          <p class="conclusion-subtitle">{section.expert_conclusion.subtitle}</p>
+        )}
+        <div class="conclusion-content" set:html={section.expert_conclusion.content} />
+      </div>
+    )}
+
+    {section.value_justification && (
+      <div class="value-justification">
+        <h3 class="justification-title">{section.value_justification.title}</h3>
+        <div class="justification-content" set:html={section.value_justification.content} />
+        {affiliateUrl && section.value_justification.cta_text && (
+          <div class="justification-cta">
+            <Button
+              href={affiliateUrl}
+              text={section.value_justification.cta_text}
+              variant="affiliate"
+              size="lg"
+              target="_blank"
+              rel="noopener noreferrer"
+            />
+          </div>
+        )}
+      </div>
+    )}
+
+    <div class="recommendation-grid">
+      {section.recommended_for && section.recommended_for.length > 0 && (
+        <div class="recommendation-card recommended">
+          <h4 class="recommendation-title">✅ Recommended For</h4>
+          <ul class="recommendation-list">
+            {section.recommended_for.map((item) => (
+              <li>{item}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {section.consider_alternatives && section.consider_alternatives.length > 0 && (
+        <div class="recommendation-card alternatives">
+          <h4 class="recommendation-title">🤔 Consider Alternatives If</h4>
+          <ul class="recommendation-list">
+            {section.consider_alternatives.map((item) => (
+              <li>{item}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </div>
+  </div>
+</section>
+
+<style>
+  .assessment-section {
+    padding: 3rem 0;
+  }
+
+  .section-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--florize-green, #4a7c59);
+    text-align: center;
+    margin: 0 0 2.5rem 0;
+  }
+
+  .assessment-content {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .expert-conclusion,
+  .value-justification {
+    background: white;
+    border-radius: 12px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  }
+
+  .conclusion-title,
+  .justification-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--florize-green, #4a7c59);
+    margin: 0 0 1rem 0;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .rating-display {
+    background: linear-gradient(135deg, #d4af37 0%, #b89530 100%);
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 1rem;
+    font-weight: 600;
+  }
+
+  .conclusion-subtitle {
+    font-size: 1.125rem;
+    color: #6b7280;
+    margin: 0 0 1rem 0;
+    font-style: italic;
+  }
+
+  .conclusion-content,
+  .justification-content {
+    font-size: 1.0625rem;
+    line-height: 1.7;
+    color: #374151;
+  }
+
+  .conclusion-content :global(p),
+  .justification-content :global(p) {
+    margin: 0 0 1rem 0;
+  }
+
+  .conclusion-content :global(p:last-child),
+  .justification-content :global(p:last-child) {
+    margin-bottom: 0;
+  }
+
+  .justification-cta {
+    margin-top: 1.5rem;
+    text-align: center;
+  }
+
+  .recommendation-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+  }
+
+  .recommendation-card {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    border: 2px solid;
+  }
+
+  .recommendation-card.recommended {
+    border-color: #10b981;
+    background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%);
+  }
+
+  .recommendation-card.alternatives {
+    border-color: #f59e0b;
+    background: linear-gradient(135deg, #fffbeb 0%, #ffffff 100%);
+  }
+
+  .recommendation-title {
+    font-size: 1.125rem;
+    font-weight: 700;
+    margin: 0 0 1rem 0;
+    color: #1f2937;
+  }
+
+  .recommendation-list {
+    margin: 0;
+    padding-left: 1.5rem;
+    list-style-type: disc;
+  }
+
+  .recommendation-list li {
+    margin: 0 0 0.5rem 0;
+    color: #4b5563;
+    line-height: 1.5;
+  }
+
+  .recommendation-list li:last-child {
+    margin-bottom: 0;
+  }
+
+  @media (max-width: 768px) {
+    .section-title {
+      font-size: 1.75rem;
+    }
+
+    .expert-conclusion,
+    .value-justification {
+      padding: 1.5rem;
+    }
+
+    .conclusion-title,
+    .justification-title {
+      font-size: 1.25rem;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .recommendation-grid {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+  }
+</style>

@@ -1,0 +1,79 @@
+---
+import MobileMenu from './MobileMenu.astro';
+import DropdownMenu from './DropdownMenu.astro';
+
+// Service dropdown items
+const serviceItems = [
+  { label: 'Interflora Review', href: '/services/interflora' },
+  { label: 'Bloom & Wild Review', href: '/services/bloom-wild' },
+  { label: 'Prestige Flowers Review', href: '/services/prestige-flowers' },
+  { label: 'Appleyard Flowers Review', href: '/services/appleyard-flowers' },
+  { label: 'Flowerbx Review', href: '/services/flowerbx' },
+  { label: 'Wild at Heart Review', href: '/services/wild-at-heart' },
+  { label: 'Next Flowers Review', href: '/services/next-flowers' },
+  { label: 'Serenata Flowers Review', href: '/services/serenata-flowers' },
+  { label: 'Flying Flowers Review', href: '/services/flying-flowers' },
+  { label: 'Real Flower Company Review', href: '/services/real-flower-company' },
+  { label: 'MyFlowers Review', href: '/services/myflowers' },
+  { label: 'Blossoming Gifts Review', href: '/services/blossoming-gifts' },
+  { divider: true },
+  { label: 'All Service Reviews', href: '/services' },
+];
+
+// Occasion dropdown items
+const occasionItems = [
+  { label: "Mother's Day Flowers", href: '/occasions/mothers-day' },
+  { label: "Valentine's Day Flowers", href: '/occasions/valentines-day' },
+  { label: 'Birthday Flowers', href: '/occasions/birthday' },
+  { label: 'Anniversary Flowers', href: '/occasions/anniversary' },
+  { label: 'Wedding Flowers', href: '/occasions/wedding' },
+  { label: 'New Baby Flowers', href: '/occasions/new-baby' },
+  { label: 'Thank You Flowers', href: '/occasions/thank-you' },
+  { label: 'Get Well Flowers', href: '/occasions/get-well' },
+  { label: 'Graduation Flowers', href: '/occasions/graduation' },
+  { label: 'Funeral Flowers', href: '/occasions/funeral' },
+  { label: 'Housewarming Flowers', href: '/occasions/housewarming' },
+  { label: 'Corporate Flowers', href: '/occasions/corporate' },
+  { divider: true },
+  { label: 'All Occasion Guides', href: '/occasions' },
+];
+---
+
+<header class="bg-florize-green text-white py-4 shadow-md">
+  <nav class="container mx-auto px-4">
+    <div class="flex items-center justify-between">
+      <a href="/" class="flex items-center">
+        <img
+          src="/images/florizeflowers-logo-white.svg"
+          alt="Florize Flowers - UK Flower Delivery Reviews"
+          class="h-10 w-auto"
+        />
+      </a>
+
+      <!-- Desktop Navigation -->
+      <ul class="hidden md:flex gap-6 items-center">
+        <li><a href="/" class="hover:text-bloom-pink transition-colors">Home</a></li>
+        <li>
+          <DropdownMenu
+            label="Services"
+            href="/services"
+            items={serviceItems}
+          />
+        </li>
+        <li>
+          <DropdownMenu
+            label="Occasions"
+            href="/occasions"
+            items={occasionItems}
+          />
+        </li>
+        <li><a href="/guides" class="hover:text-bloom-pink transition-colors">Guides</a></li>
+        <li><a href="/about" class="hover:text-bloom-pink transition-colors">About</a></li>
+        <li><a href="/contact" class="hover:text-bloom-pink transition-colors">Contact</a></li>
+      </ul>
+
+      <!-- Mobile Navigation -->
+      <MobileMenu />
+    </div>
+  </nav>
+</header>

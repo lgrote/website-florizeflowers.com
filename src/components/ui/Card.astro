@@ -1,0 +1,42 @@
+---
+export interface Props {
+  className?: string;
+  href?: string;
+  padding?: 'sm' | 'md' | 'lg';
+}
+
+const {
+  className = '',
+  href,
+  padding = 'md'
+} = Astro.props;
+
+const paddingClasses = {
+  sm: 'p-4',
+  md: 'p-6',
+  lg: 'p-8'
+};
+
+const baseClasses = `bg-white rounded-lg shadow-md ${paddingClasses[padding]} ${className}`;
+const Tag = href ? 'a' : 'div';
+---
+
+<Tag
+  href={href}
+  class={baseClasses}
+>
+  <slot />
+</Tag>
+
+<style>
+  /* Card hover effect when it's a link */
+  a.bg-white {
+    text-decoration: none;
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+  }
+
+  a.bg-white:hover {
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    transform: translateY(-2px);
+  }
+</style>

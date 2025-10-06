@@ -1,0 +1,271 @@
+---
+import { getAffiliateLink } from '../../lib/sanity';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  services: CollectionEntry<'services'>[];
+  maxServices?: number;
+}
+
+const { services, maxServices = 5 } = Astro.props;
+
+// Sort by rating and limit
+const topServices = services
+  .sort((a, b) => b.data.rating - a.data.rating)
+  .slice(0, maxServices);
+
+// Fetch affiliate links for all services
+const servicesWithAffiliates = await Promise.all(
+  topServices.map(async (service) => {
+    const affiliateUrl = await getAffiliateLink(service.data.service_id) || service.data.affiliate_url || '#';
+    return { service, affiliateUrl };
+  })
+);
+---
+
+<div class="comparison-table-wrapper">
+  <table class="comparison-table">
+    <thead>
+      <tr>
+        <th>Service</th>
+        <th>Price Range</th>
+        <th>Delivery Options</th>
+        <th>Key Features</th>
+        <th>Our Rating</th>
+        <th>Visit Service</th>
+      </tr>
+    </thead>
+    <tbody>
+      {servicesWithAffiliates.map(({ service, affiliateUrl }, index) => (
+        <tr class={index === 0 ? 'featured-service' : ''}>
+          <td>
+            <div class="service-info">
+              <img
+                src={service.data.logo_path}
+                alt={`${service.data.service_name} flower arrangement`}
+              />
+              <div>
+                <h4>{service.data.service_name}</h4>
+                {service.data.winner_badge && (
+                  <span class="winner-badge">{service.data.winner_badge}</span>
+                )}
+              </div>
+            </div>
+          </td>
+          <td>{service.data.price_range}</td>
+          <td>
+            {service.data.delivery_options.slice(0, 2).map((option, i) => (
+              <Fragment>
+                {option}
+                {i < Math.min(service.data.delivery_options.length - 1, 1) && <br />}
+              </Fragment>
+            ))}
+          </td>
+          <td>
+            {service.data.key_features.slice(0, 2).map((feature, i) => (
+              <Fragment>
+                {feature}
+                {i < Math.min(service.data.key_features.length - 1, 1) && <br />}
+              </Fragment>
+            ))}
+          </td>
+          <td>
+            <span class="rating-stars">⭐⭐⭐⭐⭐</span>{service.data.rating}/5
+          </td>
+          <td>
+            <div class="table-cta-group">
+              <a
+                href={`/services/${service.data.service_id}`}
+                class="cta-button secondary"
+              >
+                Read Review
+              </a>
+              <div class="affiliate-cta primary-cta">
+                <a
+                  href={affiliateUrl}
+                  class="cta-button"
+                  target="_blank"
+                  rel="nofollow sponsored"
+                >
+                  Visit {service.data.service_name}
+                </a>
+              </div>
+            </div>
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+
+<style>
+  .comparison-table-wrapper {
+    overflow-x: auto;
+    margin: 2rem 0;
+    border-radius: 0.75rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    background: white;
+    border: 1px solid #e5e5e5;
+  }
+
+  .comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+    min-width: 800px;
+    font-size: 0.95rem;
+  }
+
+  .comparison-table th {
+    background-color: #4a7c59;
+    color: white;
+    padding: 1rem;
+    text-align: left;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 1rem;
+  }
+
+  .comparison-table td {
+    padding: 1rem;
+    border-bottom: 1px solid #e5e5e5;
+    vertical-align: middle;
+  }
+
+  .comparison-table tr:nth-child(even) {
+    background-color: #faf8f3;
+  }
+
+  .comparison-table tr:hover {
+    background-color: rgba(232, 180, 203, 0.1);
+  }
+
+  .featured-service {
+    background-color: rgba(232, 180, 203, 0.15) !important;
+    border-left: 4px solid #e8b4cb;
+  }
+
+  .featured-service:hover {
+    background-color: rgba(232, 180, 203, 0.2) !important;
+  }
+
+  .service-info {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .service-info img {
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+    border-radius: 0.375rem;
+  }
+
+  .service-info div h4 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-family: 'Inter', sans-serif;
+    color: #2c2c2c;
+  }
+
+  .winner-badge {
+    background-color: #d4af37;
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 1rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    display: inline-block;
+    margin-top: 2px;
+  }
+
+  .rating-stars {
+    color: #d4af37;
+    font-size: 1.1rem;
+    margin-right: 0.5rem;
+  }
+
+  .table-cta-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
+  .cta-button {
+    display: inline-block;
+    padding: 0.625rem 1.25rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s;
+    text-align: center;
+    width: 160px;
+    font-size: 0.9rem;
+    box-sizing: border-box;
+  }
+
+  .cta-button.secondary {
+    background-color: transparent;
+    color: #4a7c59;
+    border: 2px solid #4a7c59;
+  }
+
+  .cta-button.secondary:hover {
+    background-color: #4a7c59;
+    color: white;
+  }
+
+  .affiliate-cta .cta-button {
+    background-color: #4a7c59;
+    color: white;
+    border: 2px solid #4a7c59;
+    width: 160px;
+  }
+
+  .affiliate-cta .cta-button:hover {
+    background-color: #d4af37;
+    border-color: #d4af37;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  }
+
+  @media (max-width: 768px) {
+    .comparison-table-wrapper {
+      overflow-x: visible;
+    }
+
+    .comparison-table {
+      font-size: 0.85rem;
+      min-width: auto;
+    }
+
+    .comparison-table th,
+    .comparison-table td {
+      padding: 0.75rem 0.5rem;
+      font-size: 0.85rem;
+    }
+
+    .service-info {
+      flex-direction: column;
+      text-align: center;
+    }
+
+    .service-info img {
+      width: 80px;
+      height: 80px;
+    }
+
+    .cta-button,
+    .affiliate-cta .cta-button {
+      font-size: 0.8rem;
+      padding: 0.5rem 0.75rem;
+      width: 140px;
+    }
+
+    .table-cta-group {
+      gap: 0.375rem;
+    }
+  }
+</style>

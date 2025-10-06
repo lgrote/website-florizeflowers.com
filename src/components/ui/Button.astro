@@ -1,0 +1,49 @@
+---
+export interface Props {
+  text?: string;
+  href?: string;
+  variant?: 'primary' | 'primary-hero' | 'secondary' | 'affiliate';
+  size?: 'sm' | 'md' | 'lg';
+  target?: string;
+  rel?: string;
+  className?: string;
+  type?: 'button' | 'submit' | 'reset';
+}
+
+const {
+  text,
+  href,
+  variant = 'primary',
+  size = 'md',
+  target,
+  rel,
+  className = '',
+  type = 'button'
+} = Astro.props;
+
+const variantClasses = {
+  'primary': 'bg-florize-green text-white border-2 border-florize-green hover:bg-florize-green-dark hover:border-florize-green-dark',
+  'primary-hero': 'bg-florize-green text-white border-2 border-florize-green hover:bg-white/90 hover:text-florize-green',
+  'secondary': 'bg-white text-florize-green border-2 border-florize-green hover:bg-florize-green hover:text-white',
+  'affiliate': 'bg-accent-gold hover:bg-accent-gold-dark text-white font-bold border-2 border-accent-gold'
+};
+
+const sizeClasses = {
+  sm: 'px-4 py-2 text-sm',
+  md: 'px-6 py-3 text-base',
+  lg: 'px-8 py-4 text-lg'
+};
+
+const Tag = href ? 'a' : 'button';
+const allClasses = `inline-block rounded-lg transition-all duration-200 ${variantClasses[variant]} ${sizeClasses[size]} ${className}`;
+---
+
+<Tag
+  href={href}
+  target={target}
+  rel={rel}
+  class={allClasses}
+  type={!href ? type : undefined}
+>
+  <slot>{text}</slot>
+</Tag>

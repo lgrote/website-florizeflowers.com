@@ -1,0 +1,183 @@
+---
+export interface Props {
+  serviceName: string;
+  affiliateUrl: string;
+  rating: number;
+  ctaText?: string;
+}
+
+const {
+  serviceName,
+  affiliateUrl,
+  rating,
+  ctaText = `Check ${serviceName} Prices`
+} = Astro.props;
+---
+
+<div class="sticky-cta" data-sticky-cta>
+  <div class="sticky-cta-content">
+    <div class="sticky-cta-info">
+      <span class="sticky-service-name">{serviceName}</span>
+      <div class="sticky-rating">
+        <span class="sticky-stars">⭐</span>
+        <span class="sticky-rating-text">{rating}/5</span>
+      </div>
+    </div>
+    <a
+      href={affiliateUrl}
+      target="_blank"
+      rel="nofollow sponsored"
+      class="sticky-cta-button"
+    >
+      {ctaText} →
+    </a>
+  </div>
+</div>
+
+<script>
+  // Show/hide sticky CTA based on scroll position
+  function initStickyCTA() {
+    const stickyCTA = document.querySelector('[data-sticky-cta]') as HTMLElement;
+    if (!stickyCTA) return;
+
+    const showThreshold = 600; // Show after scrolling 600px
+    let lastScroll = 0;
+
+    function handleScroll() {
+      const currentScroll = window.scrollY;
+
+      if (currentScroll > showThreshold) {
+        stickyCTA.classList.add('visible');
+      } else {
+        stickyCTA.classList.remove('visible');
+      }
+
+      lastScroll = currentScroll;
+    }
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll(); // Initial check
+  }
+
+  // Initialize on page load
+  document.addEventListener('DOMContentLoaded', initStickyCTA);
+
+  // Re-initialize after page transitions
+  document.addEventListener('astro:page-load', initStickyCTA);
+</script>
+
+<style>
+  .sticky-cta {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: white;
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.15);
+    transform: translateY(100%);
+    transition: transform 0.3s ease-in-out;
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .sticky-cta.visible {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .sticky-cta-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .sticky-cta-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex: 1;
+  }
+
+  .sticky-service-name {
+    font-weight: 700;
+    font-size: 1.125rem;
+    color: var(--florize-green, #4a7c59);
+  }
+
+  .sticky-rating {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.9375rem;
+  }
+
+  .sticky-stars {
+    color: #d4af37;
+    font-size: 1rem;
+  }
+
+  .sticky-rating-text {
+    font-weight: 600;
+    color: #2c2c2c;
+  }
+
+  .sticky-cta-button {
+    display: inline-block;
+    background: linear-gradient(135deg, #d4af37 0%, #b89530 100%);
+    color: white;
+    padding: 0.875rem 2rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.2s;
+    box-shadow: 0 2px 8px rgba(212, 175, 55, 0.3);
+    white-space: nowrap;
+  }
+
+  .sticky-cta-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(212, 175, 55, 0.4);
+  }
+
+  @media (max-width: 768px) {
+    .sticky-cta-content {
+      flex-direction: column;
+      padding: 0.875rem 1rem;
+      gap: 0.75rem;
+    }
+
+    .sticky-cta-info {
+      width: 100%;
+      justify-content: center;
+    }
+
+    .sticky-service-name {
+      font-size: 1rem;
+    }
+
+    .sticky-cta-button {
+      width: 100%;
+      text-align: center;
+      padding: 0.875rem 1.5rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .sticky-cta-info {
+      flex-direction: column;
+      gap: 0.25rem;
+      text-align: center;
+    }
+
+    .sticky-service-name {
+      font-size: 0.9375rem;
+    }
+  }
+</style>

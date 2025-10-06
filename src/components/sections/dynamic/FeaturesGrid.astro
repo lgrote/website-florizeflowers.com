@@ -1,0 +1,115 @@
+---
+// Dynamic features grid section component
+// Renders a grid of features from content section data
+
+import type { FeaturesGridSection } from '../../../types/content';
+
+export interface Props {
+  section: FeaturesGridSection;
+  className?: string;
+}
+
+const { section, className = '' } = Astro.props;
+---
+
+<section class={`features-grid-section ${className}`}>
+  {section.title && (
+    <h2 class="section-title">{section.title}</h2>
+  )}
+
+  {section.content && (
+    <p class="section-description">{section.content}</p>
+  )}
+
+  <div class="features-grid">
+    {section.items.map((item) => (
+      <div class="feature-card">
+        {item.icon && (
+          <div class="feature-icon">{item.icon}</div>
+        )}
+        <h3 class="feature-title">{item.title}</h3>
+        <p class="feature-description">{item.description}</p>
+      </div>
+    ))}
+  </div>
+</section>
+
+<style>
+  .features-grid-section {
+    padding: 3rem 0;
+  }
+
+  .section-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--florize-green, #4a7c59);
+    text-align: center;
+    margin: 0 0 1rem 0;
+  }
+
+  .section-description {
+    font-size: 1.125rem;
+    color: #6b7280;
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto 2.5rem;
+    line-height: 1.7;
+  }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .feature-card {
+    background: white;
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    text-align: center;
+  }
+
+  .feature-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(74, 124, 89, 0.15);
+  }
+
+  .feature-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    line-height: 1;
+  }
+
+  .feature-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--florize-green, #4a7c59);
+    margin: 0 0 0.75rem 0;
+  }
+
+  .feature-description {
+    font-size: 0.9375rem;
+    color: #6b7280;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  @media (max-width: 768px) {
+    .features-grid {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    .section-title {
+      font-size: 1.75rem;
+    }
+
+    .feature-card {
+      padding: 1.5rem;
+    }
+  }
+</style>

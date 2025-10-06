@@ -1,0 +1,44 @@
+---
+export interface Props {
+  serviceName: string;
+  positioning: string;
+  content: string; // Can contain HTML
+}
+
+const {
+  serviceName,
+  positioning,
+  content
+} = Astro.props;
+---
+
+<section class="content-section">
+  <h2>{serviceName} Overview: {positioning}</h2>
+
+  <div class="overview-content" set:html={content} />
+</section>
+
+<style>
+  .content-section h2 {
+    color: #4a7c59;
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+  }
+
+  .overview-content :global(p) {
+    margin-bottom: 1.5rem;
+    line-height: 1.8;
+    color: #2c2c2c;
+    font-size: 1.0625rem;
+  }
+
+  .overview-content :global(strong) {
+    color: #4a7c59;
+    font-weight: 600;
+  }
+
+  .overview-content :global(p:last-child) {
+    margin-bottom: 0;
+  }
+</style>

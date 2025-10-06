@@ -1,0 +1,102 @@
+---
+export interface RelatedReview {
+  title: string;
+  serviceId: string;
+  description: string;
+}
+
+export interface Props {
+  heading: string;
+  reviews: RelatedReview[];
+}
+
+const {
+  heading,
+  reviews
+} = Astro.props;
+---
+
+<section class="related-section">
+  <h2>{heading}</h2>
+  <div class="related-grid">
+    {reviews.map((review) => (
+      <div class="related-item">
+        <h3>
+          <a href={`/services/${review.serviceId}`}>{review.title}</a>
+        </h3>
+        <p>{review.description}</p>
+      </div>
+    ))}
+  </div>
+</section>
+
+<style>
+  .related-section {
+    background: #faf8f3;
+    padding: 3rem 2rem;
+    border-radius: 1rem;
+    margin-top: 3rem;
+  }
+
+  .related-section h2 {
+    text-align: center;
+    color: #4a7c59;
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 2.5rem;
+  }
+
+  .related-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+
+  .related-item {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .related-item:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .related-item h3 {
+    margin: 0 0 0.75rem 0;
+    font-size: 1.125rem;
+  }
+
+  .related-item a {
+    color: #4a7c59;
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  .related-item a:hover {
+    text-decoration: underline;
+  }
+
+  .related-item p {
+    margin: 0;
+    color: #666;
+    font-size: 0.9375rem;
+    line-height: 1.6;
+  }
+
+  @media (max-width: 1024px) {
+    .related-grid {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+  }
+
+  @media (min-width: 768px) and (max-width: 1024px) {
+    .related-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+</style>

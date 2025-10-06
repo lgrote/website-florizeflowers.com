@@ -1,0 +1,102 @@
+---
+// Quick facts section component
+// Displays key facts in a grid layout
+
+import type { QuickFactsSection } from '../../../types/content';
+
+export interface Props {
+  section: QuickFactsSection;
+  className?: string;
+}
+
+const { section, className = '' } = Astro.props;
+---
+
+<section class={`quick-facts-section ${className}`}>
+  {section.title && (
+    <h2 class="section-title">{section.title}</h2>
+  )}
+
+  <div class="facts-grid">
+    {section.facts.map((fact) => (
+      <div class="fact-card">
+        <span class="fact-label">{fact.label}</span>
+        <span class="fact-value">{fact.value}</span>
+      </div>
+    ))}
+  </div>
+</section>
+
+<style>
+  .quick-facts-section {
+    padding: 2rem 0;
+  }
+
+  .section-title {
+    font-size: 1.875rem;
+    font-weight: 700;
+    color: var(--florize-green, #4a7c59);
+    text-align: center;
+    margin: 0 0 2rem 0;
+  }
+
+  .facts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .fact-card {
+    background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
+    border: 2px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+  }
+
+  .fact-card:hover {
+    border-color: var(--florize-green, #4a7c59);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(74, 124, 89, 0.1);
+  }
+
+  .fact-label {
+    font-size: 0.875rem;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 600;
+  }
+
+  .fact-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--florize-green, #4a7c59);
+    line-height: 1.2;
+  }
+
+  @media (max-width: 768px) {
+    .section-title {
+      font-size: 1.5rem;
+    }
+
+    .facts-grid {
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1rem;
+    }
+
+    .fact-card {
+      padding: 1rem;
+    }
+
+    .fact-value {
+      font-size: 1.25rem;
+    }
+  }
+</style>

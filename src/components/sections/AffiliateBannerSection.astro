@@ -1,0 +1,149 @@
+---
+import AffiliateBanner from '../ui/AffiliateBanner.astro';
+import { getAffiliateBanners } from '../../lib/sanity';
+
+interface Props {
+  serviceId: string;
+  serviceName: string;
+  affiliateUrl: string;
+  showBanner?: boolean;
+  className?: string;
+}
+
+const {
+  serviceId,
+  serviceName,
+  affiliateUrl,
+  showBanner = true,
+  className = ''
+} = Astro.props;
+
+// Fetch banner from Sanity
+const banners = await getAffiliateBanners(serviceId);
+const banner = banners.length > 0 ? banners[0] : null;
+---
+
+<section class={`affiliate-banner-section ${className}`}>
+  <div class="banner-wrapper">
+    {showBanner && banner && (
+      <AffiliateBanner
+        serviceId={serviceId}
+        htmlCode={banner.htmlCode}
+        description={banner.description}
+        class="mb-6"
+      />
+    )}
+
+    <div class="cta-box">
+      <div class="cta-content">
+        <h3 class="cta-title">Ready to order from {serviceName}?</h3>
+        <p class="cta-description">
+          Visit their website to browse their full collection and place your order today.
+        </p>
+        <a
+          href={affiliateUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn-affiliate-large"
+        >
+          Visit {serviceName} →
+        </a>
+        <p class="affiliate-notice">
+          <small>
+            We may earn a commission if you make a purchase, at no extra cost to you.
+            See our <a href="/affiliate-disclosure">affiliate disclosure</a>.
+          </small>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .affiliate-banner-section {
+    margin: 3rem 0;
+  }
+
+  .banner-wrapper {
+    max-width: 100%;
+  }
+
+  .cta-box {
+    background: linear-gradient(135deg, #4a7c59 0%, #3d6849 100%);
+    border-radius: 0.75rem;
+    padding: 2rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  }
+
+  .cta-content {
+    text-align: center;
+    color: white;
+  }
+
+  .cta-title {
+    font-size: 1.75rem;
+    font-weight: bold;
+    margin-bottom: 0.75rem;
+    color: white;
+  }
+
+  .cta-description {
+    font-size: 1.125rem;
+    margin-bottom: 1.5rem;
+    opacity: 0.95;
+  }
+
+  .btn-affiliate-large {
+    display: inline-block;
+    background-color: #d4af37;
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 0.5rem;
+    font-size: 1.125rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .btn-affiliate-large:hover {
+    background-color: #b89530;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+  }
+
+  .affiliate-notice {
+    margin-top: 1rem;
+    opacity: 0.8;
+    font-size: 0.875rem;
+    color: white;
+  }
+
+  .affiliate-notice a {
+    color: #e8b4cb;
+    text-decoration: underline;
+  }
+
+  .affiliate-notice a:hover {
+    color: #d99bb9;
+  }
+
+  @media (max-width: 768px) {
+    .cta-box {
+      padding: 1.5rem;
+    }
+
+    .cta-title {
+      font-size: 1.5rem;
+    }
+
+    .cta-description {
+      font-size: 1rem;
+    }
+
+    .btn-affiliate-large {
+      font-size: 1rem;
+      padding: 0.875rem 1.5rem;
+    }
+  }
+</style>

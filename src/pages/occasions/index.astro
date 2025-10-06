@@ -1,0 +1,292 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import HeroSection from '../../components/sections/HeroSection.astro';
+import InfoGrid from '../../components/ui/InfoGrid.astro';
+
+const occasions = await getCollection('occasions');
+
+// Organize occasions by category
+const seasonalOccasions = occasions.filter(o => o.data.seasonal);
+const regularOccasions = occasions.filter(o => !o.data.seasonal);
+
+// Map occasion IDs to their image files
+const occasionImages: Record<string, string> = {
+  'mothers-day': '/images/mothers-day-flowers.jpg',
+  'valentines-day': '/images/valentines-day-flowers.jpg',
+  'birthday': '/images/birthday-flowers.jpg',
+  'anniversary': '/images/anniversary-flowers.jpg',
+  'wedding': '/images/wedding-flowers.jpg',
+  'funeral': '/images/funeral-flowers.jpg',
+  'new-baby': '/images/new-baby-flowers.jpg',
+  'graduation': '/images/graduation-flowers.jpg',
+  'get-well': '/images/get-well-flowers.jpg',
+  'thank-you': '/images/thank-you-flowers.jpg',
+  'housewarming': '/images/housewarming-flowers.jpg',
+  'corporate': '/images/corporate-flowers.jpg',
+};
+
+// Flower selection tips data
+const flowerTips = [
+  {
+    title: '🌸 The Language of Flowers',
+    content: 'Different flowers carry distinct meanings. Understanding these helps you communicate your feelings effectively and choose arrangements that represent your intentions.'
+  },
+  {
+    title: '📅 Timing and Seasonality',
+    content: 'The best flower deliveries align with natural seasons. Our guides consider peak availability, pricing variations, and traditional gifting periods.'
+  },
+  {
+    title: '🌍 Cultural Considerations',
+    content: 'UK flower gifting traditions blend international influences with local customs. We help you ensure your floral gift is appropriate and warmly received.'
+  }
+];
+---
+
+<BaseLayout
+  title="Flower Delivery for Every Occasion - UK Guide 2025 | Florize"
+  description="Perfect flowers for every occasion in the UK. Expert guides for birthdays, Mother's Day, Valentine's, weddings, anniversaries and more. Find the ideal blooms for your special moment."
+  keywords="flower occasions, birthday flowers, mother's day flowers, wedding flowers, funeral flowers, anniversary flowers"
+>
+  <!-- Hero Section -->
+  <HeroSection
+    title="Flowers for Every Occasion"
+    subtitle="Expert guidance on choosing the perfect blooms for life's special moments"
+    primaryCta={{ text: "Browse Occasions", href: "#all-occasions" }}
+    backgroundImage="/images/mothers-day-flowers-professional.jpg"
+  />
+
+  <!-- Brief Introduction -->
+  <section class="content-section">
+    <div class="container">
+      <h2>Celebrate Every Moment with Perfect Flowers</h2>
+      <p class="section-intro">Whether you're celebrating a joyous milestone, offering comfort during difficult times, or simply showing someone you care, the right flowers can express what words cannot. Our expert guides help you choose the perfect arrangement for every special occasion.</p>
+    </div>
+  </section>
+
+  <!-- All Occasions Grid -->
+  <section id="all-occasions" class="content-section bg-light">
+    <div class="container">
+      <h2>All Occasion Guides</h2>
+      <p class="section-intro">Browse our comprehensive guides for every flower-giving occasion</p>
+
+      <div class="occasions-grid">
+        {occasions.map((occasion) => {
+          const imageUrl = occasionImages[occasion.data.occasion_id] || '/images/hero-flowers-bright.jpg';
+          return (
+            <div class="occasion-card">
+              <img
+                src={imageUrl}
+                alt={`${occasion.data.occasion_name} flower arrangements`}
+                loading="lazy"
+                class="occasion-image"
+              />
+              <div class="occasion-content">
+                <div class="occasion-header">
+                  <h3>
+                    <a href={`/occasions/${occasion.data.occasion_id}`}>
+                      {occasion.data.occasion_name}
+                    </a>
+                  </h3>
+                  {occasion.data.seasonal && (
+                    <span class="seasonal-badge">Seasonal</span>
+                  )}
+                </div>
+
+              <p class="occasion-description">{occasion.data.description}</p>
+
+              {occasion.data.recommended_flowers && occasion.data.recommended_flowers.length > 0 && (
+                <div class="recommended-flowers">
+                  <h4>Popular Flowers:</h4>
+                  <ul>
+                    {occasion.data.recommended_flowers.slice(0, 3).map((flower) => (
+                      <li>{flower.flower}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {occasion.data.budget_guide && (
+                <div class="budget-preview">
+                  <span class="budget-label">From</span>
+                  <span class="budget-amount">{occasion.data.budget_guide.budget_friendly}</span>
+                </div>
+              )}
+
+              <a href={`/occasions/${occasion.data.occasion_id}`} class="occasion-cta">
+                View Complete Guide →
+              </a>
+            </div>
+          </div>
+          );
+        })}
+      </div>
+    </div>
+  </section>
+
+  <!-- Quick Tips -->
+  <section class="content-section">
+    <div class="container">
+      <h2>Flower Selection Tips</h2>
+      <InfoGrid items={flowerTips} columns={3} variant="tips" />
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .occasions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 2rem;
+    margin: 2rem 0;
+  }
+
+  .occasion-card {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border-left: 4px solid var(--bloom-pink, #e8b4cb);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .occasion-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  }
+
+  .occasion-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 0;
+  }
+
+  .occasion-content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 2rem;
+  }
+
+  .occasion-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+    gap: 1rem;
+  }
+
+  .occasion-header h3 {
+    color: var(--florize-green, #4a7c59);
+    font-size: 1.5rem;
+    margin: 0;
+    flex: 1;
+  }
+
+  .occasion-header h3 a {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .occasion-header h3 a:hover {
+    color: var(--bloom-pink, #e8b4cb);
+  }
+
+  .seasonal-badge {
+    background-color: var(--florize-green, #4a7c59);
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .occasion-description {
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+    flex-grow: 1;
+  }
+
+  .recommended-flowers {
+    background: #f0f8f4;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+  }
+
+  .recommended-flowers h4 {
+    font-size: 0.875rem;
+    color: var(--florize-green, #4a7c59);
+    margin: 0 0 0.5rem 0;
+    font-weight: 600;
+  }
+
+  .recommended-flowers ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .recommended-flowers li {
+    font-size: 0.875rem;
+    color: #666;
+    padding: 0.25rem 0.75rem;
+    background: white;
+    border-radius: 4px;
+    border: 1px solid #e5e5e5;
+  }
+
+  .budget-preview {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    padding: 0.75rem;
+    background: #faf8f3;
+    border-radius: 6px;
+  }
+
+  .budget-label {
+    font-size: 0.875rem;
+    color: #666;
+  }
+
+  .budget-amount {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--florize-green, #4a7c59);
+  }
+
+  .occasion-cta {
+    display: inline-block;
+    color: var(--florize-green, #4a7c59);
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.2s ease;
+    margin-top: auto;
+  }
+
+  .occasion-cta:hover {
+    color: var(--bloom-pink, #e8b4cb);
+  }
+
+  @media (max-width: 768px) {
+    .occasions-grid {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    .occasion-content {
+      padding: 1.5rem;
+    }
+  }
+</style>

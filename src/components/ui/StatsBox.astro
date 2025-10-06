@@ -1,0 +1,134 @@
+---
+export interface Stat {
+  label: string;
+  value: string;
+  description?: string;
+  icon?: string;
+}
+
+export interface Props {
+  stats: Stat[];
+  columns?: 2 | 3 | 4;
+  variant?: 'default' | 'highlighted';
+  className?: string;
+}
+
+const {
+  stats,
+  columns = 3,
+  variant = 'default',
+  className = ''
+} = Astro.props;
+---
+
+<div class={`stats-box stats-box-${columns} variant-${variant} ${className}`}>
+  {stats.map((stat) => (
+    <div class="stat-item">
+      {stat.icon && (
+        <div class="stat-icon">{stat.icon}</div>
+      )}
+      <div class="stat-value">{stat.value}</div>
+      <div class="stat-label">{stat.label}</div>
+      {stat.description && (
+        <p class="stat-description">{stat.description}</p>
+      )}
+    </div>
+  ))}
+</div>
+
+<style>
+  .stats-box {
+    display: grid;
+    gap: 1.5rem;
+    margin: 2rem 0;
+  }
+
+  .stats-box-2 {
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  }
+
+  .stats-box-3 {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  }
+
+  .stats-box-4 {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  }
+
+  .stat-item {
+    background: white;
+    border: 2px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-align: center;
+    transition: all 0.3s ease;
+  }
+
+  .stat-item:hover {
+    border-color: var(--florize-green, #4a7c59);
+    box-shadow: 0 8px 20px rgba(74, 124, 89, 0.15);
+    transform: translateY(-4px);
+  }
+
+  .stat-icon {
+    font-size: 2.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .stat-value {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--florize-green, #4a7c59);
+    line-height: 1.2;
+    margin-bottom: 0.5rem;
+  }
+
+  .stat-label {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+  }
+
+  .stat-description {
+    font-size: 0.875rem;
+    color: #9ca3af;
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  /* Highlighted variant */
+  .variant-highlighted .stat-item {
+    background: linear-gradient(135deg, #f0f8f4 0%, #e8f5e9 100%);
+    border-color: var(--florize-green, #4a7c59);
+  }
+
+  .variant-highlighted .stat-value {
+    background: linear-gradient(135deg, var(--florize-green, #4a7c59), #2d5a3d);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  @media (max-width: 768px) {
+    .stats-box-2,
+    .stats-box-3,
+    .stats-box-4 {
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    }
+
+    .stat-item {
+      padding: 1.25rem 1rem;
+    }
+
+    .stat-value {
+      font-size: 2rem;
+    }
+
+    .stat-label {
+      font-size: 0.8125rem;
+    }
+  }
+</style>

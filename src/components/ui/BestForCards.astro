@@ -1,0 +1,140 @@
+---
+export interface BestForScenario {
+  icon: string;
+  title: string;
+  description: string;
+  highlight?: boolean;
+}
+
+export interface Props {
+  scenarios: BestForScenario[];
+  title?: string;
+}
+
+const {
+  scenarios,
+  title = "Best For"
+} = Astro.props;
+---
+
+<div class="best-for-cards">
+  {title && <h3 class="best-for-title">{title}</h3>}
+
+  <div class="cards-grid">
+    {scenarios.map((scenario) => (
+      <div class={`best-for-card ${scenario.highlight ? 'highlighted' : ''}`}>
+        <div class="card-icon">{scenario.icon}</div>
+        <h4 class="card-title">{scenario.title}</h4>
+        <p class="card-description">{scenario.description}</p>
+        {scenario.highlight && (
+          <div class="highlight-badge">Popular Choice</div>
+        )}
+      </div>
+    ))}
+  </div>
+</div>
+
+<style>
+  .best-for-cards {
+    margin: 2rem 0;
+  }
+
+  .best-for-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--florize-green, #4a7c59);
+    margin: 0 0 1.5rem 0;
+    text-align: center;
+  }
+
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .best-for-card {
+    background: white;
+    border: 2px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 2rem 1.5rem;
+    text-align: center;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .best-for-card:hover {
+    border-color: var(--florize-green, #4a7c59);
+    box-shadow: 0 8px 24px rgba(74, 124, 89, 0.15);
+    transform: translateY(-4px);
+  }
+
+  .best-for-card.highlighted {
+    background: linear-gradient(135deg, #f0f8f4 0%, #e8f5e9 100%);
+    border-color: var(--florize-green, #4a7c59);
+    border-width: 3px;
+  }
+
+  .best-for-card.highlighted:hover {
+    box-shadow: 0 12px 32px rgba(74, 124, 89, 0.2);
+  }
+
+  .card-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    line-height: 1;
+  }
+
+  .card-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--florize-green, #4a7c59);
+    margin: 0 0 0.75rem 0;
+  }
+
+  .card-description {
+    font-size: 0.9375rem;
+    color: #6b7280;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .highlight-badge {
+    position: absolute;
+    top: 1rem;
+    right: -2.5rem;
+    background: linear-gradient(135deg, #d4af37 0%, #b89530 100%);
+    color: white;
+    padding: 0.375rem 3rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    transform: rotate(45deg);
+    box-shadow: 0 2px 8px rgba(212, 175, 55, 0.3);
+  }
+
+  @media (max-width: 768px) {
+    .cards-grid {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    .best-for-card {
+      padding: 1.5rem 1.25rem;
+    }
+
+    .card-icon {
+      font-size: 2.5rem;
+    }
+
+    .card-title {
+      font-size: 1.125rem;
+    }
+
+    .card-description {
+      font-size: 0.875rem;
+    }
+  }
+</style>

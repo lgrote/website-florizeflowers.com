@@ -1,0 +1,174 @@
+---
+export interface Props {
+  bestFor: string;
+  priceRange: string;
+  delivery: string;
+  rating: string;
+  serviceName: string;
+  affiliateUrl: string;
+}
+
+const { bestFor, priceRange, delivery, rating, serviceName, affiliateUrl } = Astro.props;
+---
+
+<section class="quick-summary">
+  <h2 class="summary-heading">At a Glance</h2>
+  <div class="summary-grid">
+    <div class="summary-item">
+      <div class="summary-icon">👥</div>
+      <h3>Best For</h3>
+      <p>{bestFor}</p>
+    </div>
+    <div class="summary-item">
+      <div class="summary-icon">💷</div>
+      <h3>Price Range</h3>
+      <p>{priceRange}</p>
+    </div>
+    <div class="summary-item">
+      <div class="summary-icon">🚚</div>
+      <h3>Delivery</h3>
+      <p>{delivery}</p>
+    </div>
+    <div class="summary-item">
+      <div class="summary-icon">⭐</div>
+      <h3>Rating</h3>
+      <p>{rating}</p>
+    </div>
+  </div>
+
+  <div class="affiliate-cta primary-cta">
+    <a
+      href={affiliateUrl}
+      target="_blank"
+      rel="nofollow sponsored"
+      class="cta-button"
+    >
+      Visit {serviceName} →
+    </a>
+  </div>
+</section>
+
+<style>
+  .quick-summary {
+    background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
+    border-radius: 12px;
+    padding: 2rem;
+    margin-bottom: 3rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e5e7eb;
+  }
+
+  .summary-heading {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--florize-green, #4a7c59);
+    margin: 0 0 1.5rem 0;
+    text-align: center;
+  }
+
+  .summary-icon {
+    font-size: 2rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .summary-item {
+    text-align: center;
+    padding: 1rem;
+    border-right: 1px solid #e5e5e5;
+  }
+
+  .summary-item:last-child {
+    border-right: none;
+  }
+
+  .summary-item h3 {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #4a7c59;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+  }
+
+  .summary-item p {
+    font-size: 1rem;
+    color: #2c2c2c;
+    font-weight: 500;
+    line-height: 1.5;
+  }
+
+  .affiliate-cta {
+    text-align: center;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e5e5e5;
+  }
+
+  .cta-button {
+    display: inline-block;
+    background: linear-gradient(135deg, #d4af37 0%, #b89530 100%);
+    color: white;
+    padding: 1rem 3rem;
+    border-radius: 8px;
+    font-size: 1.125rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .cta-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  /* Responsive */
+  @media (max-width: 1024px) {
+    .summary-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+    }
+
+    .summary-item {
+      border-right: none;
+      border-bottom: 1px solid #e5e5e5;
+      padding-bottom: 1.5rem;
+    }
+
+    .summary-item:nth-child(3),
+    .summary-item:nth-child(4) {
+      border-bottom: none;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .quick-summary {
+      padding: 1.5rem;
+    }
+
+    .summary-grid {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    .summary-item {
+      padding-bottom: 1rem;
+    }
+
+    .summary-item:last-child {
+      border-bottom: none;
+    }
+
+    .cta-button {
+      width: 100%;
+      padding: 0.875rem 2rem;
+      font-size: 1rem;
+    }
+  }
+</style>

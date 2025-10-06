@@ -1,0 +1,19 @@
+---
+// Occasion page using the FindFerries-pattern layout with centralized data preparation
+import { getCollection } from 'astro:content';
+import OccasionLayout from '../../layouts/OccasionLayout.astro';
+
+export const prerender = true;
+
+export async function getStaticPaths() {
+  const occasions = await getCollection('occasions');
+  return occasions.map((occasion) => ({
+    params: { occasion: occasion.data.occasion_id },
+    props: { occasion },
+  }));
+}
+
+const { occasion } = Astro.props;
+---
+
+<OccasionLayout occasion={occasion} />

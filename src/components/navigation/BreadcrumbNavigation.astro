@@ -1,0 +1,83 @@
+---
+export interface BreadcrumbItem {
+  label: string;
+  href?: string; // No href means current page (last item)
+}
+
+export interface Props {
+  items: BreadcrumbItem[];
+  className?: string;
+}
+
+const { items, className = '' } = Astro.props;
+
+// Generate schema.org BreadcrumbList structured data
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": items.map((item, index) => ({
+    "@type": "ListItem",
+    "position": index + 1,
+    "name": item.label,
+    ...(item.href && { "item": new URL(item.href, Astro.site).toString() })
+  }))
+};
+---
+
+<nav aria-label="Breadcrumb" class={`breadcrumb-nav py-3 bg-cream-white ${className}`}>
+  <div class="container mx-auto px-4">
+    <ol class="flex flex-wrap items-center gap-2 text-sm">
+      {items.map((item, index) => (
+        <li class="flex items-center gap-2">
+          {index > 0 && (
+            <span class="breadcrumb-separator text-gray-400" aria-hidden="true">
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+              </svg>
+            </span>
+          )}
+          {item.href ? (
+            <a
+              href={item.href}
+              class="breadcrumb-link text-florize-green hover:text-florize-green-dark transition-colors"
+            >
+              {item.label}
+            </a>
+          ) : (
+            <span class="breadcrumb-current text-gray-700 font-medium" aria-current="page">
+              {item.label}
+            </span>
+          )}
+        </li>
+      ))}
+    </ol>
+  </div>
+</nav>
+
+<!-- Inject BreadcrumbList schema -->
+<script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
+
+<style>
+  .breadcrumb-nav {
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  .breadcrumb-link {
+    text-decoration: none;
+  }
+
+  .breadcrumb-link:hover {
+    text-decoration: underline;
+  }
+
+  .breadcrumb-current {
+    cursor: default;
+  }
+
+  /* Responsive: Hide breadcrumbs on very small screens */
+  @media (max-width: 480px) {
+    .breadcrumb-nav ol {
+      font-size: 0.75rem;
+    }
+  }
+</style>

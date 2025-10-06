@@ -1,0 +1,169 @@
+---
+export interface RecommendationCard {
+  icon: string;
+  recipient: string;
+  flowers: string[];
+  colors: string[];
+  priceRange: string;
+  description: string;
+}
+
+export interface Props {
+  recommendations: RecommendationCard[];
+  title?: string;
+}
+
+const {
+  recommendations,
+  title = "Flower Recommendations by Recipient"
+} = Astro.props;
+---
+
+<div class="flower-recommendations">
+  <h3 class="recommendations-title">{title}</h3>
+  <div class="recommendations-grid">
+    {recommendations.map((rec) => (
+      <div class="recommendation-card">
+        <div class="card-icon">{rec.icon}</div>
+        <h4 class="card-recipient">{rec.recipient}</h4>
+        <p class="card-description">{rec.description}</p>
+        <div class="card-details">
+          <div class="detail-item">
+            <span class="detail-label">Flowers:</span>
+            <span class="detail-value">{rec.flowers.join(', ')}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Colors:</span>
+            <span class="detail-value">{rec.colors.join(', ')}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Budget:</span>
+            <span class="detail-value">{rec.priceRange}</span>
+          </div>
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+
+<style>
+  .flower-recommendations {
+    background: linear-gradient(135deg, #fef7f8 0%, #ffffff 100%);
+    border: 1px solid #f3d5d9;
+    border-radius: 16px;
+    padding: 2rem;
+    margin: 2rem 0;
+  }
+
+  .recommendations-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--florize-green, #4a7c59);
+    text-align: center;
+    margin: 0 0 2rem 0;
+  }
+
+  .recommendations-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+  }
+
+  .recommendation-card {
+    background: white;
+    border-radius: 12px;
+    padding: 1.75rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    transition: all 0.3s;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .recommendation-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(74, 124, 89, 0.15);
+  }
+
+  .card-icon {
+    font-size: 3rem;
+    text-align: center;
+    margin-bottom: 0.5rem;
+  }
+
+  .card-recipient {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--florize-green, #4a7c59);
+    text-align: center;
+    margin: 0;
+  }
+
+  .card-description {
+    font-size: 0.9rem;
+    color: #6b7280;
+    text-align: center;
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  .card-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid #f3f4f6;
+  }
+
+  .detail-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .detail-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #9ca3af;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .detail-value {
+    font-size: 0.875rem;
+    color: #374151;
+    font-weight: 500;
+  }
+
+  @media (max-width: 1024px) {
+    .recommendations-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.25rem;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .flower-recommendations {
+      padding: 1.5rem;
+    }
+
+    .recommendations-title {
+      font-size: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .recommendations-grid {
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+    }
+
+    .recommendation-card {
+      padding: 1.5rem;
+    }
+
+    .card-icon {
+      font-size: 2.5rem;
+    }
+  }
+</style>

@@ -1,0 +1,35 @@
+---
+export interface Props {
+  text: string;
+  variant?: 'winner' | 'best-for' | 'seasonal' | 'new' | 'default';
+  size?: 'sm' | 'md' | 'lg';
+  className?: string;
+}
+
+const {
+  text,
+  variant = 'default',
+  size = 'md',
+  className = ''
+} = Astro.props;
+
+const variantClasses = {
+  winner: 'bg-accent-gold text-white',
+  'best-for': 'bg-bloom-pink text-white',
+  seasonal: 'bg-florize-green text-white',
+  new: 'bg-blue-500 text-white',
+  default: 'bg-gray-200 text-gray-800'
+};
+
+const sizeClasses = {
+  sm: 'text-xs px-2 py-1',
+  md: 'text-sm px-3 py-1',
+  lg: 'text-base px-4 py-2'
+};
+
+const allClasses = `inline-block rounded-full font-semibold ${variantClasses[variant]} ${sizeClasses[size]} ${className}`;
+---
+
+<span class={allClasses}>
+  {text}
+</span>

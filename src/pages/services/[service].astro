@@ -1,0 +1,19 @@
+---
+// Service page using the FindFerries-pattern layout with centralized data preparation
+import { getCollection } from 'astro:content';
+import ServiceLayout from '../../layouts/ServiceLayout.astro';
+
+export const prerender = true;
+
+export async function getStaticPaths() {
+  const services = await getCollection('services');
+  return services.map((service) => ({
+    params: { service: service.data.service_id },
+    props: { service },
+  }));
+}
+
+const { service } = Astro.props;
+---
+
+<ServiceLayout service={service} />

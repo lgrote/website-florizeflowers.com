@@ -1,0 +1,157 @@
+---
+export interface RecommendationSection {
+  heading: string;
+  content: string;
+}
+
+export interface Props {
+  serviceName: string;
+  rating: number;
+  ratingLabel: string;
+  sections: RecommendationSection[];
+  affiliateUrl: string;
+  ctaText: string;
+}
+
+const {
+  serviceName,
+  rating,
+  ratingLabel,
+  sections,
+  affiliateUrl,
+  ctaText
+} = Astro.props;
+---
+
+<section class="content-section recommendation-section">
+  <h2>Our Verdict: When to Choose {serviceName}</h2>
+
+  <div class="verdict-rating">
+    <div class="rating-display">
+      <span class="rating-number">{rating}</span>
+      <div class="rating-stars">⭐⭐⭐⭐⭐</div>
+      <span class="rating-label">{ratingLabel}</span>
+    </div>
+  </div>
+
+  {sections.map((section) => (
+    <Fragment>
+      <h3>{section.heading}</h3>
+      <p set:html={section.content} />
+    </Fragment>
+  ))}
+
+  <div class="affiliate-cta">
+    <a
+      href={affiliateUrl}
+      target="_blank"
+      rel="nofollow sponsored"
+      class="cta-button"
+    >
+      {ctaText} →
+    </a>
+  </div>
+</section>
+
+<style>
+  .recommendation-section {
+    background: linear-gradient(135deg, #faf8f3 0%, #f5f3ed 100%);
+    border-radius: 1rem;
+    padding: 3rem 2rem;
+    margin-top: 3rem;
+  }
+
+  .verdict-rating {
+    text-align: center;
+    margin: 2rem 0 3rem;
+  }
+
+  .rating-display {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .rating-number {
+    font-size: 4rem;
+    font-weight: 700;
+    color: #4a7c59;
+    line-height: 1;
+  }
+
+  .rating-stars {
+    font-size: 1.5rem;
+    color: #d4af37;
+  }
+
+  .rating-label {
+    display: inline-block;
+    background-color: #d4af37;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 2rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    margin-top: 0.5rem;
+  }
+
+  .recommendation-section h3 {
+    color: #4a7c59;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  .recommendation-section p {
+    margin-bottom: 1.5rem;
+    line-height: 1.8;
+    color: #2c2c2c;
+  }
+
+  .recommendation-section p :global(strong) {
+    color: #4a7c59;
+    font-weight: 600;
+  }
+
+  .affiliate-cta {
+    text-align: center;
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 2px solid #e5e5e5;
+  }
+
+  .cta-button {
+    display: inline-block;
+    background: linear-gradient(135deg, #d4af37 0%, #b89530 100%);
+    color: white;
+    padding: 1rem 3rem;
+    border-radius: 0.5rem;
+    font-size: 1.125rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .cta-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  @media (max-width: 768px) {
+    .recommendation-section {
+      padding: 2rem 1.5rem;
+    }
+
+    .rating-number {
+      font-size: 3rem;
+    }
+
+    .cta-button {
+      width: 100%;
+      padding: 0.875rem 2rem;
+    }
+  }
+</style>

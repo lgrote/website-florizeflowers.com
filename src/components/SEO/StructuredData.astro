@@ -1,0 +1,246 @@
+---
+// Advanced structured data component for rich snippets
+// Supports multiple schema types with proper validation
+
+export interface Props {
+  type: 'Organization' | 'Product' | 'Review' | 'FAQPage' | 'BreadcrumbList' | 'WebSite' | 'LocalBusiness' | 'AggregateRating';
+  data: any;
+}
+
+const { type, data } = Astro.props;
+
+// Generate schema based on type
+function generateSchema(type: string, data: any) {
+  const baseContext = 'https://schema.org';
+
+  switch (type) {
+    case 'Organization':
+      return generateOrganizationSchema(data);
+    case 'Product':
+      return generateProductSchema(data);
+    case 'Review':
+      return generateReviewSchema(data);
+    case 'FAQPage':
+      return generateFAQSchema(data);
+    case 'BreadcrumbList':
+      return generateBreadcrumbSchema(data);
+    case 'WebSite':
+      return generateWebSiteSchema(data);
+    case 'LocalBusiness':
+      return generateLocalBusinessSchema(data);
+    case 'AggregateRating':
+      return generateAggregateRatingSchema(data);
+    default:
+      console.warn(`Unknown schema type: ${type}`);
+      return null;
+  }
+}
+
+// Organization schema
+function generateOrganizationSchema(data: any) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: data.name || 'Florize Flowers',
+    url: data.url || 'https://florizeflowers.com',
+    logo: data.logo || 'https://florizeflowers.com/logo.png',
+    description: data.description || 'Expert reviews and comparisons of UK flower delivery services',
+    contactPoint: data.contactPoint || {
+      '@type': 'ContactPoint',
+      contactType: 'customer service',
+      email: 'hello@florizeflowers.com'
+    },
+    sameAs: data.sameAs || [
+      'https://twitter.com/florizeflowers',
+      'https://facebook.com/florizeflowers'
+    ]
+  };
+}
+
+// Product schema (for flower services)
+function generateProductSchema(data: any) {
+  const schema: any = {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: data.name,
+    description: data.description,
+    brand: {
+      '@type': 'Brand',
+      name: data.brandName || data.name
+    },
+    offers: {
+      '@type': 'Offer',
+      price: data.price || '0',
+      priceCurrency: data.currency || 'GBP',
+      availability: 'https://schema.org/InStock',
+      seller: {
+        '@type': 'Organization',
+        name: data.sellerName || data.name
+      }
+    }
+  };
+
+  // Add aggregate rating if available
+  if (data.rating) {
+    schema.aggregateRating = {
+      '@type': 'AggregateRating',
+      ratingValue: data.rating,
+      bestRating: '5',
+      worstRating: '1',
+      ratingCount: data.ratingCount || 1
+    };
+  }
+
+  // Add review if available
+  if (data.review) {
+    schema.review = {
+      '@type': 'Review',
+      reviewRating: {
+        '@type': 'Rating',
+        ratingValue: data.review.rating,
+        bestRating: '5'
+      },
+      author: {
+        '@type': 'Organization',
+        name: 'Florize Flowers'
+      },
+      datePublished: data.review.date || new Date().toISOString(),
+      reviewBody: data.review.body
+    };
+  }
+
+  return schema;
+}
+
+// Review schema
+function generateReviewSchema(data: any) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Review',
+    itemReviewed: {
+      '@type': 'Product',
+      name: data.itemName
+    },
+    reviewRating: {
+      '@type': 'Rating',
+      ratingValue: data.rating,
+      bestRating: '5',
+      worstRating: '1'
+    },
+    author: {
+      '@type': data.authorType || 'Organization',
+      name: data.authorName || 'Florize Flowers'
+    },
+    datePublished: data.datePublished || new Date().toISOString(),
+    dateModified: data.dateModified || new Date().toISOString(),
+    reviewBody: data.reviewBody,
+    publisher: {
+      '@type': 'Organization',
+      name: 'Florize Flowers'
+    }
+  };
+}
+
+// FAQ schema
+function generateFAQSchema(data: any) {
+  const questions = data.questions || data.faqs || [];
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: questions.map((faq: any) => ({
+      '@type': 'Question',
+      name: faq.question,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: faq.answer
+      }
+    }))
+  };
+}
+
+// Breadcrumb schema
+function generateBreadcrumbSchema(data: any) {
+  const items = data.items || [];
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: items.map((item: any, index: number) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      name: item.name || item.label,
+      item: item.url || item.href
+    }))
+  };
+}
+
+// WebSite schema
+function generateWebSiteSchema(data: any) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: data.name || 'Florize Flowers',
+    url: data.url || 'https://florizeflowers.com',
+    description: data.description || 'Find the perfect UK flower delivery service',
+    potentialAction: {
+      '@type': 'SearchAction',
+      target: {
+        '@type': 'EntryPoint',
+        urlTemplate: `${data.url || 'https://florizeflowers.com'}/search?q={search_term_string}`
+      },
+      'query-input': 'required name=search_term_string'
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'Florize Flowers'
+    }
+  };
+}
+
+// Local business schema (for flower shops)
+function generateLocalBusinessSchema(data: any) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'LocalBusiness',
+    name: data.name,
+    description: data.description,
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: data.streetAddress,
+      addressLocality: data.city,
+      addressRegion: data.region,
+      postalCode: data.postalCode,
+      addressCountry: data.country || 'GB'
+    },
+    telephone: data.telephone,
+    openingHoursSpecification: data.openingHours || [],
+    priceRange: data.priceRange,
+    acceptsReservations: data.acceptsReservations || false,
+    servesCuisine: data.serviceType || 'Flower Delivery'
+  };
+}
+
+// Aggregate rating schema
+function generateAggregateRatingSchema(data: any) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'AggregateRating',
+    itemReviewed: {
+      '@type': 'Product',
+      name: data.itemName
+    },
+    ratingValue: data.ratingValue,
+    bestRating: data.bestRating || '5',
+    worstRating: data.worstRating || '1',
+    ratingCount: data.ratingCount,
+    reviewCount: data.reviewCount || data.ratingCount
+  };
+}
+
+const schema = generateSchema(type, data);
+---
+
+{schema && (
+  <script type="application/ld+json" set:html={JSON.stringify(schema, null, 2)} />
+)}

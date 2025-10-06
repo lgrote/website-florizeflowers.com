@@ -1,0 +1,193 @@
+---
+export interface ComparisonFeature {
+  feature: string;
+  service1: string | boolean;
+  service2: string | boolean;
+}
+
+export interface Props {
+  service1Name: string;
+  service2Name: string;
+  features: ComparisonFeature[];
+  winner?: 1 | 2; // Which service is highlighted as winner
+}
+
+const {
+  service1Name,
+  service2Name,
+  features,
+  winner
+} = Astro.props;
+
+// Helper to render cell value
+const renderValue = (value: string | boolean) => {
+  if (typeof value === 'boolean') {
+    return value ? '✓' : '✗';
+  }
+  return value;
+};
+
+const getCellClass = (value: string | boolean) => {
+  if (typeof value === 'boolean') {
+    return value ? 'check-cell' : 'cross-cell';
+  }
+  return '';
+};
+---
+
+<div class="vs-comparison">
+  <h3 class="comparison-title">{service1Name} vs {service2Name}</h3>
+
+  <div class="comparison-table-wrapper">
+    <table class="comparison-table">
+      <thead>
+        <tr>
+          <th class="feature-column">Feature</th>
+          <th class={winner === 1 ? 'winner-column' : ''}>
+            {service1Name}
+            {winner === 1 && <span class="winner-badge">Our Pick</span>}
+          </th>
+          <th class={winner === 2 ? 'winner-column' : ''}>
+            {service2Name}
+            {winner === 2 && <span class="winner-badge">Our Pick</span>}
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        {features.map((row) => (
+          <tr>
+            <td class="feature-name">{row.feature}</td>
+            <td class={getCellClass(row.service1)}>
+              {renderValue(row.service1)}
+            </td>
+            <td class={getCellClass(row.service2)}>
+              {renderValue(row.service2)}
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<style>
+  .vs-comparison {
+    margin: 2rem 0;
+  }
+
+  .comparison-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--florize-green, #4a7c59);
+    text-align: center;
+    margin: 0 0 1.5rem 0;
+  }
+
+  .comparison-table-wrapper {
+    overflow-x: auto;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e5e7eb;
+  }
+
+  .comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    min-width: 600px;
+  }
+
+  .comparison-table th {
+    background: var(--florize-green, #4a7c59);
+    color: white;
+    padding: 1.25rem 1rem;
+    text-align: center;
+    font-weight: 600;
+    font-size: 1.0625rem;
+    position: relative;
+  }
+
+  .comparison-table th.feature-column {
+    text-align: left;
+    width: 40%;
+  }
+
+  .comparison-table th.winner-column {
+    background: linear-gradient(135deg, #d4af37 0%, #b89530 100%);
+  }
+
+  .winner-badge {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-top: 0.25rem;
+    opacity: 0.95;
+  }
+
+  .comparison-table td {
+    padding: 1rem;
+    border-bottom: 1px solid #e5e7eb;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 0.9375rem;
+  }
+
+  .comparison-table tr:nth-child(even) {
+    background: #f9fafb;
+  }
+
+  .comparison-table tr:hover {
+    background: #f0f8f4;
+  }
+
+  .feature-name {
+    text-align: left !important;
+    font-weight: 600;
+    color: #374151;
+  }
+
+  .check-cell {
+    color: #10b981;
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+
+  .cross-cell {
+    color: #ef4444;
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+
+  @media (max-width: 768px) {
+    .comparison-table {
+      font-size: 0.875rem;
+      min-width: 500px;
+    }
+
+    .comparison-table th,
+    .comparison-table td {
+      padding: 0.75rem 0.5rem;
+    }
+
+    .comparison-title {
+      font-size: 1.25rem;
+    }
+
+    .feature-name {
+      font-size: 0.8125rem;
+    }
+
+    .check-cell,
+    .cross-cell {
+      font-size: 1.25rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .comparison-table {
+      min-width: 400px;
+    }
+  }
+</style>
