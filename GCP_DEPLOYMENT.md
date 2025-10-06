@@ -51,7 +51,7 @@ After the setup script completes, it will display a static IP address. You need 
 The setup script creates a placeholder secret. Update it with your actual Sanity API token:
 
 ```bash
-echo -n 'YOUR_ACTUAL_SANITY_TOKEN' | gcloud secrets versions add sanity-read-token --data-file=-
+echo -n 'YOUR_ACTUAL_SANITY_TOKEN' | gcloud secrets versions add florize-sanity-read-token --data-file=-
 ```
 
 ### 4. Wait for SSL Certificate Provisioning
@@ -180,7 +180,7 @@ gsutil rm -r gs://florizeflowers-website
 The build uses these environment variables (configured in `cloudbuild.yaml`):
 
 - `_BUCKET_NAME`: GCS bucket name (`florizeflowers-website`)
-- `_SANITY_PROJECT_ID`: Sanity project ID (`hr1riv5w`)
+- `_SANITY_PROJECT_ID`: Sanity project ID (`vm53xzke`)
 - `_SANITY_DATASET`: Sanity dataset (`production`)
 - `SANITY_API_READ_TOKEN`: Stored in Secret Manager
 

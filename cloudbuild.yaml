@@ -59,13 +59,13 @@ steps:
 # Substitution variables (can be set in trigger or via --substitutions flag)
 substitutions:
   _BUCKET_NAME: "florizeflowers-website" # Default bucket name - override as needed
-  _SANITY_PROJECT_ID: "hr1riv5w"
+  _SANITY_PROJECT_ID: "vm53xzke"
   _SANITY_DATASET: "production"
 
 # Use Secret Manager for sensitive tokens (recommended)
 availableSecrets:
   secretManager:
-    - versionName: projects/${PROJECT_ID}/secrets/sanity-read-token/versions/latest
+    - versionName: projects/${PROJECT_ID}/secrets/florize-sanity-read-token/versions/latest
       env: "SANITY_API_READ_TOKEN"
 
 options:

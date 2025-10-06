@@ -165,11 +165,11 @@ fi
 
 # Store Sanity API token in Secret Manager (if not already exists)
 echo -e "${BLUE}🔐 Checking Secret Manager for Sanity token...${NC}"
-if gcloud secrets describe sanity-read-token 2>/dev/null; then
+if gcloud secrets describe florize-sanity-read-token 2>/dev/null; then
     echo -e "${YELLOW}Secret already exists${NC}"
 else
     echo -e "${YELLOW}Creating placeholder secret (update this with your actual Sanity API token)${NC}"
-    echo -n "your-sanity-api-token-here" | gcloud secrets create sanity-read-token \
+    echo -n "your-sanity-api-token-here" | gcloud secrets create florize-sanity-read-token \
         --data-file=- \
         --replication-policy="automatic"
     echo -e "${GREEN}✅ Secret created (remember to update with actual token)${NC}"
@@ -178,7 +178,7 @@ fi
 # Grant Cloud Build access to secrets
 echo -e "${BLUE}🔑 Granting Cloud Build access to secrets...${NC}"
 PROJECT_NUMBER=$(gcloud projects describe "$PROJECT_ID" --format="value(projectNumber)")
-gcloud secrets add-iam-policy-binding sanity-read-token \
+gcloud secrets add-iam-policy-binding florize-sanity-read-token \
     --member="serviceAccount:${PROJECT_NUMBER}@cloudbuild.gserviceaccount.com" \
     --role="roles/secretmanager.secretAccessor" \
     2>/dev/null || echo -e "${YELLOW}Permission already granted${NC}"
@@ -193,7 +193,7 @@ echo -e "1. ${YELLOW}Configure DNS:${NC}"
 echo -e "   Add an A record for ${DOMAIN} pointing to: ${STATIC_IP}"
 echo -e ""
 echo -e "2. ${YELLOW}Update Sanity API Token:${NC}"
-echo -e "   Run: echo -n 'YOUR_ACTUAL_TOKEN' | gcloud secrets versions add sanity-read-token --data-file=-"
+echo -e "   Run: echo -n 'YOUR_ACTUAL_TOKEN' | gcloud secrets versions add florize-sanity-read-token --data-file=-"
 echo -e ""
 echo -e "3. ${YELLOW}Deploy your site:${NC}"
 echo -e "   Run: gcloud builds submit --config=cloudbuild.yaml"

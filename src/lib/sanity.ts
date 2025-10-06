@@ -5,7 +5,7 @@ let sanityClient: any;
 
 try {
   // Get environment variables with hardcoded fallbacks (these are public, non-sensitive)
-  const projectId = import.meta.env.PUBLIC_SANITY_PROJECT_ID || 'hr1riv5w';
+  const projectId = import.meta.env.PUBLIC_SANITY_PROJECT_ID || 'vm53xzke';
   const dataset = import.meta.env.PUBLIC_SANITY_DATASET || 'production';
   const readToken = import.meta.env.SANITY_API_READ_TOKEN;
 
