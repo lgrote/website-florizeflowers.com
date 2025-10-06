@@ -1,4 +1,4 @@
-import type { BreadcrumbItem } from '../components/navigation/BreadcrumbNavigation.astro';
+import type { BreadcrumbItem } from "../components/navigation/BreadcrumbNavigation.astro";
 
 // ============================================================================
 // STRUCTURED DATA GENERATORS
@@ -13,30 +13,32 @@ export function generateServiceSchema(service: any): object {
   return {
     "@context": "https://schema.org",
     "@type": "Review",
-    "itemReviewed": {
+    itemReviewed: {
       "@type": "Service",
       "@context": "https://schema.org",
-      "name": service.service_name,
-      "description": service.description,
-      "url": service.affiliate_url || "#",
-      "category": "Flower Delivery Service",
-      "areaServed": "United Kingdom",
-      "priceRange": service.price_range || "££-£££"
+      name: service.service_name,
+      description: service.description,
+      url: service.affiliate_url || "#",
+      category: "Flower Delivery Service",
+      areaServed: "United Kingdom",
+      priceRange: service.price_range || "££-£££",
     },
-    "author": {
+    author: {
       "@type": "Organization",
-      "name": "Florize Flowers",
-      "url": "https://florizeflowers.com"
+      name: "Florize Flowers",
+      url: "https://florizeflowers.com",
     },
-    "reviewRating": {
+    reviewRating: {
       "@type": "Rating",
-      "ratingValue": service.rating?.toString() || "4.5",
-      "bestRating": "5",
-      "worstRating": "1"
+      ratingValue: service.rating?.toString() || "4.5",
+      bestRating: "5",
+      worstRating: "1",
     },
-    "reviewBody": service.description,
-    "datePublished": service.date_published || new Date().toISOString().split('T')[0],
-    "dateModified": service.date_modified || new Date().toISOString().split('T')[0]
+    reviewBody: service.description,
+    datePublished:
+      service.date_published || new Date().toISOString().split("T")[0],
+    dateModified:
+      service.date_modified || new Date().toISOString().split("T")[0],
   };
 }
 
@@ -48,21 +50,22 @@ export function generateOrganizationSchema(): object {
   return {
     "@context": "https://schema.org",
     "@type": "Organization",
-    "name": "Florize Flowers",
-    "description": "UK's most trusted independent flower delivery comparison platform",
-    "url": "https://florizeflowers.com",
-    "logo": {
+    name: "Florize Flowers",
+    description:
+      "UK's most trusted independent flower delivery comparison platform",
+    url: "https://florizeflowers.com",
+    logo: {
       "@type": "ImageObject",
-      "url": "https://florizeflowers.com/images/florizeflowers-logo-white.svg"
+      url: "https://florizeflowers.com/images/florizeflowers-logo-white.svg",
     },
-    "sameAs": [
+    sameAs: [
       // Add social media links when available
     ],
-    "contactPoint": {
+    contactPoint: {
       "@type": "ContactPoint",
-      "contactType": "Customer Service",
-      "email": "hello@florizeflowers.com"
-    }
+      contactType: "Customer Service",
+      email: "hello@florizeflowers.com",
+    },
   };
 }
 
@@ -75,17 +78,18 @@ export function generateWebSiteSchema(siteUrl: string): object {
   return {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    "name": "Florize Flowers",
-    "url": siteUrl,
-    "description": "Expert reviews and comparisons of UK flower delivery services",
-    "potentialAction": {
+    name: "Florize Flowers",
+    url: siteUrl,
+    description:
+      "Expert reviews and comparisons of UK flower delivery services",
+    potentialAction: {
       "@type": "SearchAction",
-      "target": {
+      target: {
         "@type": "EntryPoint",
-        "urlTemplate": `${siteUrl}/search?q={search_term_string}`
+        urlTemplate: `${siteUrl}/search?q={search_term_string}`,
       },
-      "query-input": "required name=search_term_string"
-    }
+      "query-input": "required name=search_term_string",
+    },
   };
 }
 
@@ -95,16 +99,19 @@ export function generateWebSiteSchema(siteUrl: string): object {
  * @param siteUrl - Base URL for creating absolute URLs
  * @returns Schema.org BreadcrumbList object
  */
-export function generateBreadcrumbSchema(items: BreadcrumbItem[], siteUrl: string): object {
+export function generateBreadcrumbSchema(
+  items: BreadcrumbItem[],
+  siteUrl: string,
+): object {
   return {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
-    "itemListElement": items.map((item, index) => ({
+    itemListElement: items.map((item, index) => ({
       "@type": "ListItem",
-      "position": index + 1,
-      "name": item.label,
-      ...(item.href && { "item": `${siteUrl}${item.href}` })
-    }))
+      position: index + 1,
+      name: item.label,
+      ...(item.href && { item: `${siteUrl}${item.href}` }),
+    })),
   };
 }
 
@@ -117,22 +124,22 @@ export function generateItemListSchema(services: any[]): object {
   return {
     "@context": "https://schema.org",
     "@type": "ItemList",
-    "itemListElement": services.map((service, index) => ({
+    itemListElement: services.map((service, index) => ({
       "@type": "ListItem",
-      "position": index + 1,
-      "item": {
+      position: index + 1,
+      item: {
         "@type": "Service",
-        "name": service.service_name,
-        "description": service.description,
-        "url": `/services/${service.service_id}`,
-        "aggregateRating": {
+        name: service.service_name,
+        description: service.description,
+        url: `/services/${service.service_id}`,
+        aggregateRating: {
           "@type": "AggregateRating",
-          "ratingValue": service.rating,
-          "bestRating": "5",
-          "worstRating": "1"
-        }
-      }
-    }))
+          ratingValue: service.rating,
+          bestRating: "5",
+          worstRating: "1",
+        },
+      },
+    })),
   };
 }
 
@@ -146,18 +153,21 @@ export function generateItemListSchema(services: any[]): object {
  * @param maxLength - Maximum length (default 155 characters)
  * @returns Truncated description
  */
-export function formatMetaDescription(text: string, maxLength: number = 155): string {
+export function formatMetaDescription(
+  text: string,
+  maxLength: number = 155,
+): string {
   if (text.length <= maxLength) return text;
 
   // Truncate at last complete word before maxLength
   const truncated = text.substring(0, maxLength);
-  const lastSpace = truncated.lastIndexOf(' ');
+  const lastSpace = truncated.lastIndexOf(" ");
 
   if (lastSpace > 0) {
-    return truncated.substring(0, lastSpace) + '...';
+    return truncated.substring(0, lastSpace) + "...";
   }
 
-  return truncated + '...';
+  return truncated + "...";
 }
 
 /**
@@ -166,9 +176,12 @@ export function formatMetaDescription(text: string, maxLength: number = 155): st
  * @param siteUrl - Base site URL
  * @returns Canonical URL
  */
-export function generateCanonicalUrl(pathname: string, siteUrl: string = 'https://florizeflowers.com'): string {
+export function generateCanonicalUrl(
+  pathname: string,
+  siteUrl: string = "https://florizeflowers.com",
+): string {
   // Remove trailing slash unless it's the root
-  const cleanPath = pathname === '/' ? pathname : pathname.replace(/\/$/, '');
+  const cleanPath = pathname === "/" ? pathname : pathname.replace(/\/$/, "");
   return `${siteUrl}${cleanPath}`;
 }
 
@@ -181,13 +194,13 @@ export function generateCanonicalUrl(pathname: string, siteUrl: string = 'https:
 export function generateOgImage(type: string, title?: string): string {
   // For now, return default OG image
   // In the future, this could generate dynamic images
-  const baseUrl = 'https://florizeflowers.com';
+  const baseUrl = "https://florizeflowers.com";
 
   const imageMap: Record<string, string> = {
-    'service': `${baseUrl}/images/florize-og-image.png`,
-    'occasion': `${baseUrl}/images/florize-og-image.png`,
-    'guide': `${baseUrl}/images/florize-og-image.png`,
-    'default': `${baseUrl}/images/florize-og-image.png`
+    service: `${baseUrl}/images/florize-og-image.png`,
+    occasion: `${baseUrl}/images/florize-og-image.png`,
+    guide: `${baseUrl}/images/florize-og-image.png`,
+    default: `${baseUrl}/images/florize-og-image.png`,
   };
 
   return imageMap[type] || imageMap.default;
@@ -199,25 +212,13 @@ export function generateOgImage(type: string, title?: string): string {
  * @param additional - Additional keywords to append
  * @returns Comma-separated keyword string
  */
-export function generateKeywords(baseKeywords: string[], additional: string[] = []): string {
+export function generateKeywords(
+  baseKeywords: string[],
+  additional: string[] = [],
+): string {
   const allKeywords = [...baseKeywords, ...additional];
-  return allKeywords.join(', ');
+  return allKeywords.join(", ");
 }
-
-// ============================================================================
-// VERIFICATION META TAGS
-// ============================================================================
-
-/**
- * Get all verification meta tags
- * These are extracted from the original florizeflowers.com website
- */
-export const VERIFICATION_TAGS = {
-  'fo-verify': 'f6fa7872-3c27-471a-802a-8fd2a06a3165',
-  'verification': 'b052a8c66ea348db3f85dc7905726d22',
-  'google-site-verification': 'rqXusTtPhAOaaL5lAuMwestW9BdZyjAF_jZvaHX2UHM',
-  'verify-admitad': '6fcf46c7fa'
-} as const;
 
 // ============================================================================
 // SOCIAL SHARING HELPERS
@@ -230,12 +231,16 @@ export const VERIFICATION_TAGS = {
  * @param image - Image URL
  * @returns Twitter Card object
  */
-export function generateTwitterCard(title: string, description: string, image: string) {
+export function generateTwitterCard(
+  title: string,
+  description: string,
+  image: string,
+) {
   return {
-    card: 'summary_large_image',
+    card: "summary_large_image",
     title: title,
     description: formatMetaDescription(description, 200),
-    image: image
+    image: image,
   };
 }
 
@@ -253,13 +258,13 @@ export function generateOpenGraph(
   description: string,
   url: string,
   image: string,
-  type: 'website' | 'article' = 'website'
+  type: "website" | "article" = "website",
 ) {
   return {
     title: title,
     description: formatMetaDescription(description),
     url: url,
     image: image,
-    type: type
+    type: type,
   };
 }

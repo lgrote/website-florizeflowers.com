@@ -1,104 +1,117 @@
 ---
-import Header from '../components/navigation/Header.astro';
-import Footer from '../components/navigation/Footer.astro';
-import GlobalHeaders from '../components/navigation/GlobalHeaders.astro';
-import { VERIFICATION_TAGS } from '../utils/seo';
-import '../styles/global.css';
+import Header from "../components/navigation/Header.astro";
+import Footer from "../components/navigation/Footer.astro";
+import GlobalHeaders from "../components/navigation/GlobalHeaders.astro";
+import { VERIFICATION_TAGS } from "../utils/seo";
+import "../styles/global.css";
 
 export interface Props {
-  title: string;
-  description: string;
-  ogImage?: string;
-  ogType?: string;
-  keywords?: string;
-  showBreadcrumbs?: boolean;
-  structuredData?: object | object[]; // Schema.org structured data
+    title: string;
+    description: string;
+    ogImage?: string;
+    ogType?: string;
+    keywords?: string;
+    showBreadcrumbs?: boolean;
+    structuredData?: object | object[]; // Schema.org structured data
 }
 
 const {
-  title,
-  description,
-  ogImage = '/images/florize-og-image.png',
-  ogType = 'website',
-  keywords,
-  showBreadcrumbs = false,
-  structuredData,
+    title,
+    description,
+    ogImage = "/images/florize-og-image.png",
+    ogType = "website",
+    keywords,
+    showBreadcrumbs = false,
+    structuredData,
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 ---
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>{title}</title>
-  <meta name="description" content={description} />
-  {keywords && <meta name="keywords" content={keywords} />}
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>{title}</title>
+        <meta name="description" content={description} />
+        {keywords && <meta name="keywords" content={keywords} />}
 
-  <!-- Verification Tags -->
-  <meta name="fo-verify" content={VERIFICATION_TAGS['fo-verify']} />
-  <meta name="verification" content={VERIFICATION_TAGS.verification} />
-  <meta name="google-site-verification" content={VERIFICATION_TAGS['google-site-verification']} />
-  <meta name="verify-admitad" content={VERIFICATION_TAGS['verify-admitad']} />
+        <!-- Open Graph -->
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={description} />
+        <meta property="og:image" content={new URL(ogImage, Astro.site)} />
+        <meta property="og:url" content={canonicalURL} />
+        <meta property="og:type" content={ogType} />
 
-  <!-- Open Graph -->
-  <meta property="og:title" content={title} />
-  <meta property="og:description" content={description} />
-  <meta property="og:image" content={new URL(ogImage, Astro.site)} />
-  <meta property="og:url" content={canonicalURL} />
-  <meta property="og:type" content={ogType} />
+        <!-- Twitter -->
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={title} />
+        <meta name="twitter:description" content={description} />
+        <meta name="twitter:image" content={new URL(ogImage, Astro.site)} />
 
-  <!-- Twitter -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content={title} />
-  <meta name="twitter:description" content={description} />
-  <meta name="twitter:image" content={new URL(ogImage, Astro.site)} />
+        <!-- Canonical -->
+        <link rel="canonical" href={canonicalURL} />
 
-  <!-- Canonical -->
-  <link rel="canonical" href={canonicalURL} />
+        <!-- Structured Data -->
+        {
+            structuredData &&
+                (Array.isArray(structuredData) ? (
+                    structuredData.map((schema) => (
+                        <script
+                            type="application/ld+json"
+                            set:html={JSON.stringify(schema)}
+                        />
+                    ))
+                ) : (
+                    <script
+                        type="application/ld+json"
+                        set:html={JSON.stringify(structuredData)}
+                    />
+                ))
+        }
 
-  <!-- Structured Data -->
-  {structuredData && (
-    Array.isArray(structuredData) ? (
-      structuredData.map((schema) => (
-        <script type="application/ld+json" set:html={JSON.stringify(schema)} />
-      ))
-    ) : (
-      <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
-    )
-  )}
+        <!-- Favicon and App Icons -->
+        <link rel="icon" type="image/x-icon" href="/florize-favicon.ico" />
+        <link
+            rel="icon"
+            type="image/png"
+            sizes="32x32"
+            href="/images/florize-favicon-32x32.png"
+        />
+        <link
+            rel="icon"
+            type="image/png"
+            sizes="16x16"
+            href="/images/florize-favicon-16x16.png"
+        />
+        <link
+            rel="apple-touch-icon"
+            href="/images/florize-apple-touch-icon.png"
+        />
+        <link rel="manifest" href="/site.webmanifest" />
 
-  <!-- Favicon and App Icons -->
-  <link rel="icon" type="image/x-icon" href="/florize-favicon.ico" />
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/florize-favicon-32x32.png" />
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/florize-favicon-16x16.png" />
-  <link rel="apple-touch-icon" href="/images/florize-apple-touch-icon.png" />
-  <link rel="manifest" href="/site.webmanifest" />
+        <!-- Fonts -->
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Sans+Pro:wght@400;500;600&display=swap"
+            rel="stylesheet"
+        />
 
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Sans+Pro:wght@400;500;600&display=swap"
-    rel="stylesheet"
-  />
+        <GlobalHeaders />
+    </head>
+    <body>
+        <a href="#main-content" class="skip-link">Skip to main content</a>
 
-  <!-- Global Headers from Sanity -->
-  <GlobalHeaders />
-</head>
-<body>
-  <a href="#main-content" class="skip-link">Skip to main content</a>
+        <Header />
 
-  <Header />
+        {showBreadcrumbs && <slot name="breadcrumbs" />}
 
-  {showBreadcrumbs && <slot name="breadcrumbs" />}
+        <main id="main-content">
+            <slot />
+        </main>
 
-  <main id="main-content">
-    <slot />
-  </main>
-
-  <Footer />
-</body>
+        <Footer />
+    </body>
 </html>
