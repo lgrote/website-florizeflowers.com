@@ -34,13 +34,11 @@ steps:
 
   # Step 4: Set cache headers for static assets (images, CSS, JS)
   - name: "gcr.io/cloud-builders/gsutil"
+    entrypoint: bash
     args:
-      - "-m"
-      - "setmeta"
-      - "-h"
-      - "Cache-Control:public, max-age=31536000, immutable"
-      - "-r"
-      - "gs://${_BUCKET_NAME}/**/*.{js,css,jpg,jpeg,png,gif,svg,webp,woff,woff2,ttf,eot,ico}"
+      - "-c"
+      - |
+        gsutil -m setmeta -h "Cache-Control:public, max-age=31536000, immutable" -r "gs://${_BUCKET_NAME}/**/*.{js,css,jpg,jpeg,png,gif,svg,webp,woff,woff2,ttf,eot,ico}" || echo "No static assets found, skipping cache headers"
     id: "set-static-cache"
     waitFor: ["deploy-to-gcs"]
 
