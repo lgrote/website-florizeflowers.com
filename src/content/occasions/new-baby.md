@@ -1,26 +1,34 @@
 ---
-title: "New Baby Flowers 2025 - Celebration Bouquets"
-description: "Expert guide to new baby flowers. Gender-neutral options, gift ideas, and delivery services."
-occasion_id: "new-baby"
-occasion_name: "New Baby Flowers"
-hero_image: "/images/new-baby-flowers.jpg"
-seasonal: false
-recommended_services:
+base:
+  id: "new-baby"
+  name: "New Baby Flowers"
+  title: "New Baby Flowers 2025 - Celebration Bouquets"
+  description: "Expert guide to new baby flowers. Gender-neutral options, gift ideas, and delivery services."
+  hero_image: "/images/new-baby-flowers.jpg"
+  seasonal: false
+
+seo:
+  keywords: "new baby flowers, baby boy flowers, baby girl flowers"
+
+recommendations:
+  services:
   - "bloom-wild"
   - "interflora"
   - "prestige-flowers"
-recommended_flowers:
+  flowers:
   - flower: "Pastel Mixed Bouquets"
     reason: "Soft colors perfect for baby celebrations"
   - flower: "White & Yellow Flowers"
     reason: "Gender-neutral and cheerful"
   - flower: "Pink or Blue Arrangements"
     reason: "Traditional gender-specific options"
-budget_guide:
-  budget_friendly: "Prestige Flowers - from £19.99"
-  mid_range: "Bloom & Wild - £30-£50"
-  luxury: "Interflora - £60-£100"
-stats:
+  budget_guide:
+    budget_friendly: "Prestige Flowers - from £19.99"
+    mid_range: "Bloom & Wild - £30-£50"
+    luxury: "Interflora - £60-£100"
+
+components:
+  stats:
   - value: "7-14 days"
     label: "Average Vase Life"
     icon: "👶"
@@ -39,7 +47,7 @@ stats:
   - value: "Check policy"
     label: "Hospital Delivery"
     icon: "🏥"
-flower_recommendations:
+  flower_recommendations:
   - icon: "💗"
     recipient: "Baby Girl"
     description: "Soft pink arrangements celebrating new daughters"
@@ -64,7 +72,7 @@ flower_recommendations:
     flowers: ["Mixed Seasonal", "Cheerful Blooms", "Bright Arrangements"]
     colors: ["Gentle", "Cheerful", "Welcoming"]
     priceRange: "£40-£85"
-color_meanings:
+  color_meanings:
   - color: "Pink"
     hex: "#ec4899"
     meaning: "Gentleness and new life"
@@ -90,7 +98,7 @@ color_meanings:
     meaning: "Gentle warmth"
     emotions: ["Soft", "Comforting", "Gentle"]
     bestFor: "Sophisticated neutral option"
-seasonal_guide:
+  seasonal_guide:
   - season: "Spring"
     icon: "🌷"
     months: "March - May"
@@ -119,7 +127,7 @@ seasonal_guide:
     availability: "Good"
     pricing: "Variable"
     tips: ["Year-round availability", "Cozy winter welcomes"]
-service_features:
+  service_features:
   - icon: "📮"
     title: "Bloom & Wild - Convenient Choice"
     description: "Best for new parents who can't answer doors during feeding times and sleep schedules. Letterbox delivery ensures safe arrival without coordination stress. Gentle pastel designs perfect for celebrating new arrivals. Price range: £25-£50."
@@ -132,7 +140,9 @@ service_features:
   - icon: "👶"
     title: "Flowerbx - Premium Choice"
     description: "Best for close family celebrating significant new arrivals or multiple births. Exceptional quality with sophisticated pastel arrangements that honor the special occasion. Low-maintenance, long-lasting blooms for busy parents. Price range: £45-£100."
-delivery_locations:
+
+tabs:
+  delivery_locations:
   - location: "Hospital Delivery"
     tips:
       - "ALWAYS call maternity ward first - many UK hospitals restrict or ban flowers"
@@ -150,7 +160,7 @@ delivery_locations:
       - "Avoid first 48 hours at home - parents overwhelmed"
       - "1-2 weeks after birth still wonderful and appreciated"
       - "For premature babies or complications, wait for family's signal"
-gift_enhancements:
+  gift_enhancements:
   - item: "Teddy Bears"
     description: "Classic new baby gift in pink, blue, or neutral colors"
     priceRange: "£10-£25"
@@ -166,7 +176,7 @@ gift_enhancements:
   - item: "Meal Delivery Vouchers"
     description: "Genuinely helpful - restaurant or meal service vouchers"
     priceRange: "£30-£50"
-card_messages:
+  card_messages:
   - recipient: "Baby Girl"
     message: "Congratulations on your beautiful baby girl! Wishing you all love, joy, and sweet cuddles. xxx"
   - recipient: "Baby Boy"
@@ -177,7 +187,7 @@ card_messages:
     message: "We're so thrilled to welcome baby [Name] to the world! Congratulations to proud parents [Names]. Lots of love from [Your Names] xxx"
   - recipient: "Colleagues"
     message: "Congratulations from everyone at [Company] on your wonderful news! Wishing you all the best as you begin this exciting journey. Warmest wishes, The [Department] Team"
-special_scenarios:
+  special_scenarios:
   - title: "Hospital Policy Restrictions"
     icon: "🏥"
     tips:
@@ -206,14 +216,13 @@ special_scenarios:
       - "Modern parents increasingly prefer inclusive options"
       - "When unsure of preference, choose neutral colors"
       - "Green and white combinations sophisticated and universal"
-cost_saving_tips:
+  cost_saving_tips:
   - "Letterbox flowers (£25-£35) more affordable than florist arrangements"
   - "Order for 3-7 days after birth (no rush charges, better availability)"
   - "Choose low-maintenance, long-lasting flowers (carnations, roses) so parents aren't burdened"
   - "Pair modest bouquet (£20-£30) with genuinely helpful offers (babysitting, meals, cleaning)"
   - "Group workplace gifts allow everyone to contribute affordably"
   - "Potted plants (£20-£40) cost more initially but last months vs 5-7 days for cut flowers"
-keywords: "new baby flowers, baby boy flowers, baby girl flowers"
 ---
 
 ## Celebrating New Arrivals with Flowers

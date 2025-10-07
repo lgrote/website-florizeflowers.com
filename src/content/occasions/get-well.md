@@ -1,26 +1,34 @@
 ---
-title: "Get Well Flowers 2025 - Recovery Bouquets"
-description: "Brighten someone's recovery with thoughtful flowers. Best get well bouquets and delivery options."
-occasion_id: "get-well"
-occasion_name: "Get Well Flowers"
-hero_image: "/images/get-well-flowers.jpg"
-seasonal: false
-recommended_services:
+base:
+  id: "get-well"
+  name: "Get Well Flowers"
+  title: "Get Well Flowers 2025 - Recovery Bouquets"
+  description: "Brighten someone's recovery with thoughtful flowers. Best get well bouquets and delivery options."
+  hero_image: "/images/get-well-flowers.jpg"
+  seasonal: false
+
+seo:
+  keywords: "get well flowers, hospital flowers, recovery flowers"
+
+recommendations:
+  services:
   - "interflora"
   - "bloom-wild"
   - "serenata-flowers"
-recommended_flowers:
+  flowers:
   - flower: "Bright Gerberas"
     reason: "Cheerful and uplifting"
   - flower: "Sunflowers"
     reason: "Sunny and optimistic"
   - flower: "Mixed Colorful Bouquets"
     reason: "Vibrant and mood-boosting"
-budget_guide:
-  budget_friendly: "Prestige Flowers - from £19.99"
-  mid_range: "Bloom & Wild - £25-£50"
-  luxury: "Interflora - £50-£80"
-stats:
+  budget_guide:
+    budget_friendly: "Prestige Flowers - from £19.99"
+    mid_range: "Bloom & Wild - £25-£50"
+    luxury: "Interflora - £50-£80"
+
+components:
+  stats:
   - value: "7-10 days"
     label: "Average Vase Life"
     icon: "🌺"
@@ -39,7 +47,7 @@ stats:
   - value: "Check first"
     label: "Hospital Policy"
     icon: "🏥"
-flower_recommendations:
+  flower_recommendations:
   - icon: "🌻"
     recipient: "Hospital Recovery"
     description: "Compact, low-scent cheerful arrangements for hospital rooms"
@@ -64,7 +72,7 @@ flower_recommendations:
     flowers: ["Mixed Bouquets", "Seasonal Blooms", "Tasteful Arrangements"]
     colors: ["Professional", "Warm", "Friendly"]
     priceRange: "£25-£50"
-color_meanings:
+  color_meanings:
   - color: "Yellow"
     hex: "#eab308"
     meaning: "Optimism and friendship"
@@ -90,7 +98,7 @@ color_meanings:
     meaning: "Joy and celebration"
     emotions: ["Uplifting", "Cheerful", "Vibrant"]
     bestFor: "Lifting morale during recovery"
-seasonal_guide:
+  seasonal_guide:
   - season: "Spring"
     icon: "🌷"
     months: "March - May"
@@ -119,7 +127,7 @@ seasonal_guide:
     availability: "Good"
     pricing: "Variable"
     tips: ["Bring sunshine indoors", "Year-round cheerful options"]
-service_features:
+  service_features:
   - icon: "🏆"
     title: "Interflora - Premium Choice"
     description: "Best for hospital delivery experience and reliability. Florists familiar with hospital policies and ward restrictions. Same-day delivery available for urgent get well wishes. Price range: £35-£80."
@@ -132,7 +140,9 @@ service_features:
   - icon: "🌺"
     title: "Prestige Flowers - Value Choice"
     description: "Best for vibrant mood-boosting arrangements on a budget. Colorful mixed bouquets with free delivery options. Perfect for sending recovery wishes to friends and family. Price range: £19.99-£50."
-delivery_locations:
+
+tabs:
+  delivery_locations:
   - location: "Hospital Delivery"
     tips:
       - "ALWAYS call ward first to verify flower policy"
@@ -150,7 +160,7 @@ delivery_locations:
       - "Check facility flower policies in advance"
       - "Provide specific room/wing information"
       - "Choose compact, low-maintenance arrangements"
-gift_enhancements:
+  gift_enhancements:
   - item: "Magazines/Books"
     description: "Entertainment during recovery time"
     priceRange: "£5-£15"
@@ -166,7 +176,7 @@ gift_enhancements:
   - item: "Comfort Items"
     description: "Soft blankets, socks, hand cream"
     priceRange: "£15-£40"
-card_messages:
+  card_messages:
   - recipient: "Serious Illness"
     message: "Thinking of you and sending love and healing thoughts. Wishing you strength and comfort. Get well soon. Love, [Name] xxx"
   - recipient: "Surgery Recovery"
@@ -175,7 +185,7 @@ card_messages:
     message: "Get well soon, my friend! Can't wait to see you back to your usual self. Sending healing vibes and lots of love. [Name] xxx"
   - recipient: "Colleague"
     message: "Wishing you a speedy recovery. We miss you at work! Rest up and get well soon. Best wishes from everyone at [Company/Department]"
-special_scenarios:
+  special_scenarios:
   - title: "Hospital Restrictions"
     icon: "🏥"
     tips:
@@ -197,14 +207,13 @@ special_scenarios:
       - "Choose low-pollen options (gerberas, roses)"
       - "Remove lily stamens if included"
       - "Ask about known allergies before ordering"
-cost_saving_tips:
+  cost_saving_tips:
   - "Home delivery often cheaper than hospital delivery"
   - "Letterbox flowers from £19.99 offer budget-friendly cheer"
   - "Potted plants (£25-£45) provide longer-lasting support"
   - "Group workplace collections spread cost among colleagues"
   - "Choose seasonal bright flowers for best value"
   - "Send sympathy card with donation to patient's charity if tight budget"
-keywords: "get well flowers, hospital flowers, recovery flowers"
 ---
 
 ## Flowers for Recovery and Healing

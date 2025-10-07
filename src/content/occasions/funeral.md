@@ -1,26 +1,34 @@
 ---
-title: "Funeral Flowers Guide 2025 - Sympathy Arrangements"
-description: "Compassionate guide to funeral flowers. Appropriate choices, delivery etiquette, and service recommendations."
-occasion_id: "funeral"
-occasion_name: "Funeral Flowers"
-hero_image: "/images/funeral-flowers.jpg"
-seasonal: false
-recommended_services:
+base:
+  id: "funeral"
+  name: "Funeral Flowers"
+  title: "Funeral Flowers Guide 2025 - Sympathy Arrangements"
+  description: "Compassionate guide to funeral flowers. Appropriate choices, delivery etiquette, and service recommendations."
+  hero_image: "/images/funeral-flowers.jpg"
+  seasonal: false
+
+seo:
+  keywords: "funeral flowers, sympathy flowers, condolence flowers"
+
+recommendations:
+  services:
   - "interflora"
   - "serenata-flowers"
   - "real-flower-company"
-recommended_flowers:
+  flowers:
   - flower: "White Lilies"
     reason: "Traditional symbol of peace and purity"
   - flower: "White Roses"
     reason: "Reverence and remembrance"
   - flower: "Chrysanthemums"
     reason: "Symbol of death in many cultures"
-budget_guide:
-  budget_friendly: "Serenata Flowers - from £30"
-  mid_range: "Interflora - £50-£100"
-  luxury: "Bespoke arrangements - £150+"
-stats:
+  budget_guide:
+    budget_friendly: "Serenata Flowers - from £30"
+    mid_range: "Interflora - £50-£100"
+    luxury: "Bespoke arrangements - £150+"
+
+components:
+  stats:
   - value: "5-7 days"
     label: "Average Vase Life"
     icon: "🕊️"
@@ -39,7 +47,7 @@ stats:
   - value: "All faiths"
     label: "Cultural Variations"
     icon: "🙏"
-flower_recommendations:
+  flower_recommendations:
   - icon: "👨‍👩‍👧‍👦"
     recipient: "Immediate Family"
     description: "Casket sprays and prominent tributes honoring closest relationships"
@@ -64,7 +72,7 @@ flower_recommendations:
     flowers: ["Favorite Flowers", "Bright Blooms", "Personal Choices"]
     colors: ["Vibrant", "Joyful", "Colorful"]
     priceRange: "£50-£200"
-color_meanings:
+  color_meanings:
   - color: "White"
     hex: "#ffffff"
     meaning: "Purity and peace"
@@ -90,7 +98,7 @@ color_meanings:
     meaning: "Dignity and respect"
     emotions: ["Dignity", "Admiration", "Respect"]
     bestFor: "Honoring distinguished individuals"
-seasonal_guide:
+  seasonal_guide:
   - season: "Spring"
     icon: "🌷"
     months: "March - May"
@@ -119,7 +127,7 @@ seasonal_guide:
     availability: "Good"
     pricing: "Premium"
     tips: ["Imported blooms premium", "Elegant winter options"]
-service_features:
+  service_features:
   - icon: "🏆"
     title: "Interflora - Premium Choice"
     description: "Best for funeral tribute reliability and coordination. Extensive network works directly with funeral directors across the UK. Respectful service with guaranteed delivery to service venues. Price range: £50-£500+."
@@ -132,7 +140,9 @@ service_features:
   - icon: "💐"
     title: "Arena Flowers - Ethical Choice"
     description: "Best for eco-friendly funeral tributes. Fair-trade and sustainable flowers with biodegradable arrangements. Thoughtful sympathy service with compassionate customer care. Price range: £40-£150."
-delivery_locations:
+
+tabs:
+  delivery_locations:
   - location: "Funeral Home/Chapel"
     tips:
       - "Coordinate through funeral director for reliable delivery"
@@ -148,7 +158,7 @@ delivery_locations:
       - "Send sympathy bouquets after the funeral"
       - "Deliver 3-7 days post-funeral when support wanes"
       - "Choose long-lasting arrangements for extended comfort"
-gift_enhancements:
+  gift_enhancements:
   - item: "Sympathy Card"
     description: "Heartfelt condolence message to the family"
     priceRange: "£3-£8"
@@ -161,7 +171,7 @@ gift_enhancements:
   - item: "Comfort Food Basket"
     description: "Practical support for grieving family"
     priceRange: "£30-£80"
-card_messages:
+  card_messages:
   - recipient: "Close Family"
     message: "In loving memory of [Name]. With heartfelt condolences and sympathy. Our thoughts are with you during this difficult time. [Your Name]"
   - recipient: "Friend Tribute"
@@ -170,7 +180,7 @@ card_messages:
     message: "To my beloved [husband/wife]. Until we meet again. Forever in my heart. With all my love, [Your Name]"
   - recipient: "Colleague"
     message: "With deepest sympathy from everyone at [Company]. [Name] will be remembered for [positive quality]. Our thoughts are with the family."
-special_scenarios:
+  special_scenarios:
   - title: "Cultural & Religious Considerations"
     icon: "🙏"
     tips:
@@ -192,14 +202,13 @@ special_scenarios:
       - "Collect contributions from colleagues"
       - "Choose appropriate standing arrangement or wreath"
       - "Include collective card message from all contributors"
-cost_saving_tips:
+  cost_saving_tips:
   - "Share costs with family members for joint larger tribute"
   - "Choose seasonal flowers for better value and freshness"
   - "Posies and sheaves (£30-£80) offer respectful budget options"
   - "Potted plants provide lasting sympathy at lower cost"
   - "Consider sympathy card with donation instead of flowers"
   - "Workplace collections spread cost among colleagues"
-keywords: "funeral flowers, sympathy flowers, condolence flowers"
 ---
 
 ## Understanding Funeral Flowers

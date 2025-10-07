@@ -1,26 +1,34 @@
 ---
-title: "Corporate Flowers 2025 - Business Flower Delivery"
-description: "Professional corporate flower services. Office displays, client gifts, and event arrangements."
-occasion_id: "corporate"
-occasion_name: "Corporate Flowers"
-hero_image: "/images/corporate-flowers.jpg"
-seasonal: false
-recommended_services:
+base:
+  id: "corporate"
+  name: "Corporate Flowers"
+  title: "Corporate Flowers 2025 - Business Flower Delivery"
+  description: "Professional corporate flower services. Office displays, client gifts, and event arrangements."
+  hero_image: "/images/corporate-flowers.jpg"
+  seasonal: false
+
+seo:
+  keywords: "corporate flowers, office flowers, business flower delivery"
+
+recommendations:
+  services:
   - "interflora"
   - "wild-at-heart"
   - "appleyard-flowers"
-recommended_flowers:
+  flowers:
   - flower: "Modern Minimalist Arrangements"
     reason: "Professional aesthetic for offices"
   - flower: "Orchids"
     reason: "Elegant and long-lasting"
   - flower: "Seasonal Mixed Bouquets"
     reason: "Versatile for various occasions"
-budget_guide:
-  budget_friendly: "Weekly subscription - from £40/week"
-  mid_range: "Interflora corporate service - £80-£150"
-  luxury: "Wild at Heart events - £500+"
-stats:
+  budget_guide:
+    budget_friendly: "Weekly subscription - from £40/week"
+    mid_range: "Interflora corporate service - £80-£150"
+    luxury: "Wild at Heart events - £500+"
+
+components:
+  stats:
   - value: "7-14 days"
     label: "Average Vase Life"
     icon: "🌿"
@@ -39,7 +47,7 @@ stats:
   - value: "Year-round"
     label: "Subscription Service"
     icon: "🔄"
-flower_recommendations:
+  flower_recommendations:
   - icon: "🏢"
     recipient: "Reception & Lobby"
     description: "Impressive statement arrangements creating professional first impressions"
@@ -64,7 +72,7 @@ flower_recommendations:
     flowers: ["Event Floristry", "Brand-Aligned", "Statement Pieces"]
     colors: ["Bold", "Branded", "Coordinated"]
     priceRange: "£200-£5,000+"
-color_meanings:
+  color_meanings:
   - color: "White"
     hex: "#ffffff"
     meaning: "Professionalism and purity"
@@ -90,7 +98,7 @@ color_meanings:
     meaning: "Energy and innovation"
     emotions: ["Dynamic", "Creative", "Bold"]
     bestFor: "Marketing and tech startups"
-seasonal_guide:
+  seasonal_guide:
   - season: "Spring"
     icon: "🌷"
     months: "March - May"
@@ -119,7 +127,7 @@ seasonal_guide:
     availability: "Good"
     pricing: "Premium"
     tips: ["Festive corporate displays", "Year-round orchids available"]
-service_features:
+  service_features:
   - icon: "🏆"
     title: "Interflora - Premium Choice"
     description: "Best for nationwide corporate coverage and reliability. Extensive network ensures consistent quality across multiple office locations. Corporate account management and volume discounts available. Price range: £60-£300."
@@ -132,7 +140,9 @@ service_features:
   - icon: "🔄"
     title: "Bloom & Wild Business - Modern Choice"
     description: "Best for weekly office subscriptions and contemporary workspaces. Modern designs perfect for tech companies and creative agencies. Fixed pricing and reliable letterbox options. Price range: £40-£120/week."
-delivery_locations:
+
+tabs:
+  delivery_locations:
   - location: "Reception & Office"
     tips:
       - "Schedule weekly deliveries for consistent professional appearance"
@@ -148,7 +158,7 @@ delivery_locations:
       - "Contact venue coordinator 1-2 weeks in advance"
       - "Confirm setup time and venue access"
       - "Provide detailed contact information for venue manager"
-gift_enhancements:
+  gift_enhancements:
   - item: "Premium Gift Boxes"
     description: "Luxury chocolates or biscuits for client gifts"
     priceRange: "£15-£40"
@@ -161,7 +171,7 @@ gift_enhancements:
   - item: "Wine/Champagne"
     description: "Professional gift pairing for client appreciation"
     priceRange: "£20-£60"
-card_messages:
+  card_messages:
   - recipient: "Client Appreciation"
     message: "Thank you for your continued partnership. We truly value our relationship with [Company]. With warm regards, [Your Company]"
   - recipient: "New Client Welcome"
@@ -170,7 +180,7 @@ card_messages:
     message: "Congratulations on [achievement/milestone]. Your dedication and hard work are greatly appreciated. Best wishes, [Management/Team]"
   - recipient: "Sympathy/Condolence"
     message: "Our thoughts are with you during this difficult time. With sincere condolences from everyone at [Company]."
-special_scenarios:
+  special_scenarios:
   - title: "Multi-Location Coordination"
     icon: "🏢"
     tips:
@@ -192,14 +202,13 @@ special_scenarios:
       - "Use ribbons/vases for exact color matching"
       - "Request sample arrangements before bulk orders"
       - "Consider brand personality in flower selection"
-cost_saving_tips:
+  cost_saving_tips:
   - "Weekly subscriptions cost less than individual orders"
   - "Corporate accounts typically receive 10-15% discounts"
   - "Book events 6+ weeks ahead for better pricing"
   - "Choose seasonal flowers for significant savings"
   - "Opt for reusable vases to reduce ongoing costs"
   - "Multi-location contracts often include volume discounts"
-keywords: "corporate flowers, office flowers, business flower delivery"
 ---
 
 ## Professional Corporate Flower Services

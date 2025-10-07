@@ -1,26 +1,34 @@
 ---
-title: "Thank You Flowers 2025 - Gratitude Bouquets"
-description: "Express gratitude with beautiful flowers. Best thank you bouquets and delivery services."
-occasion_id: "thank-you"
-occasion_name: "Thank You Flowers"
-hero_image: "/images/thank-you-flowers.jpg"
-seasonal: false
-recommended_services:
+base:
+  id: "thank-you"
+  name: "Thank You Flowers"
+  title: "Thank You Flowers 2025 - Gratitude Bouquets"
+  description: "Express gratitude with beautiful flowers. Best thank you bouquets and delivery services."
+  hero_image: "/images/thank-you-flowers.jpg"
+  seasonal: false
+
+seo:
+  keywords: "thank you flowers, gratitude flowers, appreciation flowers"
+
+recommendations:
+  services:
   - "bloom-wild"
   - "prestige-flowers"
   - "interflora"
-recommended_flowers:
+  flowers:
   - flower: "Pink Roses"
     reason: "Symbol of gratitude and appreciation"
   - flower: "Gerberas"
     reason: "Cheerful and bright for thanks"
   - flower: "Mixed Spring Flowers"
     reason: "Happy and uplifting"
-budget_guide:
-  budget_friendly: "Prestige Flowers - from £19.99"
-  mid_range: "Bloom & Wild - £25-£45"
-  luxury: "Interflora - £50-£80"
-stats:
+  budget_guide:
+    budget_friendly: "Prestige Flowers - from £19.99"
+    mid_range: "Bloom & Wild - £25-£45"
+    luxury: "Interflora - £50-£80"
+
+components:
+  stats:
   - value: "5-7 days"
     label: "Average Vase Life"
     icon: "🙏"
@@ -39,7 +47,7 @@ stats:
   - value: "Year-round"
     label: "Season"
     icon: "🌸"
-flower_recommendations:
+  flower_recommendations:
   - icon: "🏡"
     recipient: "Hosts & Hospitality"
     description: "Elegant arrangements thanking dinner party or weekend hosts"
@@ -64,7 +72,7 @@ flower_recommendations:
     flowers: ["Tulips", "Roses", "Seasonal Mix"]
     colors: ["Respectful", "Warm", "Appreciative"]
     priceRange: "£30-£60"
-color_meanings:
+  color_meanings:
   - color: "Pink"
     hex: "#ec4899"
     meaning: "Gratitude and appreciation"
@@ -90,7 +98,7 @@ color_meanings:
     meaning: "Admiration and respect"
     emotions: ["Grateful", "Respectful", "Dignified"]
     bestFor: "Significant gratitude"
-seasonal_guide:
+  seasonal_guide:
   - season: "Spring"
     icon: "🌷"
     months: "March - May"
@@ -119,7 +127,7 @@ seasonal_guide:
     availability: "Good"
     pricing: "Variable"
     tips: ["Year-round gratitude", "Holiday hosting thanks"]
-service_features:
+  service_features:
   - icon: "📮"
     title: "Bloom & Wild - Convenient Choice"
     description: "Best for busy recipients and timely gratitude. Letterbox flowers ensure no missed deliveries, perfect for thanking working professionals. Modern, cheerful designs arrive promptly with next-day delivery. Price range: £25-£45."
@@ -132,7 +140,9 @@ service_features:
   - icon: "🌸"
     title: "The Real Flower Company - Elegant Choice"
     description: "Best for sophisticated hosting thanks and professional appreciation. Beautiful seasonal blooms with exceptional presentation. Luxury arrangements perfect for expressing heartfelt gratitude to special hosts. Price range: £50-£100."
-delivery_locations:
+
+tabs:
+  delivery_locations:
   - location: "Home Delivery"
     tips:
       - "Send within 2-7 days of receiving kindness for best impact"
@@ -148,7 +158,7 @@ delivery_locations:
       - "Send within 2-3 days after dinner parties or events"
       - "Coordinate timing for weekend stays - send upon returning home"
       - "Include personal note referencing specific moments"
-gift_enhancements:
+  gift_enhancements:
   - item: "Chocolates"
     description: "Quality chocolates enhance appreciation gesture"
     priceRange: "£8-£25"
@@ -164,7 +174,7 @@ gift_enhancements:
   - item: "Handwritten Letter"
     description: "Most meaningful addition - detailed heartfelt letter creates lasting impact"
     priceRange: "£0"
-card_messages:
+  card_messages:
   - recipient: "After Dinner Party"
     message: "Thank you so much for a wonderful evening. The food was delicious and the company even better! We had a lovely time. With gratitude, [Names]"
   - recipient: "After Weekend Stay"
@@ -177,7 +187,7 @@ card_messages:
     message: "Thank you for your dedication, patience, and inspiration this [term/year]. You've made a real difference. With gratitude, [Name/Family]"
   - recipient: "General Appreciation"
     message: "Thank you for your kindness and thoughtfulness. Your help meant more than you know. With sincere gratitude, [Name]"
-special_scenarios:
+  special_scenarios:
   - title: "Social Occasions Timing"
     icon: "🏡"
     tips:
@@ -199,14 +209,13 @@ special_scenarios:
       - "Choose cheerful, friendly bouquets (gerberas, sunflowers)"
       - "Budget £20-£35 for neighbor kindnesses"
       - "Build ongoing good relationships through thoughtful gestures"
-cost_saving_tips:
+  cost_saving_tips:
   - "Send within ideal 2-7 day window to access better selection"
   - "Choose in-season flowers for fresher blooms at lower prices"
   - "Pair budget flowers (£20-£30) with heartfelt handwritten letters"
   - "Consider letterbox options from Bloom & Wild for convenience and value"
   - "Sign up for service newsletters for first-order discounts"
   - "Use Prestige Flowers for quality appreciation from £19.99"
-keywords: "thank you flowers, gratitude flowers, appreciation flowers"
 ---
 
 ## Expressing Gratitude with Flowers

@@ -7,8 +7,8 @@ import InfoGrid from '../../components/ui/InfoGrid.astro';
 const occasions = await getCollection('occasions');
 
 // Organize occasions by category
-const seasonalOccasions = occasions.filter(o => o.data.seasonal);
-const regularOccasions = occasions.filter(o => !o.data.seasonal);
+const seasonalOccasions = occasions.filter(o => o.data.base.seasonal);
+const regularOccasions = occasions.filter(o => !o.data.base.seasonal);
 
 // Map occasion IDs to their image files
 const occasionImages: Record<string, string> = {
@@ -72,48 +72,48 @@ const flowerTips = [
 
       <div class="occasions-grid">
         {occasions.map((occasion) => {
-          const imageUrl = occasionImages[occasion.data.occasion_id] || '/images/hero-flowers-bright.jpg';
+          const imageUrl = occasionImages[occasion.data.base.id] || '/images/hero-flowers-bright.jpg';
           return (
             <div class="occasion-card">
               <img
                 src={imageUrl}
-                alt={`${occasion.data.occasion_name} flower arrangements`}
+                alt={`${occasion.data.base.name} flower arrangements`}
                 loading="lazy"
                 class="occasion-image"
               />
               <div class="occasion-content">
                 <div class="occasion-header">
                   <h3>
-                    <a href={`/occasions/${occasion.data.occasion_id}`}>
-                      {occasion.data.occasion_name}
+                    <a href={`/occasions/${occasion.data.base.id}`}>
+                      {occasion.data.base.name}
                     </a>
                   </h3>
-                  {occasion.data.seasonal && (
+                  {occasion.data.base.seasonal && (
                     <span class="seasonal-badge">Seasonal</span>
                   )}
                 </div>
 
-              <p class="occasion-description">{occasion.data.description}</p>
+              <p class="occasion-description">{occasion.data.base.description}</p>
 
-              {occasion.data.recommended_flowers && occasion.data.recommended_flowers.length > 0 && (
+              {occasion.data.recommendations.flowers && occasion.data.recommendations.flowers.length > 0 && (
                 <div class="recommended-flowers">
                   <h4>Popular Flowers:</h4>
                   <ul>
-                    {occasion.data.recommended_flowers.slice(0, 3).map((flower) => (
+                    {occasion.data.recommendations.flowers.slice(0, 3).map((flower) => (
                       <li>{flower.flower}</li>
                     ))}
                   </ul>
                 </div>
               )}
 
-              {occasion.data.budget_guide && (
+              {occasion.data.recommendations.budget_guide && (
                 <div class="budget-preview">
                   <span class="budget-label">From</span>
-                  <span class="budget-amount">{occasion.data.budget_guide.budget_friendly}</span>
+                  <span class="budget-amount">{occasion.data.recommendations.budget_guide.budget_friendly}</span>
                 </div>
               )}
 
-              <a href={`/occasions/${occasion.data.occasion_id}`} class="occasion-cta">
+              <a href={`/occasions/${occasion.data.base.id}`} class="occasion-cta">
                 View Complete Guide →
               </a>
             </div>

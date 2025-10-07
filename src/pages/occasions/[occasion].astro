@@ -8,7 +8,7 @@ export const prerender = true;
 export async function getStaticPaths() {
   const occasions = await getCollection('occasions');
   return occasions.map((occasion) => ({
-    params: { occasion: occasion.data.occasion_id },
+    params: { occasion: occasion.data.base.id },
     props: { occasion },
   }));
 }

@@ -1,27 +1,35 @@
 ---
-title: "Graduation Flowers 2025 - Celebration Bouquets"
-description: "Celebrate academic achievement with beautiful flowers. Best graduation bouquets and gift ideas."
-occasion_id: "graduation"
-occasion_name: "Graduation Flowers"
-hero_image: "/images/graduation-flowers.jpg"
-seasonal: true
-typical_date: "May-July"
-recommended_services:
+base:
+  id: "graduation"
+  name: "Graduation Flowers"
+  title: "Graduation Flowers 2025 - Celebration Bouquets"
+  description: "Celebrate academic achievement with beautiful flowers. Best graduation bouquets and gift ideas."
+  hero_image: "/images/graduation-flowers.jpg"
+  seasonal: true
+  typical_date: "May-July"
+
+seo:
+  keywords: "graduation flowers, congratulations flowers, graduation gift"
+
+recommendations:
+  services:
   - "interflora"
   - "prestige-flowers"
   - "bloom-wild"
-recommended_flowers:
+  flowers:
   - flower: "Sunflowers"
     reason: "Bright celebration of achievement"
   - flower: "Roses"
     reason: "Classic congratulations flowers"
   - flower: "Mixed Bold Bouquets"
     reason: "Colorful and celebratory"
-budget_guide:
-  budget_friendly: "Prestige Flowers - from £19.99"
-  mid_range: "Bloom & Wild - £30-£50"
-  luxury: "Interflora - £50-£100"
-stats:
+  budget_guide:
+    budget_friendly: "Prestige Flowers - from £19.99"
+    mid_range: "Bloom & Wild - £30-£50"
+    luxury: "Interflora - £50-£100"
+
+components:
+  stats:
   - value: "7-10 days"
     label: "Average Vase Life"
     icon: "🎓"
@@ -40,7 +48,7 @@ stats:
   - value: "May-July"
     label: "Peak Season"
     icon: "📚"
-flower_recommendations:
+  flower_recommendations:
   - icon: "🎓"
     recipient: "University Graduates"
     description: "Sophisticated arrangements celebrating degree achievements"
@@ -65,7 +73,7 @@ flower_recommendations:
     flowers: ["Roses", "Modern Mixed", "Statement Blooms"]
     colors: ["Professional", "Impressive", "Confident"]
     priceRange: "£35-£80"
-color_meanings:
+  color_meanings:
   - color: "Yellow"
     hex: "#eab308"
     meaning: "Achievement and joy"
@@ -91,7 +99,7 @@ color_meanings:
     meaning: "Success and dignity"
     emotions: ["Achievement", "Elegance", "Honor"]
     bestFor: "Advanced degrees"
-seasonal_guide:
+  seasonal_guide:
   - season: "Spring"
     icon: "🌷"
     months: "March - May"
@@ -120,7 +128,7 @@ seasonal_guide:
     availability: "Good"
     pricing: "Variable"
     tips: ["December graduation ceremonies", "Choose hardy varieties"]
-service_features:
+  service_features:
   - icon: "🏆"
     title: "Interflora - Premium Choice"
     description: "Best for ceremony-day delivery during peak graduation season. Extensive florist network ensures reliable delivery even when demand surges in May-July. Same-day delivery available for last-minute celebrations. Price range: £30-£100."
@@ -133,7 +141,9 @@ service_features:
   - icon: "🎓"
     title: "Flowerbx - Luxury Choice"
     description: "Best for postgraduate degrees and significant achievements. Exceptional quality seasonal blooms in sophisticated arrangements that honor advanced qualifications and career milestones. Premium presentation. Price range: £45-£120."
-delivery_locations:
+
+tabs:
+  delivery_locations:
   - location: "Home Delivery (Before Ceremony)"
     tips:
       - "Ensure delivery 2-4 hours before ceremony starts"
@@ -149,7 +159,7 @@ delivery_locations:
       - "Contact venue 1 week in advance"
       - "Confirm delivery acceptance and timing"
       - "Coordinate with restaurant for table presentation"
-gift_enhancements:
+  gift_enhancements:
   - item: "Champagne/Prosecco"
     description: "Celebrate achievement appropriately (if graduate is 18+)"
     priceRange: "£15-£35"
@@ -165,7 +175,7 @@ gift_enhancements:
   - item: "Keepsakes"
     description: "Personalized frames, engraved pens, or professional accessories"
     priceRange: "£15-£50"
-card_messages:
+  card_messages:
   - recipient: "Son/Daughter"
     message: "Congratulations on your graduation! We're so incredibly proud of everything you've achieved. Here's to your bright future! Love always, Mum & Dad xxx"
   - recipient: "Sibling"
@@ -178,7 +188,7 @@ card_messages:
     message: "Congratulations, my love! So proud of everything you've accomplished. Your hard work and dedication inspire me. Here's to your brilliant future! All my love, [Name] xxx"
   - recipient: "Colleague/Employee"
     message: "Congratulations on your graduation! Your dedication to both work and studies is admirable. Wishing you continued success. Best wishes, [Name/Company]"
-special_scenarios:
+  special_scenarios:
   - title: "School Leavers (GCSEs, A-Levels)"
     icon: "📚"
     tips:
@@ -207,14 +217,13 @@ special_scenarios:
       - "Budget £30-£50 each for multiple celebrations"
       - "Consider letterbox options for convenience"
       - "Stagger delivery addresses to help routing"
-cost_saving_tips:
+  cost_saving_tips:
   - "Order 1-2 weeks early before peak graduation demand drives prices up"
   - "Consider day-before delivery to avoid ceremony-day premium charges"
   - "Choose seasonal flowers like sunflowers (May-September) for better value"
   - "Sign up for service newsletters for 10-15% off promotional codes"
   - "Letterbox flowers often cheaper than hand-tied arrangements"
   - "Avoid overly large bouquets - graduates must carry them all day"
-keywords: "graduation flowers, congratulations flowers, graduation gift"
 ---
 
 ## Celebrating Academic Achievement with Flowers

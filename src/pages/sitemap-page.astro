@@ -5,8 +5,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 const services = await getCollection('services');
 const occasions = await getCollection('occasions');
 
-const sortedServices = services.sort((a, b) => b.data.rating - a.data.rating);
-const sortedOccasions = occasions.sort((a, b) => a.data.occasion_name.localeCompare(b.data.occasion_name));
+const sortedServices = services.sort((a, b) => b.data.base.rating - a.data.base.rating);
+const sortedOccasions = occasions.sort((a, b) => a.data.base.name.localeCompare(b.data.base.name));
 ---
 
 <BaseLayout
@@ -42,8 +42,8 @@ const sortedOccasions = occasions.sort((a, b) => a.data.occasion_name.localeComp
           <ul class="space-y-2">
             {sortedServices.map((service) => (
               <li>
-                <a href={`/services/${service.data.service_id}`} class="text-florize-green hover:underline">
-                  {service.data.service_name}
+                <a href={`/services/${service.data.base.id}`} class="text-florize-green hover:underline">
+                  {service.data.base.name}
                 </a>
               </li>
             ))}
@@ -56,8 +56,8 @@ const sortedOccasions = occasions.sort((a, b) => a.data.occasion_name.localeComp
           <ul class="space-y-2">
             {sortedOccasions.map((occasion) => (
               <li>
-                <a href={`/occasions/${occasion.data.occasion_id}`} class="text-florize-green hover:underline">
-                  {occasion.data.occasion_name}
+                <a href={`/occasions/${occasion.data.base.id}`} class="text-florize-green hover:underline">
+                  {occasion.data.base.name}
                 </a>
               </li>
             ))}

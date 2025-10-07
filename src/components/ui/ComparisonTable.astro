@@ -11,13 +11,13 @@ const { services, maxServices = 5 } = Astro.props;
 
 // Sort by rating and limit
 const topServices = services
-  .sort((a, b) => b.data.rating - a.data.rating)
+  .sort((a, b) => b.data.base.rating - a.data.base.rating)
   .slice(0, maxServices);
 
 // Fetch affiliate links for all services
 const servicesWithAffiliates = await Promise.all(
   topServices.map(async (service) => {
-    const affiliateUrl = await getAffiliateLink(service.data.service_id) || service.data.affiliate_url || '#';
+    const affiliateUrl = await getAffiliateLink(service.data.base.id) || service.data.affiliate?.url || '#';
     return { service, affiliateUrl };
   })
 );
@@ -41,41 +41,41 @@ const servicesWithAffiliates = await Promise.all(
           <td>
             <div class="service-info">
               <img
-                src={service.data.logo_path}
-                alt={`${service.data.service_name} flower arrangement`}
+                src={service.data.base.logo_path}
+                alt={`${service.data.base.name} flower arrangement`}
               />
               <div>
-                <h4>{service.data.service_name}</h4>
-                {service.data.winner_badge && (
-                  <span class="winner-badge">{service.data.winner_badge}</span>
+                <h4>{service.data.base.name}</h4>
+                {service.data.base.winner_badge && (
+                  <span class="winner-badge">{service.data.base.winner_badge}</span>
                 )}
               </div>
             </div>
           </td>
-          <td>{service.data.price_range}</td>
+          <td>{service.data.base.price_range}</td>
           <td>
-            {service.data.delivery_options.slice(0, 2).map((option, i) => (
+            {service.data.base.delivery_options.slice(0, 2).map((option, i) => (
               <Fragment>
                 {option}
-                {i < Math.min(service.data.delivery_options.length - 1, 1) && <br />}
+                {i < Math.min(service.data.base.delivery_options.length - 1, 1) && <br />}
               </Fragment>
             ))}
           </td>
           <td>
-            {service.data.key_features.slice(0, 2).map((feature, i) => (
+            {service.data.base.key_features.slice(0, 2).map((feature, i) => (
               <Fragment>
                 {feature}
-                {i < Math.min(service.data.key_features.length - 1, 1) && <br />}
+                {i < Math.min(service.data.base.key_features.length - 1, 1) && <br />}
               </Fragment>
             ))}
           </td>
           <td>
-            <span class="rating-stars">⭐⭐⭐⭐⭐</span>{service.data.rating}/5
+            <span class="rating-stars">⭐⭐⭐⭐⭐</span>{service.data.base.rating}/5
           </td>
           <td>
             <div class="table-cta-group">
               <a
-                href={`/services/${service.data.service_id}`}
+                href={`/services/${service.data.base.id}`}
                 class="cta-button secondary"
               >
                 Read Review
@@ -87,7 +87,7 @@ const servicesWithAffiliates = await Promise.all(
                   target="_blank"
                   rel="nofollow sponsored"
                 >
-                  Visit {service.data.service_name}
+                  Visit {service.data.base.name}
                 </a>
               </div>
             </div>

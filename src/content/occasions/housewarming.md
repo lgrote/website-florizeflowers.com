@@ -1,26 +1,34 @@
 ---
-title: "Housewarming Flowers 2025 - New Home Gifts"
-description: "Welcome friends to their new home with beautiful flowers. Best housewarming bouquets and delivery."
-occasion_id: "housewarming"
-occasion_name: "Housewarming Flowers"
-hero_image: "/images/housewarming-flowers.jpg"
-seasonal: false
-recommended_services:
+base:
+  id: "housewarming"
+  name: "Housewarming Flowers"
+  title: "Housewarming Flowers 2025 - New Home Gifts"
+  description: "Welcome friends to their new home with beautiful flowers. Best housewarming bouquets and delivery."
+  hero_image: "/images/housewarming-flowers.jpg"
+  seasonal: false
+
+seo:
+  keywords: "housewarming flowers, new home flowers, housewarming gift"
+
+recommendations:
+  services:
   - "bloom-wild"
   - "interflora"
   - "real-flower-company"
-recommended_flowers:
+  flowers:
   - flower: "Potted Plants"
     reason: "Long-lasting gift for new home"
   - flower: "Mixed Bouquets"
     reason: "Colorful welcome to new space"
   - flower: "Orchids"
     reason: "Elegant and easy-care for busy movers"
-budget_guide:
-  budget_friendly: "Prestige Flowers - from £19.99"
-  mid_range: "Bloom & Wild - £30-£50"
-  luxury: "Real Flower Company - £60-£100"
-stats:
+  budget_guide:
+    budget_friendly: "Prestige Flowers - from £19.99"
+    mid_range: "Bloom & Wild - £30-£50"
+    luxury: "Real Flower Company - £60-£100"
+
+components:
+  stats:
   - value: "Months-Years"
     label: "Potted Plant Life"
     icon: "🪴"
@@ -39,7 +47,7 @@ stats:
   - value: "Year-round"
     label: "Season"
     icon: "🏡"
-flower_recommendations:
+  flower_recommendations:
   - icon: "🪴"
     recipient: "New Homeowners"
     description: "Long-lasting potted plants symbolizing growth and new beginnings"
@@ -64,7 +72,7 @@ flower_recommendations:
     flowers: ["Indoor Trees", "Luxury Plants", "Statement Arrangements"]
     colors: ["Impressive", "Elegant", "Memorable"]
     priceRange: "£60-£150"
-color_meanings:
+  color_meanings:
   - color: "Green"
     hex: "#22c55e"
     meaning: "Growth and new beginnings"
@@ -90,7 +98,7 @@ color_meanings:
     meaning: "Luxury and sophistication"
     emotions: ["Elegant", "Refined", "Special"]
     bestFor: "Premium new homes"
-seasonal_guide:
+  seasonal_guide:
   - season: "Spring"
     icon: "🌷"
     months: "March - May"
@@ -119,7 +127,7 @@ seasonal_guide:
     availability: "Good"
     pricing: "Variable"
     tips: ["Year-round indoor options", "Low-maintenance choices"]
-service_features:
+  service_features:
   - icon: "📮"
     title: "Bloom & Wild - Modern Choice"
     description: "Best for move-in day delivery when homeowners can't answer doors. Letterbox flowers arrive safely without coordination stress. Contemporary designs suit modern homes. Includes potted plant options. Price range: £25-£50."
@@ -132,7 +140,9 @@ service_features:
   - icon: "💰"
     title: "Prestige Flowers - Value Choice"
     description: "Best for multiple housewarming gifts or budget-conscious celebrations. Quality bouquets and affordable potted plants from £19.99. Practical options like herb gardens combine beauty with usefulness. Price range: £19.99-£45."
-delivery_locations:
+
+tabs:
+  delivery_locations:
   - location: "Move-In Day (Letterbox)"
     tips:
       - "Flowers greet homeowners immediately without coordination stress"
@@ -148,7 +158,7 @@ delivery_locations:
       - "Bring potted plants that don't require immediate arranging"
       - "Choose arrangements that complement their decor style"
       - "Coordinate delivery before party if not attending in person"
-gift_enhancements:
+  gift_enhancements:
   - item: "Wine/Champagne"
     description: "Nice bottle to celebrate new home milestone"
     priceRange: "£15-£40"
@@ -164,7 +174,7 @@ gift_enhancements:
   - item: "Artisan Food Hamper"
     description: "Premium treats for celebrating or unpacking snacks"
     priceRange: "£40-£80"
-card_messages:
+  card_messages:
   - recipient: "Close Friends"
     message: "Congratulations on your new home! Wishing you lots of happiness, laughter, and wonderful memories in your beautiful new space. Love, [Names] xxx"
   - recipient: "Family"
@@ -173,7 +183,7 @@ card_messages:
     message: "Congratulations on your new home! Wishing you all the best as you settle in. Best wishes from [Name/Department]"
   - recipient: "Neighbors"
     message: "Welcome to the neighborhood! We're delighted to have you as neighbors. Looking forward to getting to know you. Warm wishes, [Names]"
-special_scenarios:
+  special_scenarios:
   - title: "First Home Purchase"
     icon: "🏡"
     tips:
@@ -202,14 +212,13 @@ special_scenarios:
       - "Send 1-2 weeks after move when loneliness may surface"
       - "Shows ongoing care despite distance"
       - "Include heartfelt card acknowledging big life change"
-cost_saving_tips:
+  cost_saving_tips:
   - "Potted plants cost slightly more initially but last months/years vs 5-7 days for cut flowers"
   - "Letterbox flowers (£25-£35) often cheaper than florist arrangements"
   - "Order mid-week delivery to avoid weekend premium charges"
   - "Herb gardens (£20-£35) are practical, affordable, and useful immediately"
   - "Succulent collections (£15-£40) are budget-friendly and virtually indestructible"
   - "Combine flowers with homemade treats or offers of practical help (unpacking, meals)"
-keywords: "housewarming flowers, new home flowers, housewarming gift"
 ---
 
 ## Welcoming Friends to Their New Home

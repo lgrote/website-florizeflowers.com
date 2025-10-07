@@ -1,27 +1,35 @@
 ---
-title: "Valentine's Day Flowers 2025 - Romantic Delivery Guide"
-description: "Expert guide to Valentine's flowers. Romantic bouquets, last-minute options, and best services."
-occasion_id: "valentines-day"
-occasion_name: "Valentine's Day Flowers"
-hero_image: "/images/valentines-day-flowers.jpg"
-seasonal: true
-typical_date: "February 14"
-recommended_services:
+base:
+  id: "valentines-day"
+  name: "Valentine's Day Flowers"
+  title: "Valentine's Day Flowers 2025 - Romantic Delivery Guide"
+  description: "Expert guide to Valentine's flowers. Romantic bouquets, last-minute options, and best services."
+  hero_image: "/images/valentines-day-flowers.jpg"
+  seasonal: true
+  typical_date: "February 14"
+
+seo:
+  keywords: "valentines day flowers, romantic flowers, valentines roses"
+
+recommendations:
+  services:
   - "interflora"
   - "flowerbx"
   - "bloom-wild"
-recommended_flowers:
+  flowers:
   - flower: "Red Roses"
     reason: "Ultimate symbol of romantic love"
   - flower: "Mixed Romantic Bouquets"
     reason: "Variety and color for modern romance"
   - flower: "Tulips"
     reason: "Elegant alternative to roses"
-budget_guide:
-  budget_friendly: "Prestige Flowers - from £24.99"
-  mid_range: "Bloom & Wild - £35-£60"
-  luxury: "Flowerbx - £80-£200"
-stats:
+  budget_guide:
+    budget_friendly: "Prestige Flowers - from £24.99"
+    mid_range: "Bloom & Wild - £35-£60"
+    luxury: "Flowerbx - £80-£200"
+
+components:
+  stats:
   - value: "5-10 days"
     label: "Average Vase Life"
     icon: "💝"
@@ -40,7 +48,7 @@ stats:
   - value: "2nd busiest"
     label: "Peak Season"
     icon: "❤️"
-flower_recommendations:
+  flower_recommendations:
   - icon: "💕"
     recipient: "New Relationships"
     description: "Sweet romantic arrangements without overwhelming new love"
@@ -65,7 +73,7 @@ flower_recommendations:
     flowers: ["Premium Roses", "Wedding Flowers", "Elegant Mix"]
     colors: ["Romantic", "Refined", "Meaningful"]
     priceRange: "£70-£150"
-color_meanings:
+  color_meanings:
   - color: "Red"
     hex: "#dc2626"
     meaning: "Passionate romantic love"
@@ -91,7 +99,7 @@ color_meanings:
     meaning: "Layered love and joy"
     emotions: ["Passionate", "Joyful", "Romantic"]
     bestFor: "Modern romantic expressions"
-seasonal_guide:
+  seasonal_guide:
   - season: "Spring"
     icon: "🌷"
     months: "March - May"
@@ -120,7 +128,7 @@ seasonal_guide:
     availability: "Good"
     pricing: "Premium"
     tips: ["Peak Valentine's season", "Order 1-2 weeks early"]
-service_features:
+  service_features:
   - icon: "🏆"
     title: "Interflora - Reliable Choice"
     description: "Best for guaranteed Valentine's delivery and peace of mind. Extensive UK florist network handles peak-season demand with same-day delivery until 3pm. Classic romantic bouquets arrive fresh despite busiest season. Price range: £45-£100."
@@ -133,7 +141,9 @@ service_features:
   - icon: "💰"
     title: "Prestige Flowers - Budget Choice"
     description: "Best for beautiful romance on a budget. Impressive Valentine's bouquets from £24.99 without compromising romance. Promotional offers help manage peak-season pricing. Price range: £24.99-£50."
-delivery_locations:
+
+tabs:
+  delivery_locations:
   - location: "Workplace Delivery"
     tips:
       - "Creates romantic public gesture witnessed by colleagues"
@@ -158,7 +168,7 @@ delivery_locations:
       - "Arrange flower delivery to restaurant for table presentation"
       - "Perfect for milestone Valentine's Days or proposals"
       - "Remember to take flowers home afterward"
-gift_enhancements:
+  gift_enhancements:
   - item: "Champagne/Prosecco"
     description: "Romantic celebration essential, quality over quantity"
     priceRange: "£25-£70"
@@ -171,7 +181,7 @@ gift_enhancements:
   - item: "Romantic Experiences"
     description: "Spa days, restaurant vouchers, weekend getaways, concert tickets"
     priceRange: "£50-£500+"
-card_messages:
+  card_messages:
   - recipient: "New Relationships"
     message: "Happy Valentine's Day! Every moment with you is special. So grateful to have you in my life. xxx"
   - recipient: "Established Relationships"
@@ -184,7 +194,7 @@ card_messages:
     message: "Happy Valentine's Day! You're still stuck with me for another year. Lucky you! Love you loads! xxx"
   - recipient: "Deeply Romantic"
     message: "My darling, you are my everything - my first thought each morning and my last each night. Happy Valentine's Day to the one who holds my heart completely. All my love forever, [Name] xxx"
-special_scenarios:
+  special_scenarios:
   - title: "Ordering Timeline Critical"
     icon: "📅"
     tips:
@@ -206,14 +216,13 @@ special_scenarios:
       - "Established (1-5 years): Classic dozen red roses (£45-£80) showing continued romance"
       - "Long-term (5+ years): Luxury roses/orchids (£80-£150) reaffirming deep love"
       - "Marriage: Premium arrangements (£70-£150) honoring commitment"
-cost_saving_tips:
+  cost_saving_tips:
   - "Order by February 7th for pre-peak pricing and full selection"
   - "2-3 weeks advance ordering (Jan 25-Feb 1) gets early-bird promotional offers"
   - "Consider letterbox roses from Bloom & Wild for value (£28-£40)"
   - "Prestige Flowers offers romantic bouquets from £24.99 with promotions"
   - "Sign up for newsletters in January for first-order discounts"
   - "Pair mid-range flowers (£45-£65) with chocolates/champagne under £100 total"
-keywords: "valentines day flowers, romantic flowers, valentines roses"
 ---
 
 ## Valentine's Day 2025 - Critical Planning

@@ -14,11 +14,11 @@ const { service } = Astro.props;
 ---
 
 <Card className="flex flex-col h-full overflow-hidden p-0">
-  {service.data.hero_image && (
+  {service.data.base.hero_image && (
     <div class="service-card-image">
       <OptimizedImage
-        src={service.data.hero_image}
-        alt={`${service.data.service_name} flowers`}
+        src={service.data.base.hero_image}
+        alt={`${service.data.base.name} flowers`}
         width={400}
         height={200}
         loading="lazy"
@@ -26,9 +26,9 @@ const { service } = Astro.props;
         quality={80}
         class="w-full h-full object-cover"
       />
-      {service.data.winner_badge && (
+      {service.data.base.winner_badge && (
         <div class="badge-overlay">
-          <Badge text={service.data.winner_badge} variant="winner" size="sm" />
+          <Badge text={service.data.base.winner_badge} variant="winner" size="sm" />
         </div>
       )}
     </div>
@@ -37,31 +37,31 @@ const { service } = Astro.props;
   <div class="p-6 flex flex-col flex-grow">
     <div class="flex items-start justify-between mb-4">
       <h2 class="text-2xl font-bold text-florize-green">
-        {service.data.service_name}
+        {service.data.base.name}
       </h2>
-      {!service.data.hero_image && service.data.winner_badge && (
-        <Badge text={service.data.winner_badge} variant="winner" size="sm" />
+      {!service.data.base.hero_image && service.data.base.winner_badge && (
+        <Badge text={service.data.base.winner_badge} variant="winner" size="sm" />
       )}
     </div>
 
     <div class="flex items-center gap-2 mb-4">
-      <RatingStars rating={service.data.rating} size="md" />
-      <span class="font-bold text-gray-800">{service.data.rating}/5</span>
+      <RatingStars rating={service.data.base.rating} size="md" />
+      <span class="font-bold text-gray-800">{service.data.base.rating}/5</span>
     </div>
 
     <p class="text-gray-700 mb-4 flex-grow">
-      {service.data.description}
+      {service.data.base.description}
     </p>
 
     <div class="mb-4">
       <div class="text-sm text-gray-600 mb-1">Price Range</div>
-      <div class="font-semibold text-florize-green">{service.data.price_range}</div>
+      <div class="font-semibold text-florize-green">{service.data.base.price_range}</div>
     </div>
 
     <div class="flex flex-col gap-2">
-      {service.data.affiliate_url && (
+      {service.data.affiliate?.url && (
         <Button
-          href={service.data.affiliate_url}
+          href={service.data.affiliate.url}
           variant="primary"
           size="md"
           text="Visit Service →"
@@ -71,8 +71,8 @@ const { service } = Astro.props;
         />
       )}
       <Button
-        href={`/services/${service.data.service_id}`}
-        variant={service.data.affiliate_url ? "secondary" : "primary"}
+        href={`/services/${service.data.base.id}`}
+        variant={service.data.affiliate?.url ? "secondary" : "primary"}
         size="md"
         text="Read Full Review"
         className="w-full text-center"

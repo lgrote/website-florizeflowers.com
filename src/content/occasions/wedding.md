@@ -1,26 +1,34 @@
 ---
-title: "Wedding Flowers Guide 2025 - Expert Recommendations"
-description: "Complete guide to wedding flowers. Bridal bouquets, centerpieces, and florist recommendations."
-occasion_id: "wedding"
-occasion_name: "Wedding Flowers"
-hero_image: "/images/wedding-flowers.jpg"
-seasonal: false
-recommended_services:
+base:
+  id: "wedding"
+  name: "Wedding Flowers"
+  title: "Wedding Flowers Guide 2025 - Expert Recommendations"
+  description: "Complete guide to wedding flowers. Bridal bouquets, centerpieces, and florist recommendations."
+  hero_image: "/images/wedding-flowers.jpg"
+  seasonal: false
+
+seo:
+  keywords: "wedding flowers, bridal bouquet, wedding florist uk"
+
+recommendations:
+  services:
   - "wild-at-heart"
   - "real-flower-company"
   - "interflora"
-recommended_flowers:
+  flowers:
   - flower: "Peonies"
     reason: "Romantic and lush for bridal bouquets"
   - flower: "Garden Roses"
     reason: "Classic elegance for all wedding styles"
   - flower: "Eucalyptus"
     reason: "Perfect greenery for modern arrangements"
-budget_guide:
-  budget_friendly: "DIY with wholesale suppliers - £200+"
-  mid_range: "Local florist - £500-£1500"
-  luxury: "Wild at Heart or designer florist - £2000+"
-stats:
+  budget_guide:
+    budget_friendly: "DIY with wholesale suppliers - £200+"
+    mid_range: "Local florist - £500-£1500"
+    luxury: "Wild at Heart or designer florist - £2000+"
+
+components:
+  stats:
   - value: "Event day"
     label: "Average Vase Life"
     icon: "💐"
@@ -39,7 +47,7 @@ stats:
   - value: "8-10% budget"
     label: "Wedding Budget"
     icon: "💒"
-flower_recommendations:
+  flower_recommendations:
   - icon: "👰"
     recipient: "Bridal Bouquets"
     description: "Stunning hand-tied arrangements for the bride"
@@ -64,7 +72,7 @@ flower_recommendations:
     flowers: ["Mixed Seasonal", "Elegant Blooms", "Styled Arrangements"]
     colors: ["Theme Colors", "Romantic", "Coordinated"]
     priceRange: "£30-£200 each"
-color_meanings:
+  color_meanings:
   - color: "White"
     hex: "#ffffff"
     meaning: "Purity and new beginnings"
@@ -90,7 +98,7 @@ color_meanings:
     meaning: "Soft romance"
     emotions: ["Gentle", "Dreamy", "Romantic"]
     bestFor: "Spring and summer weddings"
-seasonal_guide:
+  seasonal_guide:
   - season: "Spring"
     icon: "🌷"
     months: "March - May"
@@ -119,7 +127,7 @@ seasonal_guide:
     availability: "Good"
     pricing: "Variable"
     tips: ["Dramatic winter blooms", "Premium for out-of-season flowers"]
-service_features:
+  service_features:
   - icon: "✨"
     title: "Wild at Heart - Designer Choice"
     description: "Best for luxury weddings and bespoke designs. London's premier wedding florist creates stunning installations and couture bridal bouquets. Exceptional creativity and quality for unforgettable floral statements. Price range: £2,000-£10,000+."
@@ -132,7 +140,9 @@ service_features:
   - icon: "🌿"
     title: "Local Wedding Florist - Personal Choice"
     description: "Best for personalized service and budget flexibility. Local expertise understanding regional venues and seasonal availability. Build relationships through consultations creating perfect wedding vision. Price range: £500-£2,500."
-delivery_locations:
+
+tabs:
+  delivery_locations:
   - location: "Ceremony Venue"
     tips:
       - "Confirm venue access times for florist setup (typically 2-6 hours before)"
@@ -151,7 +161,7 @@ delivery_locations:
       - "Designated person coordinates flower distribution"
       - "Photograph all arrangements before ceremony begins"
       - "Keep bouquets in water until last moment"
-gift_enhancements:
+  gift_enhancements:
   - item: "Bouquet Preservation"
     description: "Freeze drying maintains 3D shape and color in glass dome"
     priceRange: "£150-£400"
@@ -167,7 +177,7 @@ gift_enhancements:
   - item: "Petal Confetti"
     description: "Natural biodegradable alternative to paper confetti"
     priceRange: "£3-£8 per liter"
-card_messages:
+  card_messages:
   - recipient: "Bride to Groom"
     message: "To my forever love - I can't wait to marry you today and spend the rest of my life by your side. All my love, always."
   - recipient: "Groom to Bride"
@@ -176,7 +186,7 @@ card_messages:
     message: "Thank you for your endless love, support, and for helping make our wedding day perfect. We love you so much."
   - recipient: "Bridal Party Thank You"
     message: "Thank you for standing by our side today and always. Your friendship means the world to us. With love and gratitude."
-special_scenarios:
+  special_scenarios:
   - title: "Budget Management"
     icon: "💷"
     tips:
@@ -198,7 +208,7 @@ special_scenarios:
       - "Photograph all arrangements before guests arrive"
       - "Keep bouquets in water until last possible moment"
       - "Arrange preservation service pickup if preserving bridal bouquet"
-cost_saving_tips:
+  cost_saving_tips:
   - "Choose in-season flowers (40-60% cheaper than out-of-season imports)"
   - "Repurpose ceremony flowers at reception venue for dual impact"
   - "Mix few luxury blooms with abundant affordable greenery (eucalyptus, ferns)"
@@ -208,7 +218,6 @@ cost_saving_tips:
   - "Single-variety centerpieces (bunches of roses or tulips) create impact affordably"
   - "Potted plants or herbs as centerpieces double as guest favors"
   - "Borrow or rent vases instead of purchasing dozens"
-keywords: "wedding flowers, bridal bouquet, wedding florist uk"
 ---
 
 ## Planning Your Wedding Flowers
