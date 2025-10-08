@@ -54,6 +54,21 @@ export default defineType({
               validation: (Rule) => Rule.required(),
             }),
             defineField({
+              name: 'locale',
+              title: 'Locale',
+              type: 'string',
+              description: 'Language/locale for this affiliate link (leave empty for all locales)',
+              options: {
+                list: [
+                  {title: 'All Locales (default)', value: ''},
+                  {title: 'English', value: 'en'},
+                  {title: 'German', value: 'de'},
+                ],
+                layout: 'dropdown'
+              },
+              initialValue: '',
+            }),
+            defineField({
               name: 'affiliateUrl',
               title: 'Affiliate URL',
               type: 'url',
@@ -102,11 +117,13 @@ export default defineType({
             select: {
               serviceId: 'serviceId',
               url: 'affiliateUrl',
+              locale: 'locale',
               notes: 'notes',
             },
-            prepare({serviceId, url, notes}) {
+            prepare({serviceId, url, locale, notes}) {
+              const localeLabel = locale ? ` [${locale}]` : ' [all locales]';
               return {
-                title: serviceId || 'Untitled',
+                title: `${serviceId || 'Untitled'}${localeLabel}`,
                 subtitle: notes || url || 'No URL',
               }
             },

@@ -31,6 +31,9 @@ import {
 const servicesCollection = defineCollection({
   type: 'content',
   schema: z.object({
+    // LANGUAGE: Content language
+    lang: z.enum(['en', 'de']).default('en'),
+
     // BASE: Core service information
     base: z.object({
       id: z.string(),
@@ -108,6 +111,9 @@ const servicesCollection = defineCollection({
 const occasionsCollection = defineCollection({
   type: 'content',
   schema: z.object({
+    // LANGUAGE: Content language
+    lang: z.enum(['en', 'de']).default('en'),
+
     // BASE: Core occasion information
     base: z.object({
       id: z.string(),
@@ -177,6 +183,7 @@ const occasionsCollection = defineCollection({
 const updatesCollection = defineCollection({
   type: 'content',
   schema: z.object({
+    lang: z.enum(['en', 'de']).default('en'),
     title: z.string(),
     description: z.string(),
     image: z.string(),
@@ -193,6 +200,7 @@ const updatesCollection = defineCollection({
 const pagesCollection = defineCollection({
   type: 'content',
   schema: z.object({
+    lang: z.enum(['en', 'de']).default('en'),
     title: z.string(),
     description: z.string(),
     seo: seoGroup.optional(),
@@ -246,6 +254,7 @@ const pagesCollection = defineCollection({
 const recommendationsCollection = defineCollection({
   type: 'content',
   schema: z.object({
+    lang: z.enum(['en', 'de']).default('en'),
     title: z.string(),
     description: z.string(),
     serviceId: z.string(), // Links to services collection
@@ -263,6 +272,7 @@ const recommendationsCollection = defineCollection({
 const guidesCollection = defineCollection({
   type: 'content',
   schema: z.object({
+    lang: z.enum(['en', 'de']).default('en'),
     title: z.string(),
     description: z.string(),
     category: z.string(), // e.g., "essential", "quick-tip", "seasonal"
@@ -279,9 +289,12 @@ const guidesCollection = defineCollection({
 const homepageSectionsCollection = defineCollection({
   type: 'content',
   schema: z.object({
+    lang: z.enum(['en', 'de']).default('en'),
     title: z.string(),
     description: z.string().optional(),
-    sectionType: z.string(), // "methodology", "trust-signals", "introduction", "hero"
+    sectionType: z.string(), // "methodology", "trust-signals", "introduction", "hero", "seo"
+    // For SEO section
+    keywords: z.string().optional(),
     // For sections with cards (methodology, trust-signals)
     cards: z.array(z.object({
       title: z.string(),

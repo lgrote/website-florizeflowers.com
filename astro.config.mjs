@@ -5,11 +5,26 @@ import { visualizer } from 'rollup-plugin-visualizer';
 
 export default defineConfig({
   site: 'https://florizeflowers.com',
+  i18n: {
+    defaultLocale: 'en',
+    locales: ['en', 'de'],
+    routing: {
+      prefixDefaultLocale: true, // Both languages use locale prefix (/en/ and /de/)
+    },
+  },
   integrations: [
     tailwind({
       applyBaseStyles: false
     }),
-    sitemap()
+    sitemap({
+      i18n: {
+        defaultLocale: 'en',
+        locales: {
+          en: 'en',
+          de: 'de',
+        },
+      },
+    })
   ],
   output: 'static',
   build: {
@@ -129,7 +144,7 @@ export default defineConfig({
     },
     // Optimize dependencies
     optimizeDeps: {
-      include: ['astro:content', 'astro:assets'],
+      include: [],
       exclude: [],
       esbuildOptions: {
         target: 'es2020',
