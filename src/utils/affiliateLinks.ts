@@ -2,21 +2,26 @@
 // Follows FindFerries pattern with Sanity fallback chain
 
 import { getEntry } from 'astro:content';
-import { getConfig } from '../lib/sanity';
+import { getConfig, findAffiliateLinkForLocale } from '../lib/sanity';
+import type { SupportedLanguage } from '../i18n/config';
 
 /**
  * Get the affiliate booking link for a flower service
- * Fallback chain: Sanity affiliate link → Service website → Internal link
+ * Fallback chain: Sanity affiliate link (locale-aware) → Service website → Internal link
  * @param serviceId - The ID of the flower service
+ * @param locale - Optional locale for language-specific affiliate links
  * @returns The affiliate URL or fallback URL
  */
-export async function getAffiliateLink(serviceId: string): Promise<string> {
+export async function getAffiliateLink(serviceId: string, locale?: SupportedLanguage): Promise<string> {
   try {
-    // 1. Try Sanity first for affiliate link
+    // 1. Try Sanity first for affiliate link (with locale awareness)
     const sanityConfig = await getConfig();
     if (sanityConfig && Array.isArray(sanityConfig.affiliateLinks)) {
-      const affiliateEntry = sanityConfig.affiliateLinks.find(
-        (link: any) => link.serviceId === serviceId
+      // Use helper function to find best matching link for locale
+      const affiliateEntry = findAffiliateLinkForLocale(
+        sanityConfig.affiliateLinks,
+        serviceId,
+        locale
       );
       if (affiliateEntry?.affiliateUrl) {
         return affiliateEntry.affiliateUrl;
@@ -24,34 +29,58 @@ export async function getAffiliateLink(serviceId: string): Promise<string> {
     }
 
     // 2. Fall back to service website from content collection
+    // Try to get locale-specific service entry
     try {
-      const serviceData = await getEntry('services', serviceId);
+      let entryId = serviceId;
+      if (locale) {
+        // Content collections are organized as locale/slug
+        entryId = `${locale}/${serviceId}`;
+      }
+
+      const serviceData = await getEntry('services', entryId);
       if (serviceData?.data?.affiliate_url) {
         return serviceData.data.affiliate_url;
       }
     } catch (error) {
-      console.warn(`Could not load service data for ${serviceId}`);
+      // Service entry not found - this is expected for some services
+      // Try without locale if locale-specific entry not found
+      if (locale) {
+        try {
+          const serviceData = await getEntry('services', serviceId);
+          if (serviceData?.data?.affiliate_url) {
+            return serviceData.data.affiliate_url;
+          }
+        } catch (error) {
+          // Ignore - will fall through to last resort
+        }
+      }
     }
 
-    // 3. Last resort: internal link
-    return `/services/${serviceId}`;
+    // 3. Last resort: internal link (with locale prefix if provided)
+    const prefix = locale ? `/${locale}` : '';
+    return `${prefix}/services/${serviceId}`;
   } catch (error) {
     console.warn(`Error getting affiliate link for ${serviceId}:`, error);
-    return `/services/${serviceId}`;
+    const prefix = locale ? `/${locale}` : '';
+    return `${prefix}/services/${serviceId}`;
   }
 }
 
 /**
  * Get multiple affiliate links at once
  * @param serviceIds - Array of service IDs
+ * @param locale - Optional locale for language-specific affiliate links
  * @returns Object mapping service IDs to their affiliate URLs
  */
-export async function getAffiliateLinks(serviceIds: string[]): Promise<Record<string, string>> {
+export async function getAffiliateLinks(
+  serviceIds: string[],
+  locale?: SupportedLanguage
+): Promise<Record<string, string>> {
   const links: Record<string, string> = {};
 
   // Process each service individually using the same fallback chain
   for (const serviceId of serviceIds) {
-    links[serviceId] = await getAffiliateLink(serviceId);
+    links[serviceId] = await getAffiliateLink(serviceId, locale);
   }
 
   return links;

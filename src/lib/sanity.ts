@@ -49,6 +49,7 @@ export interface AffiliateBanner {
 export interface AffiliateLink {
   serviceId: string;
   affiliateUrl: string;
+  locale?: string; // Empty string or undefined = all locales, 'en', 'de', etc.
   banner?: AffiliateBanner;
   notes?: string;
 }
@@ -87,15 +88,46 @@ export async function getConfig(): Promise<FlorizeConfig | null> {
 }
 
 /**
+ * Helper function to find the best matching affiliate link for a service and locale
+ * Priority: 1) Exact locale match, 2) All-locales link (empty locale), 3) null
+ */
+export function findAffiliateLinkForLocale(
+  links: AffiliateLink[],
+  serviceId: string,
+  locale?: string
+): AffiliateLink | null {
+  if (!links || links.length === 0) return null;
+
+  const serviceLinks = links.filter(link => link.serviceId === serviceId);
+  if (serviceLinks.length === 0) return null;
+
+  // First, try to find exact locale match
+  if (locale) {
+    const exactMatch = serviceLinks.find(link => link.locale === locale);
+    if (exactMatch) return exactMatch;
+  }
+
+  // Fall back to all-locales link (empty or undefined locale)
+  const allLocalesLink = serviceLinks.find(link => !link.locale || link.locale === '');
+  if (allLocalesLink) return allLocalesLink;
+
+  // No match found
+  return null;
+}
+
+/**
  * Get affiliate link for a specific service
  * Returns URL with tracking parameters or null
  */
-export async function getAffiliateLink(serviceId: string): Promise<string | null> {
+export async function getAffiliateLink(serviceId: string, locale?: string): Promise<string | null> {
   const config = await getConfig();
   if (!config?.affiliateLinks) return null;
 
-  const affiliate = config.affiliateLinks.find(
-    (link: any) => link.serviceId === serviceId
+  // Use helper function to find best matching link for locale
+  const affiliate = findAffiliateLinkForLocale(
+    config.affiliateLinks,
+    serviceId,
+    locale
   );
 
   return affiliate?.affiliateUrl || null;
@@ -104,18 +136,25 @@ export async function getAffiliateLink(serviceId: string): Promise<string | null
 /**
  * Get enabled affiliate banners
  * @param serviceId - Optional filter for specific service
+ * @param locale - Optional locale filter
  */
 export async function getAffiliateBanners(
-  serviceId?: string
+  serviceId?: string,
+  locale?: string
 ): Promise<{ serviceId: string; htmlCode: string; description?: string }[]> {
   const config = await getConfig();
   if (!config?.affiliateLinks) return [];
 
   return config.affiliateLinks
     .filter((link: any) => {
+      // Must have banner configured with code
       if (!link.banner?.code) return false;
+      // Banner must be enabled
       if (link.banner.enabled === false) return false;
+      // If serviceId specified, filter to that service
       if (serviceId && link.serviceId !== serviceId) return false;
+      // Locale filtering: match specific locale or links with no locale (all locales)
+      if (locale && link.locale && link.locale !== locale) return false;
       return true;
     })
     .map((link: any) => ({
