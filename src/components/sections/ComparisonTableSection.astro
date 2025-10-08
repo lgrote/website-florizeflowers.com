@@ -2,33 +2,40 @@
 import ComparisonTable from '../ui/ComparisonTable.astro';
 import Button from '../ui/Button.astro';
 import type { CollectionEntry } from 'astro:content';
+import type { SupportedLanguage } from '../../i18n/config';
+import { t } from '../../i18n/translations';
 
 export interface Props {
   services: CollectionEntry<'services'>[];
   heading?: string;
   maxServices?: number;
   showViewAllButton?: boolean;
+  lang?: SupportedLanguage;
 }
 
 const {
   services,
-  heading = "Top UK Flower Delivery Services - Expert Comparison 2025",
+  heading,
   maxServices = 5,
-  showViewAllButton = true
+  showViewAllButton = true,
+  lang = 'en' as SupportedLanguage
 } = Astro.props;
+
+const sectionHeading = heading || t(lang, 'homepage.comparisonHeading');
+const buttonText = t(lang, 'homepage.viewAllServices');
 ---
 
 <section id="comparison" class="section-padding bg-cream-white">
   <div class="container">
     <h2 class="text-3xl font-bold text-florize-green mb-8 text-center">
-      {heading}
+      {sectionHeading}
     </h2>
 
     <ComparisonTable services={services} maxServices={maxServices} />
 
     {showViewAllButton && (
       <div class="text-center mt-8">
-        <Button href="/services" variant="primary" size="lg" text="View All Service Reviews" />
+        <Button href={`/${lang}/services`} variant="primary" size="lg" text={buttonText} />
       </div>
     )}
   </div>

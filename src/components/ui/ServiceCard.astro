@@ -5,12 +5,14 @@ import RatingStars from './RatingStars.astro';
 import Badge from './Badge.astro';
 import Button from './Button.astro';
 import OptimizedImage from './OptimizedImage.astro';
+import { t } from '../../i18n/translations';
 
 export interface Props {
   service: CollectionEntry<'services'>;
 }
 
 const { service } = Astro.props;
+const lang = service.data.lang;
 ---
 
 <Card className="flex flex-col h-full overflow-hidden p-0">
@@ -54,7 +56,7 @@ const { service } = Astro.props;
     </p>
 
     <div class="mb-4">
-      <div class="text-sm text-gray-600 mb-1">Price Range</div>
+      <div class="text-sm text-gray-600 mb-1">{t(lang, 'table.priceRange')}</div>
       <div class="font-semibold text-florize-green">{service.data.base.price_range}</div>
     </div>
 
@@ -64,17 +66,17 @@ const { service } = Astro.props;
           href={service.data.affiliate.url}
           variant="primary"
           size="md"
-          text="Visit Service →"
+          text={`${t(lang, 'buttons.visitService')} →`}
           className="w-full text-center"
           target="_blank"
           rel="noopener noreferrer"
         />
       )}
       <Button
-        href={`/services/${service.data.base.id}`}
+        href={`/${lang}/services/${service.data.base.id}`}
         variant={service.data.affiliate?.url ? "secondary" : "primary"}
         size="md"
-        text="Read Full Review"
+        text={t(lang, 'buttons.readReview')}
         className="w-full text-center"
       />
     </div>

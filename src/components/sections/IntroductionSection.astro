@@ -1,20 +1,27 @@
 ---
-import { getEntry } from 'astro:content';
+import { getCollection } from 'astro:content';
+import type { SupportedLanguage } from '../../i18n/config';
 
 export interface Props {
   heading?: string;
   paragraphs?: string[];
+  lang?: SupportedLanguage;
 }
 
 const {
   heading,
-  paragraphs
+  paragraphs,
+  lang = 'en' as SupportedLanguage
 } = Astro.props;
 
 // Read from collection if props are not provided
-const introductionData = await getEntry('homepage-sections', 'introduction');
-const sectionHeading = heading || introductionData.data.title;
-const sectionParagraphs = paragraphs || introductionData.data.paragraphs || [];
+const allSections = await getCollection('homepage-sections');
+const introductionData = allSections.find(section =>
+  section.data.sectionType === 'introduction' && section.data.lang === lang
+);
+
+const sectionHeading = heading || introductionData?.data.title || 'About Us';
+const sectionParagraphs = paragraphs || introductionData?.data.paragraphs || [];
 ---
 
 <section id="about" class="section-padding">

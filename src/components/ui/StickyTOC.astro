@@ -1,4 +1,8 @@
 ---
+import type { SupportedLanguage } from '../../i18n/config';
+import { getLanguageFromUrl } from '../../i18n/utils';
+import { t } from '../../i18n/translations';
+
 export interface TOCItem {
   id: string;
   text: string;
@@ -7,9 +11,11 @@ export interface TOCItem {
 
 export interface Props {
   items: TOCItem[];
+  lang?: SupportedLanguage;
 }
 
-const { items } = Astro.props;
+const { items, lang: propLang } = Astro.props;
+const lang: SupportedLanguage = propLang || (Astro.currentLocale as SupportedLanguage) || getLanguageFromUrl(Astro.url);
 ---
 
 <aside class="sticky-toc" id="sticky-toc">
@@ -17,11 +23,11 @@ const { items } = Astro.props;
     <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
       <path d="M3 4h14M3 10h14M3 16h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
     </svg>
-    <span>Table of Contents</span>
+    <span>{t(lang, 'toc.toggle')}</span>
   </div>
 
   <nav class="toc-nav" id="toc-nav">
-    <h3 class="toc-title">On This Page</h3>
+    <h3 class="toc-title">{t(lang, 'toc.title')}</h3>
     <ul class="toc-list">
       {items.map((item) => (
         <li class={`toc-item level-${item.level}`}>

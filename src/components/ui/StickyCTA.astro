@@ -1,17 +1,27 @@
 ---
+import type { SupportedLanguage } from '../../i18n/config';
+import { getLanguageFromUrl } from '../../i18n/utils';
+import { t } from '../../i18n/translations';
+
 export interface Props {
   serviceName: string;
   affiliateUrl: string;
   rating: number;
   ctaText?: string;
+  lang?: SupportedLanguage;
 }
 
 const {
   serviceName,
   affiliateUrl,
   rating,
-  ctaText = `Check ${serviceName} Prices`
+  ctaText,
+  lang: propLang
 } = Astro.props;
+
+const lang: SupportedLanguage = propLang || (Astro.currentLocale as SupportedLanguage) || getLanguageFromUrl(Astro.url);
+const defaultCtaText = `${t(lang, 'affiliate.checkPrices')} ${serviceName}`;
+const finalCtaText = ctaText || defaultCtaText;
 ---
 
 <div class="sticky-cta" data-sticky-cta>
@@ -29,7 +39,7 @@ const {
       rel="nofollow sponsored"
       class="sticky-cta-button"
     >
-      {ctaText} →
+      {finalCtaText} →
     </a>
   </div>
 </div>

@@ -2,38 +2,47 @@
 import { getCollection } from 'astro:content';
 import MobileMenu from './MobileMenu.astro';
 import DropdownMenu from './DropdownMenu.astro';
+import LanguageSwitcher from '../LanguageSwitcher.astro';
+import type { SupportedLanguage } from '../../i18n/config';
+import { getLanguageFromUrl } from '../../i18n/utils';
+import { t } from '../../i18n/translations';
+
+// Get current language
+const lang: SupportedLanguage = Astro.currentLocale as SupportedLanguage || getLanguageFromUrl(Astro.url);
 
 // Auto-generate service dropdown items from services collection
 const allServices = await getCollection('services');
+const services = allServices.filter(service => service.data.lang === lang);
 const serviceItems = [
-  ...allServices
+  ...services
     .sort((a, b) => a.data.base.name.localeCompare(b.data.base.name))
     .map(service => ({
-      label: `${service.data.base.name} Review`,
-      href: `/services/${service.data.base.id}`
+      label: `${service.data.base.name} ${t(lang, 'nav.review')}`,
+      href: `/${lang}/services/${service.data.base.id}`
     })),
   { divider: true },
-  { label: 'All Service Reviews', href: '/services' },
+  { label: t(lang, 'nav.allServices'), href: `/${lang}/services` },
 ];
 
 // Auto-generate occasion dropdown items from occasions collection
 const allOccasions = await getCollection('occasions');
+const occasions = allOccasions.filter(occasion => occasion.data.lang === lang);
 const occasionItems = [
-  ...allOccasions
+  ...occasions
     .sort((a, b) => a.data.base.name.localeCompare(b.data.base.name))
     .map(occasion => ({
-      label: `${occasion.data.base.name} Flowers`,
-      href: `/occasions/${occasion.data.base.id}`
+      label: `${occasion.data.base.name} ${t(lang, 'nav.flowers')}`,
+      href: `/${lang}/occasions/${occasion.data.base.id}`
     })),
   { divider: true },
-  { label: 'All Occasion Guides', href: '/occasions' },
+  { label: t(lang, 'nav.allOccasions'), href: `/${lang}/occasions` },
 ];
 ---
 
 <header class="bg-florize-green text-white py-4 shadow-md">
   <nav class="container mx-auto px-4">
     <div class="flex items-center justify-between">
-      <a href="/" class="flex items-center">
+      <a href={`/${lang}`} class="flex items-center">
         <img
           src="/images/florizeflowers-logo-white.svg"
           alt="Florize Flowers - UK Flower Delivery Reviews"
@@ -43,28 +52,29 @@ const occasionItems = [
 
       <!-- Desktop Navigation -->
       <ul class="hidden md:flex gap-6 items-center">
-        <li><a href="/" class="hover:text-bloom-pink transition-colors">Home</a></li>
+        <li><a href={`/${lang}`} class="hover:text-bloom-pink transition-colors">{t(lang, 'nav.home')}</a></li>
         <li>
           <DropdownMenu
-            label="Services"
-            href="/services"
+            label={t(lang, 'nav.services')}
+            href={`/${lang}/services`}
             items={serviceItems}
           />
         </li>
         <li>
           <DropdownMenu
-            label="Occasions"
-            href="/occasions"
+            label={t(lang, 'nav.occasions')}
+            href={`/${lang}/occasions`}
             items={occasionItems}
           />
         </li>
-        <li><a href="/guides" class="hover:text-bloom-pink transition-colors">Guides</a></li>
-        <li><a href="/about" class="hover:text-bloom-pink transition-colors">About</a></li>
-        <li><a href="/contact" class="hover:text-bloom-pink transition-colors">Contact</a></li>
+        <li><a href={`/${lang}/guides`} class="hover:text-bloom-pink transition-colors">{t(lang, 'nav.guides')}</a></li>
+        <li><a href={`/${lang}/about`} class="hover:text-bloom-pink transition-colors">{t(lang, 'nav.about')}</a></li>
+        <li><a href={`/${lang}/contact`} class="hover:text-bloom-pink transition-colors">{t(lang, 'nav.contact')}</a></li>
+        <li><LanguageSwitcher /></li>
       </ul>
 
       <!-- Mobile Navigation -->
-      <MobileMenu />
+      <MobileMenu lang={lang} />
     </div>
   </nav>
 </header>

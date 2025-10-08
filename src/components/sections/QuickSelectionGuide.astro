@@ -2,19 +2,32 @@
 import { getCollection } from 'astro:content';
 import Button from '../ui/Button.astro';
 import AffiliateBanner from '../ui/AffiliateBanner.astro';
+import type { SupportedLanguage } from '../../i18n/config';
+import { t } from '../../i18n/translations';
 
 export interface Props {
   className?: string;
+  lang?: SupportedLanguage;
 }
 
-const { className = '' } = Astro.props;
+const {
+  className = '',
+  lang = 'en' as SupportedLanguage
+} = Astro.props;
 
-// Get recommendations from collection
+const heading = t(lang, 'homepage.quickSelectionHeading');
+const intro = t(lang, 'homepage.quickSelectionIntro');
+const occasionsTitle = t(lang, 'homepage.bestForOccasions');
+const occasionsText = t(lang, 'homepage.bestForOccasionsText');
+const occasionsButton = t(lang, 'homepage.viewOccasionGuides');
+
+// Get recommendations from collection filtered by language
 const allRecommendations = await getCollection('recommendations');
-const leftRecommendations = allRecommendations
+const recommendations = allRecommendations.filter(r => r.data.lang === lang);
+const leftRecommendations = recommendations
   .filter(r => r.data.column === 'left')
   .sort((a, b) => (a.data.order || 999) - (b.data.order || 999));
-const rightRecommendations = allRecommendations
+const rightRecommendations = recommendations
   .filter(r => r.data.column === 'right')
   .sort((a, b) => (a.data.order || 999) - (b.data.order || 999));
 ---
@@ -23,10 +36,10 @@ const rightRecommendations = allRecommendations
   <div class="container">
     <div class="max-w-6xl mx-auto">
       <h2 id="selection-heading" class="text-3xl font-bold text-florize-green mb-6 text-center">
-        Quick Selection Guide - Find Your Perfect Service
+        {heading}
       </h2>
       <p class="text-center text-lg text-gray-700 mb-8 max-w-4xl mx-auto">
-        Not sure which service is right for you? Use our expert recommendations based on your specific needs and budget.
+        {intro}
       </p>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -36,7 +49,7 @@ const rightRecommendations = allRecommendations
             <div>
               <h3 class="text-xl font-bold text-florize-green mb-3">{rec.data.title}</h3>
               <p class="text-gray-700 mb-3" set:html={rec.data.description} />
-              <Button href={`/services/${rec.data.serviceId}`} variant="secondary" size="md" text={rec.data.ctaText} />
+              <Button href={`/${lang}/services/${rec.data.serviceId}`} variant="secondary" size="md" text={rec.data.ctaText} />
             </div>
           ))}
 
@@ -51,20 +64,20 @@ const rightRecommendations = allRecommendations
             <div>
               <h3 class="text-xl font-bold text-florize-green mb-3">{rec.data.title}</h3>
               <p class="text-gray-700 mb-3" set:html={rec.data.description} />
-              <Button href={`/services/${rec.data.serviceId}`} variant="secondary" size="md" text={rec.data.ctaText} />
+              <Button href={`/${lang}/services/${rec.data.serviceId}`} variant="secondary" size="md" text={rec.data.ctaText} />
             </div>
           ))}
 
           <!-- Affiliate Banner - Right Column -->
           <AffiliateBanner serviceId="appleyard-flowers" className="mt-6" />
 
-          <!-- Occasions Link (hardcoded since it's not a service recommendation) -->
+          <!-- Occasions Link -->
           <div>
-            <h3 class="text-xl font-bold text-florize-green mb-3">Best for Specific Occasions</h3>
+            <h3 class="text-xl font-bold text-florize-green mb-3">{occasionsTitle}</h3>
             <p class="text-gray-700 mb-3">
-              Different occasions call for different approaches. Browse our detailed occasion guides for expert recommendations on the best services and flower types for birthdays, anniversaries, sympathy, and more.
+              {occasionsText}
             </p>
-            <Button href="/occasions" variant="secondary" size="md" text="View Occasion Guides" />
+            <Button href={`/${lang}/occasions`} variant="secondary" size="md" text={occasionsButton} />
           </div>
         </div>
       </div>

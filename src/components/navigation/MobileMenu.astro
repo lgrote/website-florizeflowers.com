@@ -1,5 +1,13 @@
 ---
 // Mobile menu component with hamburger toggle
+import type { SupportedLanguage } from '../../i18n/config';
+import { t } from '../../i18n/translations';
+
+export interface Props {
+  lang: SupportedLanguage;
+}
+
+const { lang } = Astro.props;
 ---
 
 <div class="mobile-menu-container md:hidden">
@@ -42,12 +50,12 @@
 
   <nav id="mobile-menu" class="mobile-menu hidden">
     <ul class="mobile-menu-list">
-      <li><a href="/" class="mobile-menu-link">Home</a></li>
-      <li><a href="/services" class="mobile-menu-link">Services</a></li>
-      <li><a href="/occasions" class="mobile-menu-link">Occasions</a></li>
-      <li><a href="/guides" class="mobile-menu-link">Guides</a></li>
-      <li><a href="/about" class="mobile-menu-link">About</a></li>
-      <li><a href="/contact" class="mobile-menu-link">Contact</a></li>
+      <li><a href={`/${lang}`} class="mobile-menu-link">{t(lang, 'nav.home')}</a></li>
+      <li><a href={`/${lang}/services`} class="mobile-menu-link">{t(lang, 'nav.services')}</a></li>
+      <li><a href={`/${lang}/occasions`} class="mobile-menu-link">{t(lang, 'nav.occasions')}</a></li>
+      <li><a href={`/${lang}/guides`} class="mobile-menu-link">{t(lang, 'nav.guides')}</a></li>
+      <li><a href={`/${lang}/about`} class="mobile-menu-link">{t(lang, 'nav.about')}</a></li>
+      <li><a href={`/${lang}/contact`} class="mobile-menu-link">{t(lang, 'nav.contact')}</a></li>
     </ul>
   </nav>
 </div>

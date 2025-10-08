@@ -1,4 +1,8 @@
 ---
+import type { SupportedLanguage } from '../../i18n/config';
+import { getLanguageFromUrl } from '../../i18n/utils';
+import { t } from '../../i18n/translations';
+
 export interface Props {
   bestFor: string;
   priceRange: string;
@@ -6,32 +10,34 @@ export interface Props {
   rating: string;
   serviceName: string;
   affiliateUrl: string;
+  lang?: SupportedLanguage;
 }
 
-const { bestFor, priceRange, delivery, rating, serviceName, affiliateUrl } = Astro.props;
+const { bestFor, priceRange, delivery, rating, serviceName, affiliateUrl, lang: propLang } = Astro.props;
+const lang: SupportedLanguage = propLang || (Astro.currentLocale as SupportedLanguage) || getLanguageFromUrl(Astro.url);
 ---
 
 <section class="quick-summary">
-  <h2 class="summary-heading">At a Glance</h2>
+  <h2 class="summary-heading">{t(lang, 'service.atAGlance')}</h2>
   <div class="summary-grid">
     <div class="summary-item">
       <div class="summary-icon">👥</div>
-      <h3>Best For</h3>
+      <h3>{t(lang, 'service.bestFor')}</h3>
       <p>{bestFor}</p>
     </div>
     <div class="summary-item">
       <div class="summary-icon">💷</div>
-      <h3>Price Range</h3>
+      <h3>{t(lang, 'service.priceRange')}</h3>
       <p>{priceRange}</p>
     </div>
     <div class="summary-item">
       <div class="summary-icon">🚚</div>
-      <h3>Delivery</h3>
+      <h3>{t(lang, 'service.delivery')}</h3>
       <p>{delivery}</p>
     </div>
     <div class="summary-item">
       <div class="summary-icon">⭐</div>
-      <h3>Rating</h3>
+      <h3>{t(lang, 'service.rating')}</h3>
       <p>{rating}</p>
     </div>
   </div>
@@ -43,7 +49,7 @@ const { bestFor, priceRange, delivery, rating, serviceName, affiliateUrl } = Ast
       rel="nofollow sponsored"
       class="cta-button"
     >
-      Visit {serviceName} →
+      {t(lang, 'service.visitService')} {serviceName} →
     </a>
   </div>
 </section>

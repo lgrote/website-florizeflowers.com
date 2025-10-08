@@ -1,23 +1,29 @@
 ---
-import { getAffiliateLink } from '../../lib/sanity';
+import { getAffiliateLink } from '../../utils/affiliateLinks';
 import type { CollectionEntry } from 'astro:content';
+import type { SupportedLanguage } from '../../i18n/config';
+import { getLanguageFromUrl } from '../../i18n/utils';
 
 interface Props {
   services: CollectionEntry<'services'>[];
   maxServices?: number;
+  lang?: SupportedLanguage;
 }
 
-const { services, maxServices = 5 } = Astro.props;
+const { services, maxServices = 5, lang: propLang } = Astro.props;
+
+// Get language
+const lang: SupportedLanguage = propLang || (Astro.currentLocale as SupportedLanguage) || getLanguageFromUrl(Astro.url);
 
 // Sort by rating and limit
 const topServices = services
   .sort((a, b) => b.data.base.rating - a.data.base.rating)
   .slice(0, maxServices);
 
-// Fetch affiliate links for all services
+// Fetch affiliate links for all services (with locale awareness)
 const servicesWithAffiliates = await Promise.all(
   topServices.map(async (service) => {
-    const affiliateUrl = await getAffiliateLink(service.data.base.id) || service.data.affiliate?.url || '#';
+    const affiliateUrl = await getAffiliateLink(service.data.base.id, lang);
     return { service, affiliateUrl };
   })
 );

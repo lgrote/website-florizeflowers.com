@@ -1,6 +1,7 @@
 ---
-import { getEntry } from 'astro:content';
+import { getCollection } from 'astro:content';
 import Card from '../ui/Card.astro';
+import type { SupportedLanguage } from '../../i18n/config';
 
 export interface Props {
   title?: string;
@@ -10,18 +11,24 @@ export interface Props {
     icon?: string;
   }>;
   className?: string;
+  lang?: SupportedLanguage;
 }
 
 const {
   title,
   signals,
-  className = ''
+  className = '',
+  lang = 'en' as SupportedLanguage
 } = Astro.props;
 
 // Read from collection if props are not provided
-const trustSignalsData = await getEntry('homepage-sections', 'trust-signals');
-const sectionTitle = title || trustSignalsData.data.title;
-const defaultSignals = signals || trustSignalsData.data.cards || [];
+const allSections = await getCollection('homepage-sections');
+const trustSignalsData = allSections.find(section =>
+  section.data.sectionType === 'trust-signals' && section.data.lang === lang
+);
+
+const sectionTitle = title || trustSignalsData?.data.title || 'Why Trust Us';
+const defaultSignals = signals || trustSignalsData?.data.cards || [];
 ---
 
 <section class={`section-padding bg-cream-white ${className}`}>

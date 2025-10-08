@@ -1,16 +1,26 @@
 ---
 import { getCollection } from 'astro:content';
 import ImageCard from '../ui/ImageCard.astro';
+import type { SupportedLanguage } from '../../i18n/config';
+import { t } from '../../i18n/translations';
 
 export interface Props {
   className?: string;
+  lang?: SupportedLanguage;
 }
 
-const { className = '' } = Astro.props;
+const {
+  className = '',
+  lang = 'en' as SupportedLanguage
+} = Astro.props;
 
-// Get updates from collection and sort by order
+const heading = t(lang, 'homepage.updatesHeading');
+const footer = t(lang, 'homepage.updatesFooter');
+
+// Get updates from collection filtered by language and sort by order
 const updatesCollection = await getCollection('updates');
 const updates = updatesCollection
+  .filter(update => update.data.lang === lang)
   .sort((a, b) => (a.data.order || 999) - (b.data.order || 999))
   .map(update => ({
     image: update.data.image,
@@ -24,7 +34,7 @@ const updates = updatesCollection
   <div class="container">
     <div class="max-w-6xl mx-auto text-center">
       <h2 id="updates-heading" class="text-3xl font-bold text-florize-green mb-6">
-        Latest Service Updates & Seasonal Recommendations
+        {heading}
       </h2>
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-8">
@@ -39,7 +49,7 @@ const updates = updatesCollection
       </div>
 
       <p class="mt-8 text-lg text-gray-700 max-w-4xl mx-auto">
-        Stay updated with our latest testing results, seasonal recommendations, and new service launches by visiting our comparison pages regularly.
+        {footer}
       </p>
     </div>
   </div>

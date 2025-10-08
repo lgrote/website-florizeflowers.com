@@ -1,17 +1,26 @@
 ---
-import { getEntry } from 'astro:content';
+import { getCollection } from 'astro:content';
 import ImageCard from '../ui/ImageCard.astro';
+import type { SupportedLanguage } from '../../i18n/config';
 
 export interface Props {
   className?: string;
+  lang?: SupportedLanguage;
 }
 
-const { className = '' } = Astro.props;
+const {
+  className = '',
+  lang = 'en' as SupportedLanguage
+} = Astro.props;
 
-const methodologyData = await getEntry('homepage-sections', 'methodology');
-const methodologyCards = methodologyData.data.cards || [];
-const sectionTitle = methodologyData.data.title;
-const footerText = methodologyData.data.footerText;
+const allSections = await getCollection('homepage-sections');
+const methodologyData = allSections.find(section =>
+  section.data.sectionType === 'methodology' && section.data.lang === lang
+);
+
+const methodologyCards = methodologyData?.data.cards || [];
+const sectionTitle = methodologyData?.data.title || 'Our Methodology';
+const footerText = methodologyData?.data.footerText;
 ---
 
 <section class={`section-padding bg-cream-white ${className}`} aria-labelledby="methodology-heading">

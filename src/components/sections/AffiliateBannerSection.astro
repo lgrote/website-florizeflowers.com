@@ -1,6 +1,8 @@
 ---
 import AffiliateBanner from '../ui/AffiliateBanner.astro';
 import { getAffiliateBanners } from '../../lib/sanity';
+import type { SupportedLanguage } from '../../i18n/config';
+import { t } from '../../i18n/translations';
 
 interface Props {
   serviceId: string;
@@ -8,6 +10,7 @@ interface Props {
   affiliateUrl: string;
   showBanner?: boolean;
   className?: string;
+  lang?: SupportedLanguage;
 }
 
 const {
@@ -15,11 +18,12 @@ const {
   serviceName,
   affiliateUrl,
   showBanner = true,
-  className = ''
+  className = '',
+  lang = 'en' as SupportedLanguage
 } = Astro.props;
 
-// Fetch banner from Sanity
-const banners = await getAffiliateBanners(serviceId);
+// Fetch banner from Sanity (with locale filtering)
+const banners = await getAffiliateBanners(serviceId, lang);
 const banner = banners.length > 0 ? banners[0] : null;
 ---
 
@@ -36,9 +40,9 @@ const banner = banners.length > 0 ? banners[0] : null;
 
     <div class="cta-box">
       <div class="cta-content">
-        <h3 class="cta-title">Ready to order from {serviceName}?</h3>
+        <h3 class="cta-title">{t(lang, 'affiliate.readyToOrder')} {serviceName}?</h3>
         <p class="cta-description">
-          Visit their website to browse their full collection and place your order today.
+          {t(lang, 'affiliate.visitWebsite')}
         </p>
         <a
           href={affiliateUrl}
@@ -46,12 +50,12 @@ const banner = banners.length > 0 ? banners[0] : null;
           rel="noopener noreferrer"
           class="btn-affiliate-large"
         >
-          Visit {serviceName} →
+          {t(lang, 'affiliate.visitButton')} {serviceName} →
         </a>
         <p class="affiliate-notice">
           <small>
-            We may earn a commission if you make a purchase, at no extra cost to you.
-            See our <a href="/affiliate-disclosure">affiliate disclosure</a>.
+            {t(lang, 'affiliate.commissionNotice')}
+            <a href={`/${lang}/affiliate-disclosure`}>{t(lang, 'affiliate.seeDisclosure')}</a>.
           </small>
         </p>
       </div>

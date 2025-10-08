@@ -11,18 +11,27 @@
 
 import AffiliateBanner from './ui/AffiliateBanner.astro';
 import { getAffiliateBanners } from '../lib/sanity';
+import type { SupportedLanguage } from '../i18n/config';
+import { t } from '../i18n/translations';
 
 export interface Props {
   variant: 'all' | 'single';
   serviceId?: string;
   title?: string;
+  lang?: SupportedLanguage;
 }
 
 const {
   variant = 'all',
   serviceId,
-  title = 'Our Flower Partners'
+  title,
+  lang = 'en' as SupportedLanguage
 } = Astro.props;
+
+const sectionTitle = title || t(lang, 'affiliate.partnersTitle');
+const subtitle = t(lang, 'affiliate.partnersSubtitle');
+const disclosure = t(lang, 'affiliate.disclosure');
+const learnMoreText = t(lang, 'affiliate.learnMore');
 
 // Fetch banners based on variant
 const banners = await getAffiliateBanners(variant === 'single' ? serviceId : undefined);
@@ -44,10 +53,10 @@ if (banners.length === 0) {
           <>
             <div class="text-center mb-8">
               <h2 class="text-2xl lg:text-3xl font-bold text-gray-900 mb-2">
-                {title}
+                {sectionTitle}
               </h2>
               <p class="text-gray-600">
-                Trusted flower delivery services across the UK
+                {subtitle}
               </p>
             </div>
 
@@ -78,9 +87,9 @@ if (banners.length === 0) {
         {variant === 'all' && (
           <div class="text-center mt-6">
             <p class="text-sm text-gray-500">
-              We may earn a commission when you order through our partner links. This helps keep Florize Flowers free.{' '}
-              <a href="/about" class="text-green-600 hover:text-green-700 underline">
-                Learn more
+              {disclosure}{' '}
+              <a href={`/${lang}/about`} class="text-green-600 hover:text-green-700 underline">
+                {learnMoreText}
               </a>
             </p>
           </div>
