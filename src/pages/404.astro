@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { DEFAULT_LANGUAGE } from '../i18n/config';
 ---
 
 <BaseLayout
@@ -47,13 +48,13 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
         <div class="flex flex-col sm:flex-row gap-4 justify-center">
           <a
-            href="/"
+            href={`/${DEFAULT_LANGUAGE}`}
             class="btn btn-primary px-8 py-4 text-lg inline-block"
           >
             ← Back to Homepage
           </a>
           <a
-            href="/services"
+            href={`/${DEFAULT_LANGUAGE}/services`}
             class="btn btn-secondary px-8 py-4 text-lg inline-block"
           >
             Browse Services
@@ -65,19 +66,19 @@ import BaseLayout from '../layouts/BaseLayout.astro';
             Popular Pages
           </h3>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-left">
-            <a href="/services/interflora" class="card hover:shadow-lg transition-shadow">
+            <a href={`/${DEFAULT_LANGUAGE}/services/interflora`} class="card hover:shadow-lg transition-shadow">
               <div class="text-sm font-semibold text-florize-green">Interflora Review</div>
               <div class="text-xs text-gray-600 mt-1">Best Overall Flower Delivery</div>
             </a>
-            <a href="/services/bloom-wild" class="card hover:shadow-lg transition-shadow">
+            <a href={`/${DEFAULT_LANGUAGE}/services/bloom-wild`} class="card hover:shadow-lg transition-shadow">
               <div class="text-sm font-semibold text-florize-green">Bloom & Wild Review</div>
               <div class="text-xs text-gray-600 mt-1">Most Innovative Letterbox Flowers</div>
             </a>
-            <a href="/occasions/mothers-day" class="card hover:shadow-lg transition-shadow">
+            <a href={`/${DEFAULT_LANGUAGE}/occasions/mothers-day`} class="card hover:shadow-lg transition-shadow">
               <div class="text-sm font-semibold text-florize-green">Mother's Day Flowers</div>
               <div class="text-xs text-gray-600 mt-1">Gift Ideas & Service Recommendations</div>
             </a>
-            <a href="/occasions/valentines-day" class="card hover:shadow-lg transition-shadow">
+            <a href={`/${DEFAULT_LANGUAGE}/occasions/valentines-day`} class="card hover:shadow-lg transition-shadow">
               <div class="text-sm font-semibold text-florize-green">Valentine's Day Flowers</div>
               <div class="text-xs text-gray-600 mt-1">Romantic Bouquet Delivery</div>
             </a>

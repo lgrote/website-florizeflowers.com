@@ -1,61 +1,29 @@
 ---
-import { getCollection, getEntry } from 'astro:content';
-import BaseLayout from '../layouts/BaseLayout.astro';
-import HeroSection from '../components/sections/HeroSection.astro';
-import IntroductionSection from '../components/sections/IntroductionSection.astro';
-import ComparisonTableSection from '../components/sections/ComparisonTableSection.astro';
-import MethodologySection from '../components/sections/MethodologySection.astro';
-import QuickSelectionGuide from '../components/sections/QuickSelectionGuide.astro';
-import UpdatesSection from '../components/sections/UpdatesSection.astro';
-import TrustSignals from '../components/sections/TrustSignals.astro';
-import AffiliateBannerSection from '../components/AffiliateBannerSection.astro';
-import { generateOrganizationSchema, generateWebSiteSchema } from '../utils/seo';
+// Smart language detection and redirect
+import { DEFAULT_LANGUAGE } from '../i18n/config';
 
-// Get all services
-const services = await getCollection('services');
+// Get browser's preferred language from Accept-Language header
+const acceptLanguage = Astro.request.headers.get('accept-language');
+let targetLang = DEFAULT_LANGUAGE;
 
-// Get hero section content
-const heroData = await getEntry('homepage-sections', 'hero');
+if (acceptLanguage) {
+  // Parse the Accept-Language header
+  // Format: "de-DE,de;q=0.9,en-US;q=0.8,en;q=0.7"
+  const languages = acceptLanguage
+    .split(',')
+    .map(lang => {
+      const [code, qValue] = lang.trim().split(';');
+      const quality = qValue ? parseFloat(qValue.split('=')[1]) : 1.0;
+      return { code: code.toLowerCase().substring(0, 2), quality };
+    })
+    .sort((a, b) => b.quality - a.quality);
 
-// Generate structured data for homepage
-const siteUrl = Astro.site?.toString() || 'https://florizeflowers.com';
-const organizationSchema = generateOrganizationSchema();
-const websiteSchema = generateWebSiteSchema(siteUrl);
+  // Check if German is preferred
+  const preferredLang = languages.find(lang => lang.code === 'de');
+  if (preferredLang) {
+    targetLang = 'de';
+  }
+}
+
+return Astro.redirect(`/${targetLang}/`);
 ---
-
-<BaseLayout
-  title="Best Flower Delivery UK 2025 - Expert Comparison & Reviews | Florize"
-  description="Compare top UK flower delivery services. Expert tested reviews, pricing comparison & recommendations for every occasion. Find your perfect florist today."
-  keywords="flower delivery uk, best florist uk, flower comparison, interflora, bloom and wild"
-  structuredData={[organizationSchema, websiteSchema]}
->
-  <!-- Hero Section -->
-  <HeroSection
-    title={heroData.data.title}
-    subtitle={heroData.data.subtitle}
-    primaryCta={heroData.data.primaryCta}
-    secondaryCta={heroData.data.secondaryCta}
-    backgroundImage={heroData.data.backgroundImage}
-  />
-
-  <!-- Introduction -->
-  <IntroductionSection />
-
-  <!-- Comparison Table -->
-  <ComparisonTableSection services={services} maxServices={12} showViewAllButton={false} />
-
-  <!-- How We Test Section -->
-  <MethodologySection />
-
-  <!-- Quick Selection Guide -->
-  <QuickSelectionGuide />
-
-  <!-- Recent Updates Section -->
-  <UpdatesSection />
-
-  <!-- Trust Signals -->
-  <TrustSignals />
-
-  <!-- Affiliate Banner Section -->
-  <AffiliateBannerSection variant="all" title="Our Flower Partners" />
-</BaseLayout>

@@ -1,0 +1,36 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { SUPPORTED_LANGUAGES, type SupportedLanguage } from '../../i18n/config';
+
+export async function getStaticPaths() {
+  return SUPPORTED_LANGUAGES.map((lang) => ({
+    params: { lang },
+  }));
+}
+
+const { lang } = Astro.params as { lang: SupportedLanguage };
+
+// Get terms page content from collection
+const allPages = await getCollection('pages');
+const termsPage = allPages.find(page => page.id === `${lang}/terms-of-use.md` || page.id === `${lang}/terms-of-use`);
+
+if (!termsPage) {
+  throw new Error(`Terms of use page content not found for language: ${lang}`);
+}
+
+const { Content } = await termsPage.render();
+---
+
+<BaseLayout
+  title={termsPage.data.title}
+  description={termsPage.data.description}
+>
+  <div class="py-12">
+    <div class="container">
+      <div class="max-w-3xl mx-auto prose prose-lg">
+        <Content />
+      </div>
+    </div>
+  </div>
+</BaseLayout>

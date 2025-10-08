@@ -1,0 +1,45 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BreadcrumbNavigation from '../../components/navigation/BreadcrumbNavigation.astro';
+import { SUPPORTED_LANGUAGES, type SupportedLanguage } from '../../i18n/config';
+
+export async function getStaticPaths() {
+  return SUPPORTED_LANGUAGES.map((lang) => ({
+    params: { lang },
+  }));
+}
+
+const { lang } = Astro.params as { lang: SupportedLanguage };
+
+// Get contact page content from collection
+const allPages = await getCollection('pages');
+const contactPage = allPages.find(page => page.id === `${lang}/contact.md` || page.id === `${lang}/contact`);
+
+if (!contactPage) {
+  throw new Error(`Contact page content not found for language: ${lang}`);
+}
+
+const { Content } = await contactPage.render();
+
+// Breadcrumb items
+const breadcrumbItems = [
+  { label: 'Home', href: `/${lang}` },
+  { label: 'Contact' },
+];
+---
+
+<BaseLayout
+  title={contactPage.data.title}
+  description={contactPage.data.description}
+  showBreadcrumbs={true}
+>
+  <BreadcrumbNavigation slot="breadcrumbs" items={breadcrumbItems} />
+  <div class="py-12">
+    <div class="container">
+      <div class="max-w-2xl mx-auto prose prose-lg">
+        <Content />
+      </div>
+    </div>
+  </div>
+</BaseLayout>

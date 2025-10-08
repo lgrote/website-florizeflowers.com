@@ -1,14 +1,25 @@
 ---
-import { getCollection, getEntry } from 'astro:content';
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import HeroSection from '../../components/sections/HeroSection.astro';
-import InfoGrid from '../../components/ui/InfoGrid.astro';
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import HeroSection from '../../../components/sections/HeroSection.astro';
+import InfoGrid from '../../../components/ui/InfoGrid.astro';
+import { SUPPORTED_LANGUAGES, type SupportedLanguage } from '../../../i18n/config';
+
+export async function getStaticPaths() {
+  return SUPPORTED_LANGUAGES.map((lang) => ({
+    params: { lang },
+  }));
+}
+
+const { lang } = Astro.params as { lang: SupportedLanguage };
 
 // Get page content from collection
-const pageData = await getEntry('pages', 'occasions-index');
+const allPages = await getCollection('pages');
+const pageData = allPages.find(page => page.id === `${lang}/occasions-index.md` || page.id === `${lang}/occasions-index`);
 
 // Get occasions from collection
-const occasions = await getCollection('occasions');
+const allOccasions = await getCollection('occasions');
+const occasions = allOccasions.filter(occasion => occasion.data.lang === lang);
 
 // Organize occasions by category
 const seasonalOccasions = occasions.filter(o => o.data.base.seasonal);
@@ -32,30 +43,34 @@ const occasionImages: Record<string, string> = {
 ---
 
 <BaseLayout
-  title={pageData.data.title}
-  description={pageData.data.description}
-  keywords={pageData.data.seo?.keywords}
+  title={pageData?.data.title || 'Occasions'}
+  description={pageData?.data.description || ''}
+  keywords={pageData?.data.seo?.keywords}
 >
   <!-- Hero Section -->
-  <HeroSection
-    title={pageData.data.hero!.title}
-    subtitle={pageData.data.hero!.subtitle}
-    primaryCta={pageData.data.hero!.primaryCta}
-    backgroundImage={pageData.data.hero!.backgroundImage}
-  />
+  {pageData?.data.hero && (
+    <HeroSection
+      title={pageData.data.hero.title}
+      subtitle={pageData.data.hero.subtitle}
+      primaryCta={pageData.data.hero.primaryCta}
+      backgroundImage={pageData.data.hero.backgroundImage}
+    />
+  )}
 
   <!-- Brief Introduction -->
-  <section class="content-section">
-    <div class="container">
-      <h2>{pageData.data.intro!.heading}</h2>
-      <p class="section-intro">{pageData.data.intro!.paragraph}</p>
-    </div>
-  </section>
+  {pageData?.data.intro && (
+    <section class="content-section">
+      <div class="container">
+        <h2>{pageData.data.intro.heading}</h2>
+        <p class="section-intro">{pageData.data.intro.paragraph}</p>
+      </div>
+    </section>
+  )}
 
   <!-- All Occasions Grid -->
   <section id="all-occasions" class="content-section bg-light">
     <div class="container">
-      <h2>{pageData.data.sections!.main}</h2>
+      <h2>{pageData?.data.sections?.main || 'All Occasions'}</h2>
       <p class="section-intro">Browse our comprehensive guides for every flower-giving occasion</p>
 
       <div class="occasions-grid">
@@ -72,12 +87,12 @@ const occasionImages: Record<string, string> = {
               <div class="occasion-content">
                 <div class="occasion-header">
                   <h3>
-                    <a href={`/occasions/${occasion.data.base.id}`}>
+                    <a href={`/${lang}/occasions/${occasion.data.base.id}`}>
                       {occasion.data.base.name}
                     </a>
                   </h3>
                   {occasion.data.base.seasonal && (
-                    <span class="seasonal-badge">{pageData.data.labels!.seasonal}</span>
+                    <span class="seasonal-badge">{pageData?.data.labels?.seasonal || 'Seasonal'}</span>
                   )}
                 </div>
 
@@ -85,7 +100,7 @@ const occasionImages: Record<string, string> = {
 
               {occasion.data.recommendations.flowers && occasion.data.recommendations.flowers.length > 0 && (
                 <div class="recommended-flowers">
-                  <h4>{pageData.data.labels!.popularFlowers}</h4>
+                  <h4>{pageData?.data.labels?.popularFlowers || 'Popular Flowers'}</h4>
                   <ul>
                     {occasion.data.recommendations.flowers.slice(0, 3).map((flower) => (
                       <li>{flower.flower}</li>
@@ -96,13 +111,13 @@ const occasionImages: Record<string, string> = {
 
               {occasion.data.recommendations.budget_guide && (
                 <div class="budget-preview">
-                  <span class="budget-label">{pageData.data.labels!.from}</span>
+                  <span class="budget-label">{pageData?.data.labels?.from || 'From'}</span>
                   <span class="budget-amount">{occasion.data.recommendations.budget_guide.budget_friendly}</span>
                 </div>
               )}
 
-              <a href={`/occasions/${occasion.data.base.id}`} class="occasion-cta">
-                {pageData.data.labels!.viewGuide}
+              <a href={`/${lang}/occasions/${occasion.data.base.id}`} class="occasion-cta">
+                {pageData?.data.labels?.viewGuide || 'View Guide'}
               </a>
             </div>
           </div>
