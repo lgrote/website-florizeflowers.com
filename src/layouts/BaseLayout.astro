@@ -3,6 +3,8 @@ import Header from "../components/navigation/Header.astro";
 import Footer from "../components/navigation/Footer.astro";
 import GlobalHeaders from "../components/navigation/GlobalHeaders.astro";
 import { VERIFICATION_TAGS } from "../utils/seo";
+import { SUPPORTED_LANGUAGES, type SupportedLanguage, DEFAULT_LANGUAGE } from "../i18n/config";
+import { getLanguageFromUrl } from "../i18n/utils";
 import "../styles/global.css";
 
 export interface Props {
@@ -13,6 +15,7 @@ export interface Props {
     keywords?: string;
     showBreadcrumbs?: boolean;
     structuredData?: object | object[]; // Schema.org structured data
+    lang?: SupportedLanguage;
 }
 
 const {
@@ -23,13 +26,25 @@ const {
     keywords,
     showBreadcrumbs = false,
     structuredData,
+    lang,
 } = Astro.props;
 
+// Determine current language from prop, Astro.currentLocale, or URL
+const currentLang = lang || (Astro.currentLocale as SupportedLanguage) || getLanguageFromUrl(Astro.url) || DEFAULT_LANGUAGE;
+
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+
+// Generate alternate language URLs for hreflang
+// Remove the current language prefix and add the alternate one
+const pathWithoutLang = Astro.url.pathname.replace(/^\/(en|de)/, '');
+const alternateUrls = SUPPORTED_LANGUAGES.map(langCode => ({
+  lang: langCode,
+  url: new URL(`/${langCode}${pathWithoutLang || '/'}`, Astro.site)
+}));
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={currentLang}>
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -43,6 +58,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
         <meta property="og:image" content={new URL(ogImage, Astro.site)} />
         <meta property="og:url" content={canonicalURL} />
         <meta property="og:type" content={ogType} />
+        <meta property="og:locale" content={currentLang === 'en' ? 'en_GB' : 'de_DE'} />
 
         <!-- Twitter -->
         <meta name="twitter:card" content="summary_large_image" />
@@ -52,6 +68,12 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
         <!-- Canonical -->
         <link rel="canonical" href={canonicalURL} />
+
+        <!-- Hreflang for multilingual SEO -->
+        {alternateUrls.map(({ lang: langCode, url }) => (
+          <link rel="alternate" hreflang={langCode} href={url} />
+        ))}
+        <link rel="alternate" hreflang="x-default" href={new URL(`/${DEFAULT_LANGUAGE}${pathWithoutLang || '/'}`, Astro.site)} />
 
         <!-- Structured Data -->
         {

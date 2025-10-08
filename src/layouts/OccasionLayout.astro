@@ -18,6 +18,7 @@ import TabSection from '../components/ui/TabSection.astro';
 import StickyTOC from '../components/ui/StickyTOC.astro';
 import ReadingProgress from '../components/ui/ReadingProgress.astro';
 import AccordionFAQ from '../components/ui/AccordionFAQ.astro';
+import { t } from '../i18n/translations';
 
 interface TOCItem {
   id: string;
@@ -32,10 +33,13 @@ export interface Props {
 const { occasion } = Astro.props;
 const { Content } = await occasion.render();
 
+// Get language from occasion data
+const lang = occasion.data.lang;
+
 // Breadcrumb items
 const breadcrumbItems = [
-  { label: 'Home', href: '/' },
-  { label: 'Occasions', href: '/occasions' },
+  { label: t(lang, 'layout.home'), href: `/${lang}` },
+  { label: t(lang, 'layout.occasions'), href: `/${lang}/occasions` },
   { label: occasion.data.base.name },
 ];
 
@@ -60,15 +64,15 @@ const backgroundImage = occasionImages[occasion.data.base.id] || '/images/hero-f
 // Prepare budget guide items for InfoGrid
 const budgetItems = occasion.data.recommendations.budget_guide ? [
   {
-    title: 'Budget-Friendly',
+    title: t(lang, 'layout.budgetFriendlyLabel'),
     content: occasion.data.recommendations.budget_guide.budget_friendly
   },
   {
-    title: 'Mid-Range',
+    title: t(lang, 'layout.midRangeLabel'),
     content: occasion.data.recommendations.budget_guide.mid_range
   },
   {
-    title: 'Luxury',
+    title: t(lang, 'layout.luxuryLabel'),
     content: occasion.data.recommendations.budget_guide.luxury
   }
 ] : [];
@@ -79,7 +83,7 @@ const tocItems: TOCItem[] = [];
 if (occasion.data.components?.stats && occasion.data.components.stats.length > 0) {
   tocItems.push({
     id: 'at-a-glance',
-    text: 'At a Glance',
+    text: t(lang, 'layout.atAGlance'),
     level: 2
   });
 }
@@ -87,7 +91,7 @@ if (occasion.data.components?.stats && occasion.data.components.stats.length > 0
 if (occasion.data.components?.flower_recommendations && occasion.data.components.flower_recommendations.length > 0) {
   tocItems.push({
     id: 'flower-recommendations',
-    text: 'Flower Recommendations',
+    text: t(lang, 'layout.flowerRecommendations'),
     level: 2
   });
 }
@@ -95,7 +99,7 @@ if (occasion.data.components?.flower_recommendations && occasion.data.components
 if (occasion.data.components?.color_meanings && occasion.data.components.color_meanings.length > 0) {
   tocItems.push({
     id: 'color-meanings',
-    text: 'Flower Color Meanings',
+    text: t(lang, 'layout.flowerColorMeanings'),
     level: 2
   });
 }
@@ -103,7 +107,7 @@ if (occasion.data.components?.color_meanings && occasion.data.components.color_m
 if (occasion.data.components?.seasonal_guide && occasion.data.components.seasonal_guide.length > 0) {
   tocItems.push({
     id: 'seasonal-guide',
-    text: 'Seasonal Guide',
+    text: t(lang, 'layout.seasonalGuide'),
     level: 2
   });
 }
@@ -204,7 +208,7 @@ const structuredData = [occasionStructuredData, howToStructuredData];
       <!-- Budget Guide (if exists) -->
       {budgetItems.length > 0 && (
         <section class="content-section">
-          <h2>Budget Guide</h2>
+          <h2>{t(lang, 'layout.budgetGuide')}</h2>
           <InfoGrid items={budgetItems} columns={3} variant="budget" />
         </section>
       )}
@@ -212,7 +216,7 @@ const structuredData = [occasionStructuredData, howToStructuredData];
       <!-- Recommended Flowers (if exists) -->
       {occasion.data.recommendations.flowers && occasion.data.recommendations.flowers.length > 0 && (
         <section class="content-section bg-light">
-          <h2>Recommended Flowers</h2>
+          <h2>{t(lang, 'layout.recommendedFlowers')}</h2>
           <div class="recommended-flowers-grid">
             {occasion.data.recommendations.flowers.map((flower) => (
               <div class="flower-recommendation">
@@ -229,7 +233,7 @@ const structuredData = [occasionStructuredData, howToStructuredData];
         <section id="at-a-glance" class="content-section">
           <TestingMetrics
             metrics={occasion.data.components.stats}
-            title={`${occasion.data.base.name} at a Glance`}
+            title={`${occasion.data.base.name} ${t(lang, 'layout.atAGlance')}`}
           />
         </section>
       )}
@@ -264,10 +268,10 @@ const structuredData = [occasionStructuredData, howToStructuredData];
       <!-- Tabbed Content Sections -->
       <section class="content-section">
         <TabSection tabs={[
-          { id: 'guide', label: 'Complete Guide', icon: '📖' },
-          { id: 'services', label: 'Top Services', icon: '🏆' },
-          { id: 'timeline', label: 'Planning Timeline', icon: '📅' },
-          { id: 'tips', label: 'Tips & FAQs', icon: '💡' }
+          { id: 'guide', label: t(lang, 'layout.completeGuide'), icon: '📖' },
+          { id: 'services', label: t(lang, 'layout.topServices'), icon: '🏆' },
+          { id: 'timeline', label: t(lang, 'layout.planningTimeline'), icon: '📅' },
+          { id: 'tips', label: t(lang, 'layout.tipsFaqs'), icon: '💡' }
         ]}>
           <!-- Tab 1: Complete Guide -->
           <div class="tab-panel active" role="tabpanel" data-tab-panel="guide">
@@ -283,14 +287,14 @@ const structuredData = [occasionStructuredData, howToStructuredData];
             <div class="tab-content-wrapper">
               {occasion.data.components?.service_features && occasion.data.components.service_features.length > 0 ? (
                 <>
-                  <h2>Top Flower Delivery Services for {occasion.data.base.name}</h2>
+                  <h2>{t(lang, 'layout.topServicesFor')} {occasion.data.base.name}</h2>
                   <FeatureList
                     features={occasion.data.components.service_features}
                     columns={2}
                   />
                 </>
               ) : (
-                <p class="empty-tab-message">No service recommendations available for this occasion.</p>
+                <p class="empty-tab-message">{t(lang, 'layout.noServiceRecommendations')}</p>
               )}
             </div>
           </div>
@@ -300,14 +304,14 @@ const structuredData = [occasionStructuredData, howToStructuredData];
             <div class="tab-content-wrapper">
               {occasion.data.components?.delivery_timeline && occasion.data.components.delivery_timeline.length > 0 && (
                 <TimelineCard
-                  title="Order Planning Timeline"
+                  title={t(lang, 'layout.orderPlanningTimeline')}
                   steps={occasion.data.components.delivery_timeline}
                 />
               )}
 
               {occasion.data.tabs?.delivery_locations && occasion.data.tabs.delivery_locations.length > 0 && (
                 <div class="delivery-locations">
-                  <h2>Delivery Location Tips</h2>
+                  <h2>{t(lang, 'layout.deliveryLocationTips')}</h2>
                   <div class="locations-grid">
                     {occasion.data.tabs.delivery_locations.map((location) => (
                       <div class="location-card">
@@ -324,7 +328,7 @@ const structuredData = [occasionStructuredData, howToStructuredData];
               )}
 
               {!occasion.data.components?.delivery_timeline && !occasion.data.tabs?.delivery_locations && (
-                <p class="empty-tab-message">No planning timeline available for this occasion.</p>
+                <p class="empty-tab-message">{t(lang, 'layout.noPlanningTimeline')}</p>
               )}
             </div>
           </div>
@@ -335,7 +339,7 @@ const structuredData = [occasionStructuredData, howToStructuredData];
               {/* Gift Enhancements */}
               {occasion.data.tabs?.gift_enhancements && occasion.data.tabs.gift_enhancements.length > 0 && (
                 <div class="gift-enhancements">
-                  <h2>Additional Gift Enhancements</h2>
+                  <h2>{t(lang, 'layout.additionalGiftEnhancements')}</h2>
                   <div class="enhancements-grid">
                     {occasion.data.tabs.gift_enhancements.map((item) => (
                       <div class="enhancement-card">
@@ -351,11 +355,11 @@ const structuredData = [occasionStructuredData, howToStructuredData];
               {/* Card Messages */}
               {occasion.data.tabs?.card_messages && occasion.data.tabs.card_messages.length > 0 && (
                 <div class="card-messages">
-                  <h2>Personalized Card Messages</h2>
+                  <h2>{t(lang, 'layout.personalizedCardMessages')}</h2>
                   <div class="messages-grid">
                     {occasion.data.tabs.card_messages.map((msg) => (
                       <div class="message-card">
-                        <h4>For {msg.recipient}</h4>
+                        <h4>{t(lang, 'layout.for')} {msg.recipient}</h4>
                         <p class="message-text">"{msg.message}"</p>
                       </div>
                     ))}
@@ -366,7 +370,7 @@ const structuredData = [occasionStructuredData, howToStructuredData];
               {/* Special Scenarios */}
               {occasion.data.tabs?.special_scenarios && occasion.data.tabs.special_scenarios.length > 0 && (
                 <div class="special-scenarios">
-                  <h2>Special Scenarios</h2>
+                  <h2>{t(lang, 'layout.specialScenarios')}</h2>
                   <div class="scenarios-grid">
                     {occasion.data.tabs.special_scenarios.map((scenario) => (
                       <div class="scenario-card">
@@ -386,7 +390,7 @@ const structuredData = [occasionStructuredData, howToStructuredData];
               {/* Cost Saving Tips */}
               {occasion.data.tabs?.cost_saving_tips && occasion.data.tabs.cost_saving_tips.length > 0 && (
                 <div class="cost-saving">
-                  <h2>Cost-Saving Tips</h2>
+                  <h2>{t(lang, 'layout.costSavingTips')}</h2>
                   <ul class="cost-tips-list">
                     {occasion.data.tabs.cost_saving_tips.map((tip) => (
                       <li>{tip}</li>
@@ -405,7 +409,7 @@ const structuredData = [occasionStructuredData, howToStructuredData];
               {/* FAQs */}
               {occasion.data.components?.faqs && occasion.data.components.faqs.length > 0 && (
                 <div class="faqs-wrapper">
-                  <h2>Frequently Asked Questions</h2>
+                  <h2>{t(lang, 'layout.frequentlyAskedQuestions')}</h2>
                   <AccordionFAQ items={occasion.data.components.faqs} />
                 </div>
               )}
@@ -417,7 +421,7 @@ const structuredData = [occasionStructuredData, howToStructuredData];
 
     <!-- Sticky Table of Contents -->
     {tocItems.length > 0 && (
-      <StickyTOC items={tocItems} />
+      <StickyTOC items={tocItems} lang={lang} />
     )}
   </main>
 </BaseLayout>
