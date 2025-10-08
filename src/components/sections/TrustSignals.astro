@@ -1,4 +1,5 @@
 ---
+import { getEntry } from 'astro:content';
 import Card from '../ui/Card.astro';
 
 export interface Props {
@@ -12,28 +13,22 @@ export interface Props {
 }
 
 const {
-  title = "Why Trust Florize Flower Reviews?",
+  title,
   signals,
   className = ''
 } = Astro.props;
 
-const defaultSignals = signals || [
-  {
-    title: "Independent Testing",
-    description: "We purchase all flowers with our own money and test services exactly as a regular customer would. No special treatment, just honest reviews."
-  },
-  {
-    title: "Transparent Disclosure",
-    description: "While we earn commissions from some services, this never influences our rankings. Our testing methodology remains completely independent."
-  }
-];
+// Read from collection if props are not provided
+const trustSignalsData = await getEntry('homepage-sections', 'trust-signals');
+const sectionTitle = title || trustSignalsData.data.title;
+const defaultSignals = signals || trustSignalsData.data.cards || [];
 ---
 
 <section class={`section-padding bg-cream-white ${className}`}>
   <div class="container">
     <div class="max-w-3xl mx-auto text-center">
       <h2 class="text-3xl font-bold text-florize-green mb-6">
-        {title}
+        {sectionTitle}
       </h2>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">

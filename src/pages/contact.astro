@@ -1,6 +1,10 @@
 ---
+import { getEntry } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import BreadcrumbNavigation from '../components/navigation/BreadcrumbNavigation.astro';
+
+const contactPage = await getEntry('pages', 'contact');
+const { Content } = await contactPage.render();
 
 // Breadcrumb items
 const breadcrumbItems = [
@@ -10,44 +14,15 @@ const breadcrumbItems = [
 ---
 
 <BaseLayout
-  title="Contact Florize | Get in Touch"
-  description="Contact the Florize team with questions about our flower delivery reviews."
+  title={contactPage.data.title}
+  description={contactPage.data.description}
   showBreadcrumbs={true}
 >
   <BreadcrumbNavigation slot="breadcrumbs" items={breadcrumbItems} />
   <div class="py-12">
     <div class="container">
-      <div class="max-w-2xl mx-auto">
-        <h1 class="text-4xl md:text-5xl font-bold text-florize-green mb-8 text-center">
-          Contact Us
-        </h1>
-
-        <div class="card">
-          <p class="text-lg mb-6">
-            Have questions about our reviews or want to suggest a service for us to test? We'd love to hear from you!
-          </p>
-
-          <div class="space-y-4">
-            <div>
-              <h3 class="font-bold text-lg mb-2">Email</h3>
-              <a href="mailto:hello@florizeflowers.com" class="text-florize-green hover:underline">
-                hello@florizeflowers.com
-              </a>
-            </div>
-
-            <div>
-              <h3 class="font-bold text-lg mb-2">Response Time</h3>
-              <p class="text-gray-700">We typically respond within 24-48 hours on business days.</p>
-            </div>
-
-            <div>
-              <h3 class="font-bold text-lg mb-2">Note</h3>
-              <p class="text-gray-700">
-                Please note that Florize is a review and comparison platform. We do not sell flowers directly. For orders and delivery inquiries, please contact the flower delivery service directly.
-              </p>
-            </div>
-          </div>
-        </div>
+      <div class="max-w-2xl mx-auto prose prose-lg">
+        <Content />
       </div>
     </div>
   </div>

@@ -1,4 +1,5 @@
 ---
+import { getCollection } from 'astro:content';
 import ImageCard from '../ui/ImageCard.astro';
 
 export interface Props {
@@ -7,26 +8,16 @@ export interface Props {
 
 const { className = '' } = Astro.props;
 
-const updates = [
-  {
-    image: '/images/seasonal/valentine-updates.jpg',
-    imageAlt: "Beautiful Valentine's Day flower arrangements for seasonal updates",
-    title: 'January 2025 Updates',
-    description: "We've added 3 new services to our testing roster and updated pricing across all major providers. Valentine's Day preparations are in full swing with special seasonal arrangements now available."
-  },
-  {
-    image: '/images/seasonal/mothers-day-prep.jpg',
-    imageAlt: "Premium Mother's Day flower arrangements for seasonal preparation",
-    title: "Mother's Day 2025 Prep",
-    description: "Planning ahead for Mother's Day (30th March)? Our early testing shows exceptional quality from Interflora and Flowerbx this season. Book early to avoid disappointment."
-  },
-  {
-    image: '/images/seasonal/winter-quality.jpg',
-    imageAlt: 'Winter flower quality assessment and seasonal testing report',
-    title: 'Winter Quality Report',
-    description: 'Our winter testing revealed significant quality variations among budget services. Prestige Flowers and Flying Flowers maintained consistent standards throughout the colder months.'
-  }
-];
+// Get updates from collection and sort by order
+const updatesCollection = await getCollection('updates');
+const updates = updatesCollection
+  .sort((a, b) => (a.data.order || 999) - (b.data.order || 999))
+  .map(update => ({
+    image: update.data.image,
+    imageAlt: update.data.imageAlt,
+    title: update.data.title,
+    description: update.data.description
+  }));
 ---
 
 <section class={`section-padding bg-cream-white ${className}`} aria-labelledby="updates-heading">

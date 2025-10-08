@@ -1,5 +1,20 @@
 ---
-// Simple footer component
+import { getCollection, getEntry } from 'astro:content';
+
+// Auto-generate top services for footer (top 3)
+const allServices = await getCollection('services');
+const topServices = allServices
+  .sort((a, b) => (b.data.base.rating || 0) - (a.data.base.rating || 0))
+  .slice(0, 3);
+
+// Auto-generate top occasions for footer (top 3)
+const allOccasions = await getCollection('occasions');
+const topOccasions = allOccasions
+  .sort((a, b) => a.data.base.name.localeCompare(b.data.base.name))
+  .slice(0, 3);
+
+// Get footer content
+const footerData = await getEntry('homepage-sections', 'footer');
 ---
 
 <footer class="bg-charcoal text-white py-12 mt-16">
@@ -8,18 +23,26 @@
       <div>
         <h4 class="text-xl font-bold mb-4">Service Reviews</h4>
         <ul class="space-y-2">
-          <li><a href="/services/interflora" class="hover:text-bloom-pink transition-colors">Interflora Review</a></li>
-          <li><a href="/services/bloom-wild" class="hover:text-bloom-pink transition-colors">Bloom & Wild Review</a></li>
-          <li><a href="/services/prestige-flowers" class="hover:text-bloom-pink transition-colors">Prestige Flowers Review</a></li>
+          {topServices.map(service => (
+            <li>
+              <a href={`/services/${service.data.base.id}`} class="hover:text-bloom-pink transition-colors">
+                {service.data.base.name} Review
+              </a>
+            </li>
+          ))}
           <li><a href="/services" class="hover:text-bloom-pink transition-colors">All Service Reviews</a></li>
         </ul>
       </div>
       <div>
         <h4 class="text-xl font-bold mb-4">Occasion Guides</h4>
         <ul class="space-y-2">
-          <li><a href="/occasions/birthday" class="hover:text-bloom-pink transition-colors">Birthday Flowers</a></li>
-          <li><a href="/occasions/anniversary" class="hover:text-bloom-pink transition-colors">Anniversary Flowers</a></li>
-          <li><a href="/occasions/wedding" class="hover:text-bloom-pink transition-colors">Wedding Flowers</a></li>
+          {topOccasions.map(occasion => (
+            <li>
+              <a href={`/occasions/${occasion.data.base.id}`} class="hover:text-bloom-pink transition-colors">
+                {occasion.data.base.name} Flowers
+              </a>
+            </li>
+          ))}
           <li><a href="/occasions" class="hover:text-bloom-pink transition-colors">All Occasion Guides</a></li>
         </ul>
       </div>
@@ -43,7 +66,7 @@
           class="h-8 w-auto mx-auto"
         />
       </div>
-      <p>&copy; 2025 Florize Flowers. All rights reserved. | Expert flower delivery comparisons for the UK market.</p>
+      <p>&copy; 2025 Florize Flowers. All rights reserved. | {footerData.data.description}</p>
     </div>
   </div>
 </footer>

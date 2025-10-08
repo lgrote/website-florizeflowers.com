@@ -22,7 +22,7 @@ import {
   seasonalGuideArray,
   recommendedFlowersArray,
   budgetGuideObject,
-} from './schemas/shared';
+} from '../schemas/shared';
 
 // ============================================================================
 // SERVICES COLLECTION
@@ -171,10 +171,152 @@ const occasionsCollection = defineCollection({
 });
 
 // ============================================================================
+// UPDATES COLLECTION
+// ============================================================================
+
+const updatesCollection = defineCollection({
+  type: 'content',
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    image: z.string(),
+    imageAlt: z.string(),
+    publishedDate: z.string(),
+    order: z.number().optional(), // For display ordering
+  })
+});
+
+// ============================================================================
+// PAGES COLLECTION
+// ============================================================================
+
+const pagesCollection = defineCollection({
+  type: 'content',
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    seo: seoGroup.optional(),
+    // For index pages with hero sections
+    hero: z.object({
+      title: z.string(),
+      subtitle: z.string(),
+      primaryCta: z.object({
+        text: z.string(),
+        href: z.string(),
+      }).optional(),
+      secondaryCta: z.object({
+        text: z.string(),
+        href: z.string(),
+      }).optional(),
+      backgroundImage: z.string().optional(),
+    }).optional(),
+    // For page intro/overview sections
+    intro: z.object({
+      heading: z.string(),
+      paragraph: z.string(),
+    }).optional(),
+    // For section headings
+    sections: z.object({
+      main: z.string().optional(),
+      services: z.string().optional(),
+      occasions: z.string().optional(),
+      legal: z.string().optional(),
+    }).optional(),
+    // For tips/cards arrays
+    tips: z.array(z.object({
+      title: z.string(),
+      content: z.string(),
+    })).optional(),
+    // For UI labels
+    labels: z.object({
+      seasonal: z.string().optional(),
+      popularFlowers: z.string().optional(),
+      from: z.string().optional(),
+      viewGuide: z.string().optional(),
+      cantFind: z.string().optional(),
+      contactHelp: z.string().optional(),
+    }).optional(),
+  })
+});
+
+// ============================================================================
+// RECOMMENDATIONS COLLECTION
+// ============================================================================
+
+const recommendationsCollection = defineCollection({
+  type: 'content',
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    serviceId: z.string(), // Links to services collection
+    category: z.string(), // e.g., "budget", "luxury", "convenience", "reliability"
+    order: z.number().optional(),
+    ctaText: z.string().default("Read Full Review"),
+    column: z.enum(['left', 'right']).optional(), // For layout positioning
+  })
+});
+
+// ============================================================================
+// GUIDES COLLECTION
+// ============================================================================
+
+const guidesCollection = defineCollection({
+  type: 'content',
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    category: z.string(), // e.g., "essential", "quick-tip", "seasonal"
+    icon: z.string().optional(),
+    order: z.number().optional(),
+    tips: z.array(z.string()).optional(), // For bullet-point tips
+  })
+});
+
+// ============================================================================
+// HOMEPAGE SECTIONS COLLECTION
+// ============================================================================
+
+const homepageSectionsCollection = defineCollection({
+  type: 'content',
+  schema: z.object({
+    title: z.string(),
+    description: z.string().optional(),
+    sectionType: z.string(), // "methodology", "trust-signals", "introduction", "hero"
+    // For sections with cards (methodology, trust-signals)
+    cards: z.array(z.object({
+      title: z.string(),
+      description: z.string(),
+      image: z.string().optional(),
+      imageAlt: z.string().optional(),
+      icon: z.string().optional(),
+    })).optional(),
+    // For sections with paragraphs (introduction)
+    paragraphs: z.array(z.string()).optional(),
+    footerText: z.string().optional(),
+    // For hero section
+    subtitle: z.string().optional(),
+    backgroundImage: z.string().optional(),
+    primaryCta: z.object({
+      text: z.string(),
+      href: z.string(),
+    }).optional(),
+    secondaryCta: z.object({
+      text: z.string(),
+      href: z.string(),
+    }).optional(),
+  })
+});
+
+// ============================================================================
 // EXPORTS
 // ============================================================================
 
 export const collections = {
   'services': servicesCollection,
   'occasions': occasionsCollection,
+  'updates': updatesCollection,
+  'pages': pagesCollection,
+  'recommendations': recommendationsCollection,
+  'guides': guidesCollection,
+  'homepage-sections': homepageSectionsCollection,
 };

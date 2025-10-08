@@ -1,6 +1,16 @@
 ---
+import { getEntry } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import BreadcrumbNavigation from '../components/navigation/BreadcrumbNavigation.astro';
+
+// Get about page content from collection
+const aboutPage = await getEntry('pages', 'about');
+
+if (!aboutPage) {
+  throw new Error('About page content not found');
+}
+
+const { Content } = await aboutPage.render();
 
 // Breadcrumb items
 const breadcrumbItems = [
@@ -10,8 +20,8 @@ const breadcrumbItems = [
 ---
 
 <BaseLayout
-  title="About Florize - UK Flower Delivery Experts"
-  description="Learn about Florize's expert flower delivery review methodology and team."
+  title={aboutPage.data.title}
+  description={aboutPage.data.description}
   showBreadcrumbs={true}
 >
   <BreadcrumbNavigation slot="breadcrumbs" items={breadcrumbItems} />
@@ -23,36 +33,7 @@ const breadcrumbItems = [
         </h1>
 
         <div class="prose prose-lg max-w-none">
-          <p class="lead">
-            Florize is the UK's most trusted independent flower delivery comparison platform. We help thousands of customers find the perfect flower delivery service for their needs.
-          </p>
-
-          <h2>Our Mission</h2>
-          <p>
-            To provide honest, unbiased reviews of UK flower delivery services through rigorous real-world testing. We believe every customer deserves to know exactly what they're getting before they buy.
-          </p>
-
-          <h2>Our Testing Methodology</h2>
-          <p>
-            Unlike many review sites, we actually order from every service we review. Our testing criteria includes:
-          </p>
-          <ul>
-            <li>Flower freshness and quality on arrival</li>
-            <li>Packaging and presentation</li>
-            <li>Delivery reliability and timing</li>
-            <li>Customer service responsiveness</li>
-            <li>Value for money</li>
-            <li>Website usability and ordering experience</li>
-          </ul>
-
-          <h2>Why Trust Us?</h2>
-          <p>
-            We purchase all test orders with our own money and maintain complete editorial independence. While we may earn affiliate commissions when you make a purchase, this never influences our ratings or recommendations.
-          </p>
-
-          <p>
-            Our reviews are based solely on our actual testing experience and expertise in the flower delivery industry.
-          </p>
+          <Content />
         </div>
       </div>
     </div>

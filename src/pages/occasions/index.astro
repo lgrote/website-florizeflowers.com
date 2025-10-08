@@ -1,9 +1,13 @@
 ---
-import { getCollection } from 'astro:content';
+import { getCollection, getEntry } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import HeroSection from '../../components/sections/HeroSection.astro';
 import InfoGrid from '../../components/ui/InfoGrid.astro';
 
+// Get page content from collection
+const pageData = await getEntry('pages', 'occasions-index');
+
+// Get occasions from collection
 const occasions = await getCollection('occasions');
 
 // Organize occasions by category
@@ -25,49 +29,33 @@ const occasionImages: Record<string, string> = {
   'housewarming': '/images/housewarming-flowers.jpg',
   'corporate': '/images/corporate-flowers.jpg',
 };
-
-// Flower selection tips data
-const flowerTips = [
-  {
-    title: '🌸 The Language of Flowers',
-    content: 'Different flowers carry distinct meanings. Understanding these helps you communicate your feelings effectively and choose arrangements that represent your intentions.'
-  },
-  {
-    title: '📅 Timing and Seasonality',
-    content: 'The best flower deliveries align with natural seasons. Our guides consider peak availability, pricing variations, and traditional gifting periods.'
-  },
-  {
-    title: '🌍 Cultural Considerations',
-    content: 'UK flower gifting traditions blend international influences with local customs. We help you ensure your floral gift is appropriate and warmly received.'
-  }
-];
 ---
 
 <BaseLayout
-  title="Flower Delivery for Every Occasion - UK Guide 2025 | Florize"
-  description="Perfect flowers for every occasion in the UK. Expert guides for birthdays, Mother's Day, Valentine's, weddings, anniversaries and more. Find the ideal blooms for your special moment."
-  keywords="flower occasions, birthday flowers, mother's day flowers, wedding flowers, funeral flowers, anniversary flowers"
+  title={pageData.data.title}
+  description={pageData.data.description}
+  keywords={pageData.data.seo?.keywords}
 >
   <!-- Hero Section -->
   <HeroSection
-    title="Flowers for Every Occasion"
-    subtitle="Expert guidance on choosing the perfect blooms for life's special moments"
-    primaryCta={{ text: "Browse Occasions", href: "#all-occasions" }}
-    backgroundImage="/images/mothers-day-flowers-professional.jpg"
+    title={pageData.data.hero!.title}
+    subtitle={pageData.data.hero!.subtitle}
+    primaryCta={pageData.data.hero!.primaryCta}
+    backgroundImage={pageData.data.hero!.backgroundImage}
   />
 
   <!-- Brief Introduction -->
   <section class="content-section">
     <div class="container">
-      <h2>Celebrate Every Moment with Perfect Flowers</h2>
-      <p class="section-intro">Whether you're celebrating a joyous milestone, offering comfort during difficult times, or simply showing someone you care, the right flowers can express what words cannot. Our expert guides help you choose the perfect arrangement for every special occasion.</p>
+      <h2>{pageData.data.intro!.heading}</h2>
+      <p class="section-intro">{pageData.data.intro!.paragraph}</p>
     </div>
   </section>
 
   <!-- All Occasions Grid -->
   <section id="all-occasions" class="content-section bg-light">
     <div class="container">
-      <h2>All Occasion Guides</h2>
+      <h2>{pageData.data.sections!.main}</h2>
       <p class="section-intro">Browse our comprehensive guides for every flower-giving occasion</p>
 
       <div class="occasions-grid">
@@ -89,7 +77,7 @@ const flowerTips = [
                     </a>
                   </h3>
                   {occasion.data.base.seasonal && (
-                    <span class="seasonal-badge">Seasonal</span>
+                    <span class="seasonal-badge">{pageData.data.labels!.seasonal}</span>
                   )}
                 </div>
 
@@ -97,7 +85,7 @@ const flowerTips = [
 
               {occasion.data.recommendations.flowers && occasion.data.recommendations.flowers.length > 0 && (
                 <div class="recommended-flowers">
-                  <h4>Popular Flowers:</h4>
+                  <h4>{pageData.data.labels!.popularFlowers}</h4>
                   <ul>
                     {occasion.data.recommendations.flowers.slice(0, 3).map((flower) => (
                       <li>{flower.flower}</li>
@@ -108,13 +96,13 @@ const flowerTips = [
 
               {occasion.data.recommendations.budget_guide && (
                 <div class="budget-preview">
-                  <span class="budget-label">From</span>
+                  <span class="budget-label">{pageData.data.labels!.from}</span>
                   <span class="budget-amount">{occasion.data.recommendations.budget_guide.budget_friendly}</span>
                 </div>
               )}
 
               <a href={`/occasions/${occasion.data.base.id}`} class="occasion-cta">
-                View Complete Guide →
+                {pageData.data.labels!.viewGuide}
               </a>
             </div>
           </div>
@@ -128,7 +116,7 @@ const flowerTips = [
   <section class="content-section">
     <div class="container">
       <h2>Flower Selection Tips</h2>
-      <InfoGrid items={flowerTips} columns={3} variant="tips" />
+      <InfoGrid items={pageData.data.tips || []} columns={3} variant="tips" />
     </div>
   </section>
 </BaseLayout>

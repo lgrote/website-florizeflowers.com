@@ -1,39 +1,30 @@
 ---
+import { getCollection } from 'astro:content';
 import MobileMenu from './MobileMenu.astro';
 import DropdownMenu from './DropdownMenu.astro';
 
-// Service dropdown items
+// Auto-generate service dropdown items from services collection
+const allServices = await getCollection('services');
 const serviceItems = [
-  { label: 'Interflora Review', href: '/services/interflora' },
-  { label: 'Bloom & Wild Review', href: '/services/bloom-wild' },
-  { label: 'Prestige Flowers Review', href: '/services/prestige-flowers' },
-  { label: 'Appleyard Flowers Review', href: '/services/appleyard-flowers' },
-  { label: 'Flowerbx Review', href: '/services/flowerbx' },
-  { label: 'Wild at Heart Review', href: '/services/wild-at-heart' },
-  { label: 'Next Flowers Review', href: '/services/next-flowers' },
-  { label: 'Serenata Flowers Review', href: '/services/serenata-flowers' },
-  { label: 'Flying Flowers Review', href: '/services/flying-flowers' },
-  { label: 'Real Flower Company Review', href: '/services/real-flower-company' },
-  { label: 'MyFlowers Review', href: '/services/myflowers' },
-  { label: 'Blossoming Gifts Review', href: '/services/blossoming-gifts' },
+  ...allServices
+    .sort((a, b) => a.data.base.name.localeCompare(b.data.base.name))
+    .map(service => ({
+      label: `${service.data.base.name} Review`,
+      href: `/services/${service.data.base.id}`
+    })),
   { divider: true },
   { label: 'All Service Reviews', href: '/services' },
 ];
 
-// Occasion dropdown items
+// Auto-generate occasion dropdown items from occasions collection
+const allOccasions = await getCollection('occasions');
 const occasionItems = [
-  { label: "Mother's Day Flowers", href: '/occasions/mothers-day' },
-  { label: "Valentine's Day Flowers", href: '/occasions/valentines-day' },
-  { label: 'Birthday Flowers', href: '/occasions/birthday' },
-  { label: 'Anniversary Flowers', href: '/occasions/anniversary' },
-  { label: 'Wedding Flowers', href: '/occasions/wedding' },
-  { label: 'New Baby Flowers', href: '/occasions/new-baby' },
-  { label: 'Thank You Flowers', href: '/occasions/thank-you' },
-  { label: 'Get Well Flowers', href: '/occasions/get-well' },
-  { label: 'Graduation Flowers', href: '/occasions/graduation' },
-  { label: 'Funeral Flowers', href: '/occasions/funeral' },
-  { label: 'Housewarming Flowers', href: '/occasions/housewarming' },
-  { label: 'Corporate Flowers', href: '/occasions/corporate' },
+  ...allOccasions
+    .sort((a, b) => a.data.base.name.localeCompare(b.data.base.name))
+    .map(occasion => ({
+      label: `${occasion.data.base.name} Flowers`,
+      href: `/occasions/${occasion.data.base.id}`
+    })),
   { divider: true },
   { label: 'All Occasion Guides', href: '/occasions' },
 ];

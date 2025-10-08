@@ -1,6 +1,9 @@
 ---
-import { getCollection } from 'astro:content';
+import { getCollection, getEntry } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
+
+// Get page content from collection
+const pageData = await getEntry('pages', 'sitemap');
 
 const services = await getCollection('services');
 const occasions = await getCollection('occasions');
@@ -10,22 +13,22 @@ const sortedOccasions = occasions.sort((a, b) => a.data.base.name.localeCompare(
 ---
 
 <BaseLayout
-  title="Sitemap - All Pages | Florize Flowers"
-  description="Complete sitemap of Florize Flowers website. Find all service reviews, occasion guides, and helpful resources."
+  title={pageData.data.title}
+  description={pageData.data.description}
 >
   <div class="py-12">
     <div class="container">
       <h1 class="text-4xl md:text-5xl font-bold text-florize-green mb-8 text-center">
-        Sitemap
+        {pageData.data.intro!.heading}
       </h1>
       <p class="text-center text-lg text-gray-700 mb-12 max-w-3xl mx-auto">
-        Browse all pages and resources on Florize Flowers
+        {pageData.data.intro!.paragraph}
       </p>
 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
         <!-- Main Pages -->
         <div class="bg-white p-6 rounded-lg shadow-md">
-          <h2 class="text-2xl font-bold text-florize-green mb-4">Main Pages</h2>
+          <h2 class="text-2xl font-bold text-florize-green mb-4">{pageData.data.sections!.main}</h2>
           <ul class="space-y-2">
             <li><a href="/" class="text-florize-green hover:underline">Home</a></li>
             <li><a href="/services" class="text-florize-green hover:underline">All Service Reviews</a></li>
@@ -38,7 +41,7 @@ const sortedOccasions = occasions.sort((a, b) => a.data.base.name.localeCompare(
 
         <!-- Service Reviews -->
         <div class="bg-white p-6 rounded-lg shadow-md">
-          <h2 class="text-2xl font-bold text-florize-green mb-4">Service Reviews</h2>
+          <h2 class="text-2xl font-bold text-florize-green mb-4">{pageData.data.sections!.services}</h2>
           <ul class="space-y-2">
             {sortedServices.map((service) => (
               <li>
@@ -52,7 +55,7 @@ const sortedOccasions = occasions.sort((a, b) => a.data.base.name.localeCompare(
 
         <!-- Occasion Guides -->
         <div class="bg-white p-6 rounded-lg shadow-md">
-          <h2 class="text-2xl font-bold text-florize-green mb-4">Occasion Guides</h2>
+          <h2 class="text-2xl font-bold text-florize-green mb-4">{pageData.data.sections!.occasions}</h2>
           <ul class="space-y-2">
             {sortedOccasions.map((occasion) => (
               <li>
@@ -66,7 +69,7 @@ const sortedOccasions = occasions.sort((a, b) => a.data.base.name.localeCompare(
 
         <!-- Legal & Info -->
         <div class="bg-white p-6 rounded-lg shadow-md">
-          <h2 class="text-2xl font-bold text-florize-green mb-4">Legal & Information</h2>
+          <h2 class="text-2xl font-bold text-florize-green mb-4">{pageData.data.sections!.legal}</h2>
           <ul class="space-y-2">
             <li><a href="/privacy-policy" class="text-florize-green hover:underline">Privacy Policy</a></li>
             <li><a href="/terms-of-use" class="text-florize-green hover:underline">Terms of Use</a></li>
@@ -77,7 +80,7 @@ const sortedOccasions = occasions.sort((a, b) => a.data.base.name.localeCompare(
 
       <div class="mt-12 text-center">
         <p class="text-gray-600">
-          Can't find what you're looking for? <a href="/contact" class="text-florize-green hover:underline font-semibold">Contact us</a> for help.
+          {pageData.data.labels!.cantFind} <a href="/contact" class="text-florize-green hover:underline font-semibold">{pageData.data.labels!.contactHelp}</a> for help.
         </p>
       </div>
     </div>

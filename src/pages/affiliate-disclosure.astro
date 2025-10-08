@@ -1,115 +1,19 @@
 ---
+import { getEntry } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
+
+const affiliatePage = await getEntry('pages', 'affiliate-disclosure');
+const { Content } = await affiliatePage.render();
 ---
 
 <BaseLayout
-  title="Affiliate Disclosure | Florize Flowers"
-  description="Florize Flowers affiliate disclosure. Transparency about our affiliate partnerships and commissions."
+  title={affiliatePage.data.title}
+  description={affiliatePage.data.description}
 >
   <div class="py-12">
     <div class="container">
       <div class="max-w-3xl mx-auto prose prose-lg">
-        <h1>Affiliate Disclosure</h1>
-
-        <p class="lead">Transparency is important to us. Here's how we earn money and why it doesn't affect our reviews.</p>
-
-        <h2>Our Business Model</h2>
-        <p>
-          Florize Flowers earns revenue through affiliate marketing partnerships with flower delivery services. When you click on our links and make a purchase, we may receive a commission from the service provider.
-        </p>
-
-        <h2>How Affiliate Commissions Work</h2>
-        <p>
-          Here's what happens when you use our links:
-        </p>
-        <ol>
-          <li>You click on a link to a flower delivery service from our website</li>
-          <li>You're taken to the service's website to browse and purchase</li>
-          <li>If you make a purchase, we may earn a small commission</li>
-          <li><strong>The price you pay is exactly the same</strong> - affiliate commissions don't increase your costs</li>
-        </ol>
-
-        <h2>Our Affiliate Partners</h2>
-        <p>
-          We have affiliate relationships with many UK flower delivery services, including but not limited to:
-        </p>
-        <ul>
-          <li>Interflora</li>
-          <li>Bloom & Wild</li>
-          <li>Prestige Flowers</li>
-          <li>Appleyard Flowers</li>
-          <li>Flowerbx</li>
-          <li>And others featured on our website</li>
-        </ul>
-
-        <h2>Editorial Independence</h2>
-        <p>
-          <strong>Our affiliate relationships do NOT influence our reviews or rankings.</strong> Here's our commitment:
-        </p>
-        <ul>
-          <li><strong>Honest Reviews:</strong> All reviews are based on actual testing and real orders we place ourselves</li>
-          <li><strong>Independent Testing:</strong> We purchase flowers with our own money to test services fairly</li>
-          <li><strong>Objective Rankings:</strong> Services are ranked based on quality, value, and customer experience - not commission rates</li>
-          <li><strong>Full Disclosure:</strong> We clearly mark affiliate links and sponsored content</li>
-          <li><strong>Your Trust Matters:</strong> We only recommend services we would genuinely use ourselves</li>
-        </ul>
-
-        <h2>Testing Methodology</h2>
-        <p>
-          Our review process is rigorous and independent:
-        </p>
-        <ol>
-          <li><strong>Real Orders:</strong> We place actual orders with each service</li>
-          <li><strong>Complete Journey:</strong> We test the entire experience from browsing to delivery</li>
-          <li><strong>Quality Assessment:</strong> We evaluate flower freshness, arrangement quality, and packaging</li>
-          <li><strong>Service Evaluation:</strong> We assess customer service, delivery reliability, and value for money</li>
-          <li><strong>Documented Testing:</strong> We photograph deliveries and document our experiences</li>
-        </ol>
-
-        <h2>Why We Use Affiliate Links</h2>
-        <p>
-          Affiliate commissions allow us to:
-        </p>
-        <ul>
-          <li>Maintain a completely free service for you</li>
-          <li>Continue testing and reviewing new flower delivery services</li>
-          <li>Keep our comparison tools and guides up to date</li>
-          <li>Invest in comprehensive testing and research</li>
-        </ul>
-
-        <h2>Your Choice</h2>
-        <p>
-          Using our affiliate links is entirely optional. You can:
-        </p>
-        <ul>
-          <li>Use our links to support our work at no extra cost to you</li>
-          <li>Navigate directly to flower delivery services if you prefer</li>
-          <li>Still access all our reviews and comparisons for free either way</li>
-        </ul>
-
-        <h2>FTC Compliance</h2>
-        <p>
-          This disclosure complies with the Federal Trade Commission's guidelines on affiliate marketing. We believe in complete transparency about how we earn revenue.
-        </p>
-
-        <h2>Advertiser Disclosure</h2>
-        <p>
-          Some links on this website are affiliate links. This means that if you click on a link and purchase a product or service, we may receive a commission. This comes at no additional cost to you, and we only recommend services that we believe provide value to our users.
-        </p>
-
-        <h2>Questions?</h2>
-        <p>
-          If you have any questions about our affiliate relationships or business model, please contact us:
-          <br />
-          Email: <a href="mailto:hello@florizeflowers.com">hello@florizeflowers.com</a>
-        </p>
-
-        <div class="bg-cream-white p-6 rounded-lg mt-8">
-          <h3 class="text-xl font-bold mb-3">Our Promise</h3>
-          <p class="mb-0">
-            We promise to always prioritize your trust over commissions. If a service doesn't meet our quality standards, we won't recommend it - regardless of potential earnings. Your satisfaction and finding the right flower delivery service is our primary goal.
-          </p>
-        </div>
+        <Content />
       </div>
     </div>
   </div>
