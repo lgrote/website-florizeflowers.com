@@ -1,7 +1,9 @@
 ---
 /**
  * Root redirect page - detects user's language and redirects to appropriate locale
- * This page should redirect immediately to /en/ or /de/ based on browser language
+ * This page redirects immediately to /en/ or /de/ based on browser language
+ *
+ * NOTE: Without Astro's i18n config, this page is served as-is (not overridden)
  */
 export const prerender = true;
 ---
@@ -13,13 +15,10 @@ export const prerender = true;
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Florize Flowers - Redirecting...</title>
   <meta http-equiv="refresh" content="0;url=/en/">
-  <script>
+  <script type="module">
     // Detect browser language and redirect
-    (function() {
-      const userLang = navigator.language || navigator.userLanguage;
-      const lang = userLang.toLowerCase().startsWith('de') ? 'de' : 'en';
-      window.location.href = `/${lang}/`;
-    })();
+    const lang = (navigator.language || "en").toLowerCase().startsWith("de") ? "de" : "en";
+    location.replace(`/${lang}/${location.search}${location.hash}`);
   </script>
 </head>
 <body>

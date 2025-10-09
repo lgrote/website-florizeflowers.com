@@ -5,26 +5,11 @@ import { visualizer } from 'rollup-plugin-visualizer';
 
 export default defineConfig({
   site: 'https://florizeflowers.com',
-  i18n: {
-    defaultLocale: 'en',
-    locales: ['en', 'de'],
-    routing: {
-      prefixDefaultLocale: true, // Both languages use locale prefix (/en/ and /de/)
-    },
-  },
   integrations: [
     tailwind({
       applyBaseStyles: false
     }),
-    sitemap({
-      i18n: {
-        defaultLocale: 'en',
-        locales: {
-          en: 'en',
-          de: 'de',
-        },
-      },
-    })
+    sitemap()
   ],
   output: 'static',
   build: {
