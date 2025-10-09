@@ -1,29 +1,37 @@
 ---
-// Smart language detection and redirect
-import { DEFAULT_LANGUAGE } from '../i18n/config';
-
-// Get browser's preferred language from Accept-Language header
-const acceptLanguage = Astro.request.headers.get('accept-language');
-let targetLang = DEFAULT_LANGUAGE;
-
-if (acceptLanguage) {
-  // Parse the Accept-Language header
-  // Format: "de-DE,de;q=0.9,en-US;q=0.8,en;q=0.7"
-  const languages = acceptLanguage
-    .split(',')
-    .map(lang => {
-      const [code, qValue] = lang.trim().split(';');
-      const quality = qValue ? parseFloat(qValue.split('=')[1]) : 1.0;
-      return { code: code.toLowerCase().substring(0, 2), quality };
-    })
-    .sort((a, b) => b.quality - a.quality);
-
-  // Check if German is preferred
-  const preferredLang = languages.find(lang => lang.code === 'de');
-  if (preferredLang) {
-    targetLang = 'de';
-  }
-}
-
-return Astro.redirect(`/${targetLang}/`);
+/**
+ * Root redirect page - detects user's language and redirects to appropriate locale
+ * This page should redirect immediately to /en/ or /de/ based on browser language
+ */
+export const prerender = true;
 ---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Florize Flowers - Redirecting...</title>
+  <meta http-equiv="refresh" content="0;url=/en/">
+  <script>
+    // Detect browser language and redirect
+    (function() {
+      const userLang = navigator.language || navigator.userLanguage;
+      const lang = userLang.toLowerCase().startsWith('de') ? 'de' : 'en';
+      window.location.href = `/${lang}/`;
+    })();
+  </script>
+</head>
+<body>
+  <div style="display: flex; align-items: center; justify-content: center; min-height: 100vh; font-family: system-ui, -apple-system, sans-serif; background: linear-gradient(135deg, #fce7f3 0%, #dbeafe 100%);">
+    <div style="text-align: center; padding: 2rem;">
+      <h1 style="color: #be185d; margin-bottom: 1rem; font-size: 2rem; font-weight: 600;">🌸 Florize Flowers</h1>
+      <p style="color: #6b7280; font-size: 1.125rem;">Redirecting to your language...</p>
+      <p style="color: #9ca3af; font-size: 0.875rem; margin-top: 1.5rem;">
+        If you are not redirected automatically, <a href="/en/" style="color: #db2777; text-decoration: underline;">click here for English</a>
+        or <a href="/de/" style="color: #db2777; text-decoration: underline;">hier für Deutsch</a>.
+      </p>
+    </div>
+  </div>
+</body>
+</html>
