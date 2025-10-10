@@ -2,8 +2,8 @@ import { defineConfig } from "sanity";
 import { structureTool } from "sanity/structure";
 import { codeInput } from "@sanity/code-input";
 
-// Import schemas from schemas directory
-import { schemaTypes } from "./schemas";
+// Import schemas from root-level schemas directory
+import { schemaTypes } from "../schemas";
 
 export default defineConfig({
   name: "florize-flowers-cms",
