@@ -3,6 +3,7 @@ import { getAffiliateLink } from '../../utils/affiliateLinks';
 import type { CollectionEntry } from 'astro:content';
 import type { SupportedLanguage } from '../../i18n/config';
 import { getLanguageFromUrl } from '../../i18n/utils';
+import { t } from '../../i18n/translations';
 
 interface Props {
   services: CollectionEntry<'services'>[];
@@ -34,12 +35,12 @@ const servicesWithAffiliates = await Promise.all(
   <table class="comparison-table">
     <thead>
       <tr>
-        <th>Service</th>
-        <th>Price Range</th>
-        <th>Delivery Options</th>
-        <th>Key Features</th>
-        <th>Our Rating</th>
-        <th>Visit Service</th>
+        <th>{t(lang, 'comparisonTable.service')}</th>
+        <th>{t(lang, 'comparisonTable.priceRange')}</th>
+        <th>{t(lang, 'comparisonTable.deliveryOptions')}</th>
+        <th>{t(lang, 'comparisonTable.keyFeatures')}</th>
+        <th>{t(lang, 'comparisonTable.ourRating')}</th>
+        <th>{t(lang, 'comparisonTable.visitService')}</th>
       </tr>
     </thead>
     <tbody>
@@ -82,10 +83,10 @@ const servicesWithAffiliates = await Promise.all(
           <td>
             <div class="table-cta-group">
               <a
-                href={`/services/${service.data.base.id}`}
+                href={`/${lang}/services/${service.data.base.id}`}
                 class="cta-button secondary"
               >
-                Read Review
+                {t(lang, 'buttons.readReview')}
               </a>
               <div class="affiliate-cta primary-cta">
                 <a
@@ -94,7 +95,7 @@ const servicesWithAffiliates = await Promise.all(
                   target="_blank"
                   rel="nofollow sponsored"
                 >
-                  Visit {service.data.base.name}
+                  {t(lang, 'buttons.visitService')}
                 </a>
               </div>
             </div>
@@ -130,12 +131,12 @@ const servicesWithAffiliates = await Promise.all(
 
       <div class="card-info-section">
         <div class="info-row">
-          <span class="info-label">Price Range:</span>
+          <span class="info-label">{t(lang, 'service.priceRange')}:</span>
           <span class="info-value">{service.data.base.price_range}</span>
         </div>
 
         <div class="info-row">
-          <span class="info-label">Delivery:</span>
+          <span class="info-label">{t(lang, 'service.delivery')}:</span>
           <ul class="info-list">
             {service.data.base.delivery_options.slice(0, 3).map((option) => (
               <li>{option}</li>
@@ -144,7 +145,7 @@ const servicesWithAffiliates = await Promise.all(
         </div>
 
         <div class="info-row">
-          <span class="info-label">Key Features:</span>
+          <span class="info-label">{t(lang, 'comparisonTable.keyFeatures')}:</span>
           <ul class="info-list">
             {service.data.base.key_features.slice(0, 3).map((feature) => (
               <li>{feature}</li>
@@ -160,13 +161,13 @@ const servicesWithAffiliates = await Promise.all(
           target="_blank"
           rel="nofollow sponsored"
         >
-          Visit {service.data.base.name}
+          {t(lang, 'buttons.visitService')}
         </a>
         <a
-          href={`/services/${service.data.base.id}`}
+          href={`/${lang}/services/${service.data.base.id}`}
           class="cta-button secondary"
         >
-          Read Full Review
+          {t(lang, 'buttons.readReview')}
         </a>
       </div>
     </div>
