@@ -31,7 +31,7 @@ const buttonText = t(lang, 'homepage.viewAllServices');
       {sectionHeading}
     </h2>
 
-    <ComparisonTable services={services} maxServices={maxServices} />
+    <ComparisonTable services={services} maxServices={maxServices} lang={lang} />
 
     {showViewAllButton && (
       <div class="text-center mt-8">
