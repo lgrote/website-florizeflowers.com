@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import BreadcrumbNavigation from '../../components/navigation/BreadcrumbNavigation.astro';
 import { SUPPORTED_LANGUAGES, type SupportedLanguage } from '../../i18n/config';
+import { t } from '../../i18n/translations';
 
 export async function getStaticPaths() {
   return SUPPORTED_LANGUAGES.map((lang) => ({
@@ -24,8 +25,8 @@ const { Content } = await contactPage.render();
 
 // Breadcrumb items
 const breadcrumbItems = [
-  { label: 'Home', href: `/${lang}` },
-  { label: 'Contact' },
+  { label: t(lang, 'nav.home'), href: `/${lang}` },
+  { label: t(lang, 'nav.contact') },
 ];
 ---
 

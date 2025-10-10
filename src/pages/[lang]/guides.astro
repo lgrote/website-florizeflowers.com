@@ -5,6 +5,7 @@ import BreadcrumbNavigation from '../../components/navigation/BreadcrumbNavigati
 import HeroSection from '../../components/sections/HeroSection.astro';
 import Card from '../../components/ui/Card.astro';
 import { SUPPORTED_LANGUAGES, type SupportedLanguage } from '../../i18n/config';
+import { t } from '../../i18n/translations';
 
 export async function getStaticPaths() {
   return SUPPORTED_LANGUAGES.map((lang) => ({
@@ -33,8 +34,8 @@ const quickTips = guides
 
 // Breadcrumb items
 const breadcrumbItems = [
-  { label: 'Home', href: `/${lang}` },
-  { label: 'Guides' },
+  { label: t(lang, 'nav.home'), href: `/${lang}` },
+  { label: t(lang, 'nav.guides') },
 ];
 ---
 
