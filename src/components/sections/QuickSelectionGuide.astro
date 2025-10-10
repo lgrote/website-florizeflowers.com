@@ -1,7 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
 import Button from '../ui/Button.astro';
-import AffiliateBanner from '../ui/AffiliateBanner.astro';
 import type { SupportedLanguage } from '../../i18n/config';
 import { t } from '../../i18n/translations';
 
@@ -52,10 +51,6 @@ const rightRecommendations = recommendations
               <Button href={`/${lang}/services/${rec.data.serviceId}`} variant="secondary" size="md" text={rec.data.ctaText} />
             </div>
           ))}
-
-          <!-- Affiliate Banners - Left Column -->
-          <AffiliateBanner serviceId="myflowers" className="mt-6" />
-          <AffiliateBanner serviceId="blossoming-gifts" />
         </div>
 
         <!-- Right Column -->
@@ -67,9 +62,6 @@ const rightRecommendations = recommendations
               <Button href={`/${lang}/services/${rec.data.serviceId}`} variant="secondary" size="md" text={rec.data.ctaText} />
             </div>
           ))}
-
-          <!-- Affiliate Banner - Right Column -->
-          <AffiliateBanner serviceId="appleyard-flowers" className="mt-6" />
 
           <!-- Occasions Link -->
           <div>
