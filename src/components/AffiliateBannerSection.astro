@@ -3,7 +3,7 @@
  * AffiliateBannerSection Component
  *
  * Displays affiliate banners in two modes:
- * - "all": Shows all enabled banners in a responsive grid (homepage)
+ * - "all": Shows all enabled banners in a responsive masonry grid (homepage)
  * - "single": Shows only the banner for a specific service (service pages)
  *
  * If no banners are available, the section is not rendered.
@@ -33,8 +33,11 @@ const subtitle = t(lang, 'affiliate.partnersSubtitle');
 const disclosure = t(lang, 'affiliate.disclosure');
 const learnMoreText = t(lang, 'affiliate.learnMore');
 
-// Fetch banners based on variant
-const banners = await getAffiliateBanners(variant === 'single' ? serviceId : undefined);
+// Fetch banners based on variant - NOW WITH LOCALE FILTERING
+const banners = await getAffiliateBanners(
+  variant === 'single' ? serviceId : undefined,
+  lang  // FIXED: Pass locale to filter banners by language
+);
 
 // Don't render if no banners available
 if (banners.length === 0) {
@@ -60,12 +63,19 @@ if (banners.length === 0) {
               </p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="masonry-grid" id="affiliate-masonry-grid">
+              <!-- Masonry columns -->
+              <div class="masonry-col"></div>
+              <div class="masonry-col hidden md:block"></div>
+              <div class="masonry-col hidden lg:block"></div>
+
+              <!-- Masonry items (client-side script will sort and distribute by height) -->
               {banners.map((banner) => (
                 <AffiliateBanner
                   serviceId={banner.serviceId}
                   htmlCode={banner.htmlCode}
                   description={banner.description}
+                  class="masonry-item"
                 />
               ))}
             </div>
@@ -103,4 +113,181 @@ if (banners.length === 0) {
   .affiliate-banner-section {
     /* Additional styling if needed */
   }
+
+  /* Masonry grid layout */
+  .masonry-grid {
+    display: flex;
+    gap: 1.5rem;
+  }
+
+  /* Masonry columns - responsive widths */
+  .masonry-col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  /* Hide grid initially while measuring */
+  .masonry-grid {
+    visibility: hidden;
+  }
+
+  .masonry-grid.ready {
+    visibility: visible;
+  }
+
+  /* Hide items initially to prevent FOUC */
+  .masonry-item {
+    opacity: 0;
+    transition: opacity 0.3s ease-in;
+  }
+
+  .masonry-item.loaded {
+    opacity: 1;
+  }
+
+  /* Single column on mobile */
+  @media (max-width: 767px) {
+    .masonry-grid {
+      flex-direction: column;
+    }
+  }
 </style>
+
+<script>
+  async function initMasonry() {
+    console.log('🔧 Initializing optimized masonry grid with bin-packing algorithm...');
+    const grid = document.querySelector('#affiliate-masonry-grid');
+
+    if (!grid) {
+      console.error('❌ Masonry grid element not found');
+      return;
+    }
+
+    const items = Array.from(grid.querySelectorAll('.masonry-item'));
+    const columns = Array.from(grid.querySelectorAll('.masonry-col'));
+
+    console.log('📊 Items found:', items.length);
+    console.log('📊 Columns found:', columns.length);
+
+    if (columns.length === 0) {
+      console.error('❌ No columns found');
+      return;
+    }
+
+    // Wait for all images to load before measuring heights
+    await waitForImagesToLoad(grid);
+    console.log('✅ All images loaded');
+
+    // Temporarily place all items in first column to measure their natural heights
+    items.forEach(item => {
+      columns[0].appendChild(item);
+    });
+
+    // Wait for layout to settle
+    await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+
+    // Measure actual heights of each item NOW (after proper layout)
+    const itemsWithHeights = items.map((item, index) => ({
+      element: item,
+      height: item.offsetHeight,
+      index
+    }));
+
+    // Log measured heights
+    console.log('📏 Measured heights:', itemsWithHeights.map(item =>
+      `Banner ${item.index}: ${item.height}px`
+    ));
+
+    // Sort by height descending (tallest first) - Best Fit Decreasing
+    itemsWithHeights.sort((a, b) => b.height - a.height);
+
+    console.log('🔄 Sorted by height (tallest first):',
+      itemsWithHeights.map(item => `${item.height}px`).join(', ')
+    );
+
+    // Initialize column tracking
+    const columnHeights = columns.map(() => 0);
+    const columnItems = columns.map(() => []);
+
+    // Distribute items using Best Fit Decreasing algorithm
+    itemsWithHeights.forEach(item => {
+      // Find column with minimum current height
+      const minHeight = Math.min(...columnHeights);
+      const targetColumnIndex = columnHeights.indexOf(minHeight);
+
+      // Assign item to that column
+      columnItems[targetColumnIndex].push(item);
+      columnHeights[targetColumnIndex] += item.height;
+    });
+
+    // Log distribution
+    console.log('📊 Column distribution:');
+    columnHeights.forEach((height, index) => {
+      console.log(`  Column ${index + 1}: ${height}px (${columnItems[index].length} items)`);
+    });
+
+    const maxHeight = Math.max(...columnHeights);
+    const minHeight = Math.min(...columnHeights);
+    const difference = maxHeight - minHeight;
+    console.log(`⚖️  Height difference: ${difference}px (${((difference/maxHeight)*100).toFixed(1)}%)`);
+
+    // Clear all columns
+    columns.forEach(col => col.innerHTML = '');
+
+    // Place items in their assigned columns
+    columnItems.forEach((items, columnIndex) => {
+      items.forEach(item => {
+        columns[columnIndex].appendChild(item.element);
+      });
+    });
+
+    console.log('✅ Items distributed with optimal bin-packing');
+
+    // Show grid
+    grid.classList.add('ready');
+
+    // Show items with fade-in effect
+    setTimeout(() => {
+      items.forEach(item => {
+        item.classList.add('loaded');
+      });
+      console.log('✅ Items shown with fade-in');
+    }, 50);
+  }
+
+  // Wait for all images within a container to load
+  function waitForImagesToLoad(container) {
+    const images = Array.from(container.querySelectorAll('img'));
+
+    if (images.length === 0) {
+      return Promise.resolve();
+    }
+
+    const promises = images.map(img => {
+      if (img.complete) {
+        return Promise.resolve();
+      }
+      return new Promise((resolve) => {
+        img.addEventListener('load', resolve);
+        img.addEventListener('error', resolve); // Resolve even on error to not block
+        // Timeout after 5 seconds to prevent infinite waiting
+        setTimeout(resolve, 5000);
+      });
+    });
+
+    return Promise.all(promises);
+  }
+
+  // Try multiple events to ensure it runs
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initMasonry);
+  } else {
+    // DOM already loaded
+    initMasonry();
+  }
+
+  // Also listen for Astro page loads (for SPA navigation)
+  document.addEventListener('astro:page-load', initMasonry);
+</script>
