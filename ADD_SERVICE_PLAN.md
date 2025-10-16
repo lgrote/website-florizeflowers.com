@@ -33,10 +33,17 @@ When the user provides a domain, execute the following steps in order:
    - Based on features: innovative, traditional, luxury, eco-friendly, etc.
    - Assign appropriate rating (4.0-4.9 based on market position)
 
-4. **Search for existing logo/images**
-   - Look for high-quality logo on their website
-   - Note the logo URL for potential download
+4. **Search for and identify logo/images**
+   - **CRITICAL:** Find the service's logo on their website
+   - Look in header, footer, or about pages
+   - Identify the logo image URL (right-click > Copy Image Address)
+   - Note image specifications:
+     - Direct URL to logo image
+     - Image format (PNG, JPG, SVG preferred)
+     - Approximate dimensions
+   - Look for hero/banner images if available
    - Check if service already has images in `/public/images/`
+   - Document findings for step 7
 
 ### Phase 2: File Creation
 
@@ -67,12 +74,26 @@ When the user provides a domain, execute the following steps in order:
    - Translate: title, description, features, content, pros/cons
    - Ensure natural German translations, not literal
 
-7. **Handle service images**
-   - Check if images exist in `/public/images/` for this service
-   - If not, identify which existing placeholder images to use
-   - Options: `service-professional-1.jpg` through `service-professional-9.jpg`
-   - Select an unused or appropriate placeholder
-   - Document which image was assigned in the service file
+7. **Download and handle service images**
+   - **IMPORTANT:** Download actual images from the service website for professional quality
+   - Look for the service logo on their website (usually in header/footer)
+   - Find high-quality hero images or product images
+   - Download steps:
+     - Identify the logo URL from the website
+     - Check image quality and size (minimum 500x500px for logos)
+     - Note: You cannot directly download images, so provide user with:
+       - Image URL found on website
+       - Recommended filename: `[service-slug]-logo.jpg`
+       - Save location: `/public/images/[service-slug]-logo.jpg`
+       - Instructions: "Please download the logo from [URL] and save it to `/public/images/[service-slug]-logo.jpg`"
+   - If user cannot download immediately:
+     - Use placeholder: `service-professional-[1-9].jpg` temporarily
+     - Clearly note in summary that placeholder is used
+     - Provide image URL for later download
+   - Update service files with correct image path:
+     - If downloaded: `/images/[service-slug]-logo.jpg`
+     - If placeholder: `/images/service-professional-X.jpg`
+   - Document image source and any pending downloads in summary
 
 ### Phase 3: Affiliate Link Setup
 
@@ -120,19 +141,23 @@ When the user provides a domain, execute the following steps in order:
       - ✅ German service file
     - Rating assigned: X.X/5
     - Price range: £XX-£XX
-    - Image used: [path]
+    - **Images:**
+      - Logo URL found: [URL from website]
+      - Current image path: [placeholder or downloaded]
+      - **Action needed:** If placeholder used, download logo from [URL] and save to `/public/images/[slug]-logo.jpg`, then update both service files
     - Affiliate link: [status]
     - URLs to review: [list]
 
 14. **Ask for improvements**
     - "Would you like me to:"
+      - Download and replace placeholder images with actual service images?
       - Add more detailed content?
       - Add testing metrics?
       - Add competitor comparisons?
       - Adjust the rating or positioning?
-      - Create a custom logo/image? (user would need to provide)
       - Add FAQ section?
       - Enhance SEO content?
+    - If placeholder image was used, prominently remind about image download
 
 15. **Git commit (only if user approves)**
     - Wait for user confirmation
@@ -263,14 +288,15 @@ User: "Add petalpost.co.uk"
 
 Claude:
 1. ✓ Fetching website information...
-2. ✓ Creating service slug: "petal-post"
-3. ✓ Analyzing service positioning: Mid-range, fast delivery focus
-4. ✓ Creating English service file...
-5. ✓ Creating German service file...
-6. ✓ Assigning placeholder image: service-professional-4.jpg
-7. ✓ Running build test...
-8. ✓ Build successful!
-9. ✓ Starting dev server...
+2. ✓ Found logo at: https://www.petalpost.co.uk/logo.png
+3. ✓ Creating service slug: "petal-post"
+4. ✓ Analyzing service positioning: Mid-range, fast delivery focus
+5. ✓ Creating English service file...
+6. ✓ Creating German service file...
+7. ⚠️  Using placeholder image temporarily: service-professional-4.jpg
+8. ✓ Running build test...
+9. ✓ Build successful!
+10. ✓ Starting dev server...
 
 Summary:
 - Service: Petal Post
@@ -278,7 +304,11 @@ Summary:
 - Rating: 4.3/5 (mid-range, reliable service)
 - Price Range: £20-£70
 - Files Created: ✓ en/petal-post.md, ✓ de/petal-post.md
-- Image: /images/service-professional-4.jpg
+- Images:
+  - Logo URL: https://www.petalpost.co.uk/logo.png
+  - Current: /images/service-professional-4.jpg (PLACEHOLDER)
+  - **ACTION NEEDED:** Please download logo and save to `/public/images/petal-post-logo.jpg`
+  - After download, update logo_path in both service files to `/images/petal-post-logo.jpg`
 
 Review at:
 - http://localhost:4321/en/services/petal-post
