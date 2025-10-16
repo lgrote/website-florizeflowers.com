@@ -1,0 +1,91 @@
+---
+import type { SupportedLanguage } from '../../i18n/config';
+import { t } from '../../i18n/translations';
+
+interface Props {
+  lang: SupportedLanguage;
+}
+
+const { lang } = Astro.props;
+---
+
+<div id="imprint-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="imprint-modal-title">
+  <div class="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-xl">
+    <div class="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex justify-between items-center">
+      <h2 id="imprint-modal-title" class="text-2xl font-bold text-charcoal">{t(lang, 'modal.imprintTitle')}</h2>
+      <button
+        id="close-modal"
+        class="text-gray-500 hover:text-charcoal transition-colors"
+        aria-label={t(lang, 'modal.close')}
+      >
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+    <div class="px-6 py-6">
+      <div class="space-y-6 text-charcoal">
+        <div>
+          <h3 class="font-bold text-lg mb-2">SmartAds AS</h3>
+          <p>Johnny Myklebust</p>
+          <p>Skøyen terrasse 33, 0276 OSLO | Norway</p>
+        </div>
+
+        <div>
+          <h3 class="font-bold text-lg mb-2">Contact</h3>
+          <p>Email: <a href="mailto:contact@smartads.as" class="text-bloom-pink hover:underline">contact@smartads.as</a></p>
+        </div>
+
+        <div>
+          <h3 class="font-bold text-lg mb-2">Company Registration Number</h3>
+          <p>912796620</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function initImprintModal() {
+    const modal = document.getElementById('imprint-modal');
+    const openButton = document.getElementById('open-imprint-modal');
+    const closeButton = document.getElementById('close-modal');
+
+    if (!modal || !openButton || !closeButton) return;
+
+    // Open modal
+    openButton.addEventListener('click', (e) => {
+      e.preventDefault();
+      modal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    });
+
+    // Close modal on button click
+    closeButton.addEventListener('click', () => {
+      modal.classList.add('hidden');
+      document.body.style.overflow = '';
+    });
+
+    // Close modal on backdrop click
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        modal.classList.add('hidden');
+        document.body.style.overflow = '';
+      }
+    });
+
+    // Close modal on Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+        modal.classList.add('hidden');
+        document.body.style.overflow = '';
+      }
+    });
+  }
+
+  // Initialize on page load
+  initImprintModal();
+
+  // Re-initialize after Astro page transitions (if using View Transitions)
+  document.addEventListener('astro:page-load', initImprintModal);
+</script>

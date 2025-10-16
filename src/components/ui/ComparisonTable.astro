@@ -35,12 +35,12 @@ const servicesWithAffiliates = await Promise.all(
   <table class="comparison-table">
     <thead>
       <tr>
-        <th>{t(lang, 'comparisonTable.service')}</th>
-        <th>{t(lang, 'comparisonTable.priceRange')}</th>
-        <th>{t(lang, 'comparisonTable.deliveryOptions')}</th>
-        <th>{t(lang, 'comparisonTable.keyFeatures')}</th>
-        <th>{t(lang, 'comparisonTable.ourRating')}</th>
-        <th>{t(lang, 'comparisonTable.visitService')}</th>
+        <th>{t(lang, 'table.service')}</th>
+        <th>{t(lang, 'table.priceRange')}</th>
+        <th>{t(lang, 'table.deliveryOptions')}</th>
+        <th>{t(lang, 'table.keyFeatures')}</th>
+        <th>{t(lang, 'table.ourRating')}</th>
+        <th>{t(lang, 'table.visitService')}</th>
       </tr>
     </thead>
     <tbody>
@@ -145,7 +145,7 @@ const servicesWithAffiliates = await Promise.all(
         </div>
 
         <div class="info-row">
-          <span class="info-label">{t(lang, 'comparisonTable.keyFeatures')}:</span>
+          <span class="info-label">{t(lang, 'table.keyFeatures')}:</span>
           <ul class="info-list">
             {service.data.base.key_features.slice(0, 3).map((feature) => (
               <li>{feature}</li>
@@ -198,18 +198,18 @@ const servicesWithAffiliates = await Promise.all(
     width: 100%;
     border-collapse: collapse;
     background-color: white;
-    min-width: 1000px;
+    min-width: 840px;
     font-size: 0.875rem;
     table-layout: fixed;
   }
 
   /* Optimized column widths for better space distribution */
   .comparison-table th:nth-child(1) { width: 180px; } /* Service */
-  .comparison-table th:nth-child(2) { width: 100px; } /* Price Range */
-  .comparison-table th:nth-child(3) { width: 140px; } /* Delivery Options */
-  .comparison-table th:nth-child(4) { width: 180px; } /* Key Features */
-  .comparison-table th:nth-child(5) { width: 100px; } /* Our Rating */
-  .comparison-table th:nth-child(6) { width: 180px; } /* Visit Service */
+  .comparison-table th:nth-child(2) { width: 90px; } /* Price Range */
+  .comparison-table th:nth-child(3) { width: 130px; } /* Delivery Options */
+  .comparison-table th:nth-child(4) { width: 160px; } /* Key Features */
+  .comparison-table th:nth-child(5) { width: 110px; } /* Our Rating */
+  .comparison-table th:nth-child(6) { width: 170px; } /* Visit Service */
 
   .comparison-table th {
     background-color: #4a7c59;
@@ -226,6 +226,11 @@ const servicesWithAffiliates = await Promise.all(
     border-bottom: 1px solid #e5e5e5;
     vertical-align: middle;
     font-size: 0.875rem;
+  }
+
+  .comparison-table td:nth-child(6) {
+    padding: 0.75rem 0.5rem;
+    overflow: visible;
   }
 
   .comparison-table tr:nth-child(even) {
@@ -254,8 +259,11 @@ const servicesWithAffiliates = await Promise.all(
   .service-info img {
     width: 70px;
     height: 70px;
+    min-width: 70px;
+    max-width: 70px;
     object-fit: contain;
     border-radius: 0.375rem;
+    flex-shrink: 0;
   }
 
   .service-info div h4 {
@@ -287,21 +295,24 @@ const servicesWithAffiliates = await Promise.all(
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
-    align-items: center;
+    align-items: stretch;
+    width: 100%;
+    max-width: 100%;
   }
 
   .cta-button {
-    display: inline-block;
-    padding: 0.5rem 0.75rem;
+    display: block;
+    padding: 0.5rem 0.375rem;
     border-radius: 0.5rem;
     font-weight: 600;
     text-decoration: none;
     transition: all 0.2s;
     text-align: center;
     width: 100%;
-    font-size: 0.8125rem;
+    font-size: 0.75rem;
     box-sizing: border-box;
     white-space: nowrap;
+    line-height: 1.2;
   }
 
   .cta-button.secondary {
@@ -326,6 +337,12 @@ const servicesWithAffiliates = await Promise.all(
     border-color: #d4af37;
     transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  }
+
+  .affiliate-cta {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
   }
 
   .affiliate-cta .cta-button {
