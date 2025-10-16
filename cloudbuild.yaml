@@ -12,9 +12,9 @@ steps:
       - "-c"
       - |
         # Check if schema files changed in this commit
-        SCHEMA_CHANGED=$(git diff --name-only HEAD~1 HEAD | grep -E "^studio/schemas/|^studio/sanity.config.ts" || echo "")
+        SCHEMA_CHANGED=$$(git diff --name-only HEAD~1 HEAD | grep -E "^studio/schemas/|^studio/sanity.config.ts" || echo "")
 
-        if [ -n "$SCHEMA_CHANGED" ]; then
+        if [ -n "$$SCHEMA_CHANGED" ]; then
           echo "Schema files changed, deploying Sanity Studio..."
           cd studio
           npm install
