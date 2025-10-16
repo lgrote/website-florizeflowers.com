@@ -17,9 +17,7 @@ steps:
         npx sanity deploy --no-build
     id: "deploy-sanity-schema"
     waitFor: ["install-dependencies"]
-    secretEnv: ["SANITY_DEPLOY_TOKEN"]
-    env:
-      - "SANITY_AUTH_TOKEN=${SANITY_DEPLOY_TOKEN}"
+    secretEnv: ["SANITY_AUTH_TOKEN"]
 
   # Step 3: Build Astro static site
   - name: "node:20"
@@ -82,7 +80,7 @@ availableSecrets:
     - versionName: projects/${PROJECT_ID}/secrets/florize-sanity-read-token/versions/latest
       env: "SANITY_API_READ_TOKEN"
     - versionName: projects/${PROJECT_ID}/secrets/florize-sanity-deploy-token/versions/latest
-      env: "SANITY_DEPLOY_TOKEN"
+      env: "SANITY_AUTH_TOKEN"
 
 options:
   logging: CLOUD_LOGGING_ONLY
