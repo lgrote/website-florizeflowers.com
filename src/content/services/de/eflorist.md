@@ -9,7 +9,7 @@ base:
   hero_image: "/images/eflorist-hero.jpg"
   rating: 4.3
   price_range: "£20-£45"
-  winner_badge: "Bestes Preis-Leistungs-Verhältnis"
+  winner_badge: "Beste Preis-Leistung"
   delivery_options:
     - "Lieferung am nächsten Tag"
     - "Lieferung am gleichen Tag verfügbar"

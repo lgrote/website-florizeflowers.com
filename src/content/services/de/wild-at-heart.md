@@ -9,7 +9,7 @@ base:
   hero_image: "/images/service-professional-6.jpg"
   rating: 4.3
   price_range: "£55 - £300+"
-  winner_badge: "Herausragende handwerkliche Exzellenz"
+  winner_badge: "Handwerk-Exzellenz"
   delivery_options:
     - "Londoner Kunsthandwerk-Fokus"
     - "Maßgeschneiderte Beratung"

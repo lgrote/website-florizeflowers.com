@@ -38,3 +38,4 @@ dist/
 # Sanity
 coverage/
 .cache/
+schema.json

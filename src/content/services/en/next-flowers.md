@@ -9,7 +9,7 @@ base:
   hero_image: "/images/service-professional-7.jpg"
   rating: 4.0
   price_range: "£22 - £75"
-  winner_badge: "Reliable High Street Value"
+  winner_badge: "High Street Value"
   delivery_options:
     - "Nationwide coverage"
     - "Next-day standard"

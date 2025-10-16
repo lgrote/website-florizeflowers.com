@@ -9,7 +9,7 @@ base:
   hero_image: "/images/service-professional-5.jpg"
   rating: 4.4
   price_range: "£45 - £250+"
-  winner_badge: "Outstanding Modern Luxury"
+  winner_badge: "Modern Luxury"
   delivery_options:
     - "London focus"
     - "Same-day premium service"

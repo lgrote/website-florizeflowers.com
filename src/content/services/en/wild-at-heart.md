@@ -9,7 +9,7 @@ base:
   hero_image: "/images/service-professional-6.jpg"
   rating: 4.3
   price_range: "£55 - £300+"
-  winner_badge: "Outstanding Artisanal Excellence"
+  winner_badge: "Artisan Excellence"
   delivery_options:
     - "London artisanal focus"
     - "Bespoke consultation"

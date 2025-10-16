@@ -9,7 +9,7 @@ base:
   hero_image: "/images/service-professional-4.jpg"
   rating: 4.6
   price_range: "£22 - £95"
-  winner_badge: "Exzellente Premium-Qualität"
+  winner_badge: "Premium-Qualität"
   delivery_options:
     - "Landesweit am nächsten Tag"
     - "Am selben Tag London"

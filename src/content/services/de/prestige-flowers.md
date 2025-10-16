@@ -9,7 +9,7 @@ base:
   hero_image: "/images/service-professional-2.jpg"
   rating: 4.3
   price_range: "£19,99-£69,99"
-  winner_badge: "Bestes Preis-Leistungs-Verhältnis"
+  winner_badge: "Beste Preis-Leistung"
   delivery_options:
     - "Garantierte Lieferung am nächsten Tag"
     - "Bestellung bis 22 Uhr"
