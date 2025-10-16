@@ -95,7 +95,7 @@ components:
       description: "Luxushotels & VIPs"
 
 affiliate:
-  url: "https://example.affiliat.link.com/flowerbx"
+  url: "https://www.flowerbx.com/"
 
 comparisons:
   items:

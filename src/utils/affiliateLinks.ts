@@ -38,8 +38,8 @@ export async function getAffiliateLink(serviceId: string, locale?: SupportedLang
       }
 
       const serviceData = await getEntry('services', entryId);
-      if (serviceData?.data?.affiliate_url) {
-        return serviceData.data.affiliate_url;
+      if (serviceData?.data?.affiliate?.url) {
+        return serviceData.data.affiliate.url;
       }
     } catch (error) {
       // Service entry not found - this is expected for some services
@@ -47,8 +47,8 @@ export async function getAffiliateLink(serviceId: string, locale?: SupportedLang
       if (locale) {
         try {
           const serviceData = await getEntry('services', serviceId);
-          if (serviceData?.data?.affiliate_url) {
-            return serviceData.data.affiliate_url;
+          if (serviceData?.data?.affiliate?.url) {
+            return serviceData.data.affiliate.url;
           }
         } catch (error) {
           // Ignore - will fall through to last resort
