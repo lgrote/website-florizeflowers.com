@@ -1,84 +1,99 @@
 ---
-import { getCollection } from 'astro:content';
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import HeroSection from '../../components/sections/HeroSection.astro';
-import IntroductionSection from '../../components/sections/IntroductionSection.astro';
-import ComparisonTableSection from '../../components/sections/ComparisonTableSection.astro';
-import MethodologySection from '../../components/sections/MethodologySection.astro';
-import QuickSelectionGuide from '../../components/sections/QuickSelectionGuide.astro';
-import UpdatesSection from '../../components/sections/UpdatesSection.astro';
-import TrustSignals from '../../components/sections/TrustSignals.astro';
-import AffiliateBannerSection from '../../components/AffiliateBannerSection.astro';
-import { generateOrganizationSchema, generateWebSiteSchema } from '../../utils/seo';
-import { SUPPORTED_LANGUAGES, type SupportedLanguage } from '../../i18n/config';
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import HeroSection from "../../components/sections/HeroSection.astro";
+import IntroductionSection from "../../components/sections/IntroductionSection.astro";
+import ComparisonTableSection from "../../components/sections/ComparisonTableSection.astro";
+import MethodologySection from "../../components/sections/MethodologySection.astro";
+import QuickSelectionGuide from "../../components/sections/QuickSelectionGuide.astro";
+import UpdatesSection from "../../components/sections/UpdatesSection.astro";
+import TrustSignals from "../../components/sections/TrustSignals.astro";
+import AffiliateBannerSection from "../../components/AffiliateBannerSection.astro";
+import {
+    generateOrganizationSchema,
+    generateWebSiteSchema,
+} from "../../utils/seo";
+import { SUPPORTED_LANGUAGES, type SupportedLanguage } from "../../i18n/config";
 
 export async function getStaticPaths() {
-  return SUPPORTED_LANGUAGES.map((lang) => ({
-    params: { lang },
-  }));
+    return SUPPORTED_LANGUAGES.map((lang) => ({
+        params: { lang },
+    }));
 }
 
 const { lang } = Astro.params as { lang: SupportedLanguage };
 
 // Get all services for current language
-const allServices = await getCollection('services');
-const services = allServices.filter(service => service.data.lang === lang);
+const allServices = await getCollection("services");
+const services = allServices.filter((service) => service.data.lang === lang);
 
 // Get homepage sections content for current language
-const allSections = await getCollection('homepage-sections');
-const heroData = allSections.find(section =>
-  section.data.sectionType === 'hero' && section.data.lang === lang
+const allSections = await getCollection("homepage-sections");
+const heroData = allSections.find(
+    (section) =>
+        section.data.sectionType === "hero" && section.data.lang === lang,
 );
-const seoData = allSections.find(section =>
-  section.data.sectionType === 'seo' && section.data.lang === lang
+const seoData = allSections.find(
+    (section) =>
+        section.data.sectionType === "seo" && section.data.lang === lang,
 );
 
 // Generate structured data for homepage
-const siteUrl = Astro.site?.toString() || 'https://florizeflowers.com';
+const siteUrl = Astro.site?.toString() || "https://florizeflowers.com";
 const organizationSchema = generateOrganizationSchema();
 const websiteSchema = generateWebSiteSchema(siteUrl);
 
 // Use SEO data from content or fallback to English defaults
-const pageTitle = seoData?.data.title || "Best Flower Delivery UK 2025 - Expert Comparison & Reviews | Florize";
-const pageDescription = seoData?.data.description || "Compare top UK flower delivery services. Expert tested reviews, pricing comparison & recommendations for every occasion. Find your perfect florist today.";
-const pageKeywords = seoData?.data.keywords || "flower delivery uk, best florist uk, flower comparison, interflora, bloom and wild";
+const pageTitle =
+    seoData?.data.title ||
+    "Best Flower Delivery UK 2025 - Expert Comparison & Reviews | Florize";
+const pageDescription =
+    seoData?.data.description ||
+    "Compare top UK flower delivery services. Expert tested reviews, pricing comparison & recommendations for every occasion. Find your perfect florist today.";
+const pageKeywords =
+    seoData?.data.keywords ||
+    "flower delivery uk, best florist uk, flower comparison, interflora, bloom and wild";
 ---
 
 <BaseLayout
-  title={pageTitle}
-  description={pageDescription}
-  keywords={pageKeywords}
-  structuredData={[organizationSchema, websiteSchema]}
+    title={pageTitle}
+    description={pageDescription}
+    keywords={pageKeywords}
+    structuredData={[organizationSchema, websiteSchema]}
 >
-  <!-- Hero Section -->
-  {heroData && (
-    <HeroSection
-      title={heroData.data.title}
-      subtitle={heroData.data.subtitle}
-      primaryCta={heroData.data.primaryCta}
-      secondaryCta={heroData.data.secondaryCta}
-      backgroundImage={heroData.data.backgroundImage}
+    <!-- Hero Section -->
+    {
+        heroData && (
+            <HeroSection
+                title={heroData.data.title}
+                subtitle={heroData.data.subtitle}
+                primaryCta={heroData.data.primaryCta}
+                secondaryCta={heroData.data.secondaryCta}
+                backgroundImage={heroData.data.backgroundImage}
+            />
+        )
+    }
+
+    <!-- Introduction -->
+    <IntroductionSection lang={lang} />
+
+    <!-- Comparison Table -->
+    <ComparisonTableSection
+        services={services}
+        maxServices={12}
+        showViewAllButton={false}
+        lang={lang}
     />
-  )}
 
-  <!-- Introduction -->
-  <IntroductionSection lang={lang} />
+    <!-- How We Test Section -->
+    <MethodologySection lang={lang} />
 
-  <!-- Comparison Table -->
-  <ComparisonTableSection services={services} maxServices={12} showViewAllButton={false} lang={lang} />
+    <!-- Quick Selection Guide -->
+    <QuickSelectionGuide lang={lang} />
 
-  <!-- How We Test Section -->
-  <MethodologySection lang={lang} />
+    <!-- Recent Updates Section -->
+    <UpdatesSection lang={lang} />
 
-  <!-- Quick Selection Guide -->
-  <QuickSelectionGuide lang={lang} />
-
-  <!-- Recent Updates Section -->
-  <UpdatesSection lang={lang} />
-
-  <!-- Trust Signals -->
-  <TrustSignals lang={lang} />
-
-  <!-- Affiliate Banner Section -->
-  <AffiliateBannerSection variant="all" title="Our Flower Partners" lang={lang} />
+    <!-- Trust Signals -->
+    <TrustSignals lang={lang} />
 </BaseLayout>
