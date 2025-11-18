@@ -7,7 +7,7 @@ base:
   description: "Vollständige Eflorist Bewertung. 7-Tage Frischegarantie, Preisgarantie, landesweite Abdeckung. Expertentest dieses etablierten UK Blumenlieferdienstes."
   logo_path: "/images/eflorist-logo.svg"
   hero_image: "/images/eflorist-hero.jpg"
-  rating: 4.3
+  rating: 4.9
   price_range: "£20-£45"
   winner_badge: "Beste Preis-Leistung"
   delivery_options:

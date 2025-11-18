@@ -7,7 +7,7 @@ base:
   description: "Complete Eflorist review. 7-day freshness guarantee, price match promise, nationwide coverage. Expert testing of this established UK flower delivery service."
   logo_path: "/images/eflorist-logo.svg"
   hero_image: "/images/eflorist-hero.jpg"
-  rating: 4.3
+  rating: 4.9
   price_range: "£20-£45"
   winner_badge: "Best Value"
   delivery_options:
