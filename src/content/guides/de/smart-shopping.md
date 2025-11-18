@@ -1,5 +1,8 @@
 ---
 lang: de
+base:
+  id: "smart-shopping"
+  name: "Intelligente Einkaufsstrategien"
 title: "Intelligente Einkaufsstrategien"
 description: "Meistern Sie Aktions-Timing, saisonale Arbitrage und Serviceauswahl, um sowohl Kosten als auch Wirkung zu optimieren."
 category: "quick-tip"

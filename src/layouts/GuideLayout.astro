@@ -1,0 +1,274 @@
+---
+// Guide Layout - Simple layout for guide content
+import type { CollectionEntry } from 'astro:content';
+import BaseLayout from './BaseLayout.astro';
+import BreadcrumbNavigation from '../components/navigation/BreadcrumbNavigation.astro';
+import { t } from '../i18n/translations';
+
+export interface Props {
+  guide: CollectionEntry<'guides'>;
+}
+
+const { guide } = Astro.props;
+const { Content } = await guide.render();
+
+// Get language from guide data
+const lang = guide.data.lang;
+
+// Breadcrumb items
+const breadcrumbItems = [
+  { label: t(lang, 'layout.home'), href: `/${lang}` },
+  { label: t(lang, 'layout.guides'), href: `/${lang}/guides` },
+  { label: guide.data.title },
+];
+
+// Get category label
+const getCategoryLabel = (category: string) => {
+  switch (category) {
+    case 'essential':
+      return t(lang, 'layout.essentialGuide');
+    case 'quick-tip':
+      return t(lang, 'layout.quickTip');
+    case 'benefit':
+      return t(lang, 'layout.benefitGuide');
+    default:
+      return category;
+  }
+};
+---
+
+<BaseLayout
+  title={`${guide.data.title} - ${t(lang, 'layout.guides')}`}
+  description={guide.data.description}
+  showBreadcrumbs={true}
+>
+  <BreadcrumbNavigation slot="breadcrumbs" items={breadcrumbItems} />
+
+  <article class="guide-article">
+    <div class="container">
+      <!-- Guide Header -->
+      <header class="guide-header">
+        <div class="guide-category">
+          {getCategoryLabel(guide.data.category)}
+        </div>
+        <h1 class="guide-title">{guide.data.title}</h1>
+        <p class="guide-description">{guide.data.description}</p>
+      </header>
+
+      <!-- Key Tips (if available) -->
+      {guide.data.tips && guide.data.tips.length > 0 && (
+        <aside class="key-tips">
+          <h2 class="tips-heading">{t(lang, 'layout.keyTips')}</h2>
+          <ul class="tips-list">
+            {guide.data.tips.map((tip) => (
+              <li class="tip-item">{tip}</li>
+            ))}
+          </ul>
+        </aside>
+      )}
+
+      <!-- Guide Content -->
+      <div class="guide-content prose-content">
+        <Content />
+      </div>
+
+      <!-- Back to Guides -->
+      <div class="guide-footer">
+        <a href={`/${lang}/guides`} class="back-link">
+          ← {t(lang, 'layout.backToGuides')}
+        </a>
+      </div>
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+  }
+
+  .guide-article {
+    background: white;
+  }
+
+  .guide-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    padding-bottom: 2rem;
+    border-bottom: 2px solid #e5e7eb;
+  }
+
+  .guide-category {
+    display: inline-block;
+    background: linear-gradient(135deg, #4a7c59 0%, #6fa581 100%);
+    color: white;
+    padding: 0.5rem 1.25rem;
+    border-radius: 2rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 1.5rem;
+  }
+
+  .guide-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #1f2937;
+    margin: 0 0 1rem 0;
+    line-height: 1.2;
+  }
+
+  .guide-description {
+    font-size: 1.25rem;
+    line-height: 1.6;
+    color: #6b7280;
+    margin: 0;
+    max-width: 650px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .key-tips {
+    background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+    border-left: 4px solid #4a7c59;
+    padding: 1.5rem 2rem;
+    border-radius: 0.5rem;
+    margin-bottom: 3rem;
+  }
+
+  .tips-heading {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #4a7c59;
+    margin: 0 0 1rem 0;
+  }
+
+  .tips-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .tip-item {
+    position: relative;
+    padding-left: 1.5rem;
+    margin-bottom: 0.75rem;
+    color: #374151;
+    line-height: 1.6;
+  }
+
+  .tip-item:before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: #4a7c59;
+    font-weight: bold;
+  }
+
+  .tip-item:last-child {
+    margin-bottom: 0;
+  }
+
+  .guide-content {
+    margin-bottom: 3rem;
+  }
+
+  .prose-content :global(h2) {
+    font-size: 1.875rem;
+    font-weight: 700;
+    color: #4a7c59;
+    margin: 2.5rem 0 1rem 0;
+  }
+
+  .prose-content :global(h3) {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #1f2937;
+    margin: 2rem 0 0.75rem 0;
+  }
+
+  .prose-content :global(p) {
+    font-size: 1.125rem;
+    line-height: 1.7;
+    color: #374151;
+    margin: 0 0 1.25rem 0;
+  }
+
+  .prose-content :global(ul),
+  .prose-content :global(ol) {
+    margin: 0 0 1.25rem 0;
+    padding-left: 1.5rem;
+  }
+
+  .prose-content :global(li) {
+    margin: 0 0 0.5rem 0;
+    line-height: 1.7;
+  }
+
+  .prose-content :global(strong) {
+    font-weight: 700;
+    color: #1f2937;
+  }
+
+  .prose-content :global(a) {
+    color: #4a7c59;
+    text-decoration: underline;
+  }
+
+  .prose-content :global(a:hover) {
+    color: #6fa581;
+  }
+
+  .guide-footer {
+    padding-top: 2rem;
+    border-top: 2px solid #e5e7eb;
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #4a7c59;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+
+  .back-link:hover {
+    color: #6fa581;
+    transform: translateX(-4px);
+  }
+
+  @media (max-width: 768px) {
+    .container {
+      padding: 1.5rem 1rem;
+    }
+
+    .guide-title {
+      font-size: 1.875rem;
+    }
+
+    .guide-description {
+      font-size: 1.125rem;
+    }
+
+    .key-tips {
+      padding: 1.25rem 1.5rem;
+    }
+
+    .prose-content :global(h2) {
+      font-size: 1.5rem;
+    }
+
+    .prose-content :global(h3) {
+      font-size: 1.25rem;
+    }
+
+    .prose-content :global(p) {
+      font-size: 1rem;
+    }
+  }
+</style>

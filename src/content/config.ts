@@ -273,9 +273,13 @@ const guidesCollection = defineCollection({
   type: 'content',
   schema: z.object({
     lang: z.enum(['en', 'de']).default('en'),
+    base: z.object({
+      id: z.string(),
+      name: z.string(),
+    }),
     title: z.string(),
     description: z.string(),
-    category: z.string(), // e.g., "essential", "quick-tip", "seasonal"
+    category: z.string(), // e.g., "essential", "quick-tip", "seasonal", "benefit"
     icon: z.string().optional(),
     order: z.number().optional(),
     tips: z.array(z.string()).optional(), // For bullet-point tips

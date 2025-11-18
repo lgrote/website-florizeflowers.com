@@ -1,5 +1,8 @@
 ---
 lang: de
+base:
+  id: "save-money"
+  name: "Geld sparen"
 title: "Geld sparen"
 description: "Lernen Sie Timing-Strategien, Aktionsmuster und Wertvergleichstechniken, um das ganze Jahr über Premium-Blumen zu den besten Preisen zu erhalten."
 category: "benefit"

@@ -1,5 +1,8 @@
 ---
 lang: en
+base:
+  id: "popular-flowers"
+  name: "Popular Flower Types"
 title: "Popular Flower Types"
 description: "Essential guide to the most popular UK flower varieties, their meanings, and care requirements."
 category: "quick-tip"

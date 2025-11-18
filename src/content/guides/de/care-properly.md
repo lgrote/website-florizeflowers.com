@@ -1,5 +1,8 @@
 ---
 lang: de
+base:
+  id: "care-properly"
+  name: "Richtig pflegen"
 title: "Richtig pflegen"
 description: "Verlängern Sie die Lebensdauer von Blumen mit professionellen Pflegetechniken, Ratschlägen zur richtigen Platzierung und Pflegetipps, die Arrangements länger schön halten."
 category: "benefit"

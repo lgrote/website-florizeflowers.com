@@ -228,6 +228,14 @@ export interface Translations {
     costSavingTips: string;
     frequentlyAskedQuestions: string;
 
+    // Guide Layout
+    guides: string;
+    essentialGuide: string;
+    quickTip: string;
+    benefitGuide: string;
+    keyTips: string;
+    backToGuides: string;
+
     // Breadcrumbs
     home: string;
     services: string;
@@ -465,6 +473,14 @@ export const translations: Record<SupportedLanguage, Translations> = {
       costSavingTips: "Cost-Saving Tips",
       frequentlyAskedQuestions: "Frequently Asked Questions",
 
+      // Guide Layout
+      guides: "Guides",
+      essentialGuide: "Essential Guide",
+      quickTip: "Quick Tip",
+      benefitGuide: "Benefit Guide",
+      keyTips: "Key Tips",
+      backToGuides: "Back to Guides",
+
       // Breadcrumbs
       home: "Home",
       services: "Services",
@@ -698,6 +714,14 @@ export const translations: Record<SupportedLanguage, Translations> = {
       specialScenarios: "Besondere Szenarien",
       costSavingTips: "Spartipps",
       frequentlyAskedQuestions: "Häufig gestellte Fragen",
+
+      // Guide Layout
+      guides: "Ratgeber",
+      essentialGuide: "Wesentlicher Ratgeber",
+      quickTip: "Schneller Tipp",
+      benefitGuide: "Vorteilsratgeber",
+      keyTips: "Wichtige Tipps",
+      backToGuides: "Zurück zu den Ratgebern",
 
       // Breadcrumbs
       home: "Startseite",

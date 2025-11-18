@@ -1,5 +1,8 @@
 ---
 lang: en
+base:
+  id: "seasonal-selection"
+  name: "Seasonal Selection Strategy"
 title: "Seasonal Selection Strategy"
 description: "Maximise flower quality and value by understanding UK seasonal patterns, availability cycles, and optimal timing."
 category: "essential"

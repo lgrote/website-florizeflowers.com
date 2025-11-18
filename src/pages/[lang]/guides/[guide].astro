@@ -1,0 +1,23 @@
+---
+// Guide detail page
+import { getCollection } from 'astro:content';
+import GuideLayout from '../../../layouts/GuideLayout.astro';
+import { SUPPORTED_LANGUAGES } from '../../../i18n/config';
+
+export async function getStaticPaths() {
+  const allGuides = await getCollection('guides');
+
+  // Generate paths for each language
+  return SUPPORTED_LANGUAGES.flatMap((lang) => {
+    const guides = allGuides.filter(guide => guide.data.lang === lang);
+    return guides.map((guide) => ({
+      params: { lang, guide: guide.data.base.id },
+      props: { guide },
+    }));
+  });
+}
+
+const { guide } = Astro.props;
+---
+
+<GuideLayout guide={guide} />

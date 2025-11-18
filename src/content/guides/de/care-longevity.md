@@ -1,5 +1,8 @@
 ---
 lang: de
+base:
+  id: "care-longevity"
+  name: "Pflege- und Haltbarkeitsmeisterschaft"
 title: "Pflege- und Haltbarkeitsmeisterschaft"
 description: "Verwandeln Sie Ihre Blumen von kurzlebigen Dekorationen in langanhaltende Arrangements mit professionellen Pflegetechniken."
 category: "essential"

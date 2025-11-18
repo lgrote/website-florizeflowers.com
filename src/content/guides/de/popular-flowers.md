@@ -1,5 +1,8 @@
 ---
 lang: de
+base:
+  id: "popular-flowers"
+  name: "Beliebte Blumenarten"
 title: "Beliebte Blumenarten"
 description: "Wesentlicher Leitfaden zu den beliebtesten britischen Blumensorten, ihren Bedeutungen und Pflegeanforderungen."
 category: "quick-tip"

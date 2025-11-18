@@ -1,5 +1,8 @@
 ---
 lang: en
+base:
+  id: "choosing-right-service"
+  name: "Choosing the Right Service"
 title: "Choosing the Right Service"
 description: "Navigate the crowded UK flower delivery market with confidence using our comprehensive service selection framework."
 category: "essential"

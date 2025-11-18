@@ -1,5 +1,8 @@
 ---
 lang: de
+base:
+  id: "seasonal-selection"
+  name: "Saisonale Auswahlstrategie"
 title: "Saisonale Auswahlstrategie"
 description: "Maximieren Sie Blumenqualität und -wert durch Verständnis britischer Saisonmuster, Verfügbarkeitszyklen und optimalen Timings."
 category: "essential"

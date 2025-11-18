@@ -1,5 +1,8 @@
 ---
 lang: en
+base:
+  id: "smart-shopping"
+  name: "Smart Shopping Strategies"
 title: "Smart Shopping Strategies"
 description: "Master promotional timing, seasonal arbitrage, and service selection to optimize both cost and impact."
 category: "quick-tip"

@@ -1,5 +1,8 @@
 ---
 lang: en
+base:
+  id: "care-longevity"
+  name: "Care & Longevity Mastery"
 title: "Care & Longevity Mastery"
 description: "Transform your flowers from short-lived decorations into long-lasting displays with professional care techniques."
 category: "essential"

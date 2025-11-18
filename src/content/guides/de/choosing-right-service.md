@@ -1,5 +1,8 @@
 ---
 lang: de
+base:
+  id: "choosing-right-service"
+  name: "Den richtigen Service wählen"
 title: "Den richtigen Service wählen"
 description: "Navigieren Sie selbstbewusst durch den überfüllten britischen Blumenliefermarkt mit unserem umfassenden Service-Auswahlrahmen."
 category: "essential"

@@ -1,5 +1,8 @@
 ---
 lang: en
+base:
+  id: "care-properly"
+  name: "Care Properly"
 title: "Care Properly"
 description: "Extend flower life with expert care techniques, proper placement advice, and maintenance tips that keep arrangements beautiful for longer."
 category: "benefit"
