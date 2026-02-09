@@ -3,7 +3,7 @@ lang: en
 base:
   id: "birthday"
   name: "Birthday Flowers"
-  title: "Birthday Flowers Guide 2025 - Best Flower Delivery Services"
+  title: "Birthday Flowers Guide 2026 - Best Flower Delivery Services"
   description: "Expert guide to birthday flower delivery. Best services, flower recommendations, and tips for choosing the perfect birthday bouquet."
   hero_image: "/images/birthday-flowers.jpg"
   seasonal: false

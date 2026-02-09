@@ -3,7 +3,7 @@ lang: de
 base:
   id: "thank-you"
   name: "Dankesblumen"
-  title: "Dankesblumen 2025 - Sträuße der Dankbarkeit"
+  title: "Dankesblumen 2026 - Sträuße der Dankbarkeit"
   description: "Drücken Sie Dankbarkeit mit wunderschönen Blumen aus. Die besten Dankessträuße und Lieferdienste."
   hero_image: "/images/thank-you-flowers.jpg"
   seasonal: false

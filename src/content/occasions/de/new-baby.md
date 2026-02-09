@@ -3,7 +3,7 @@ lang: de
 base:
   id: "new-baby"
   name: "Blumen zur Geburt"
-  title: "Blumen zur Geburt 2025 - Sträuße zur Feier"
+  title: "Blumen zur Geburt 2026 - Sträuße zur Feier"
   description: "Expertenleitfaden für Blumen zur Geburt. Geschlechtsneutrale Optionen, Geschenkideen und Lieferdienste."
   hero_image: "/images/new-baby-flowers.jpg"
   seasonal: false

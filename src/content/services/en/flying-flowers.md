@@ -3,7 +3,7 @@ lang: en
 base:
   id: "flying-flowers"
   name: "Flying Flowers"
-  title: "Flying Flowers Review 2025 - Budget-Friendly Reliability Worth Your Money? | Florize"
+  title: "Flying Flowers Review 2026 - Budget-Friendly Reliability Worth Your Money? | Florize"
   description: "Complete Flying Flowers review. Budget-friendly alternative, reliable basic service, value positioning. Read our expert testing experience & value analysis."
   logo_path: "/images/service-professional-9.jpg"
   hero_image: "/images/service-professional-9.jpg"
@@ -26,8 +26,8 @@ base:
 
 seo:
   keywords: "flying flowers review, budget flowers uk, cheap flower delivery, value flowers"
-  date_published: "2025-01-14"
-  date_modified: "2025-01-14"
+  date_published: "2026-01-14"
+  date_modified: "2026-01-14"
 
 summary:
   best_for: "Budget-conscious customers seeking reliable basic flower delivery"

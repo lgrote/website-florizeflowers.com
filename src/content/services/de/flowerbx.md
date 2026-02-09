@@ -3,7 +3,7 @@ lang: de
 base:
   id: "flowerbx"
   name: "Flowerbx"
-  title: "Flowerbx Bewertung 2025 - Luxus Moderne Blumenlieferung London | Florize"
+  title: "Flowerbx Bewertung 2026 - Luxus Moderne Blumenlieferung London | Florize"
   description: "Ausführliche Flowerbx Bewertung. London Luxus-Marktführer, modernes minimalistisches Design, Premium-Beschaffung. Experten-Test eines High-End Blumenlieferdiensts."
   logo_path: "/images/service-professional-5.jpg"
   hero_image: "/images/service-professional-5.jpg"
@@ -23,8 +23,8 @@ base:
 
 seo:
   keywords: "flowerbx bewertung, luxusblumen london, moderne minimalistische blumen, designerblumen"
-  date_published: "2025-01-14"
-  date_modified: "2025-01-14"
+  date_published: "2026-01-14"
+  date_modified: "2026-01-14"
 
 summary:
   best_for: "Luxus-Suchende, die moderne minimalistische Design-Exzellenz wünschen"

@@ -3,11 +3,11 @@ lang: de
 base:
   id: "mothers-day"
   name: "Muttertagsblumen"
-  title: "Muttertagsblumen 2025 - Beste Lieferservices"
+  title: "Muttertagsblumen 2026 - Beste Lieferservices"
   description: "Expertenratgeber für Muttertagsblumen. Beste Sträuße, Lieferoptionen und Service-Empfehlungen."
   hero_image: "/images/mothers-day-flowers.jpg"
   seasonal: true
-  typical_date: "30. März 2025"
+  typical_date: "30. März 2026"
 
 seo:
   keywords: "muttertagsblumen, blumen für mama, muttertag lieferung"
@@ -226,9 +226,9 @@ tabs:
     - "Kombinieren Sie Blumen mit gemeinsamer Zeit (selbst gekochtes Essen, Tagesausflug) für bedeutungsvolle Feier"
 ---
 
-## Muttertag 2025 - Wichtige Informationen
+## Muttertag 2026 - Wichtige Informationen
 
-**Muttertag-Datum**: Sonntag, 30. März 2025
+**Muttertag-Datum**: Sonntag, 30. März 2026
 
 Der Muttertag ist der **verkehrsreichste Tag des Jahres** für Blumenlieferungen in Großbritannien. Millionen von Sträußen werden bestellt, und Services erleben beispiellose Nachfrage. Aufgrund der außergewöhnlichen Nachfrage **empfehlen wir dringend**, mindestens eine Woche im Voraus (bis zum 23. März) zu bestellen, um die Lieferung zu garantieren und die beste Blumenauswahl zu sichern.
 

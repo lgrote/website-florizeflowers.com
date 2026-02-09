@@ -3,7 +3,7 @@ lang: en
 base:
   id: "serenata-flowers"
   name: "Serenata Flowers"
-  title: "Serenata Flowers Review 2025 - Longevity Specialist Worth Your Investment? | Florize"
+  title: "Serenata Flowers Review 2026 - Longevity Specialist Worth Your Investment? | Florize"
   description: "Complete Serenata Flowers review. Extended bloom specialist, professional flower care expertise, 10-day longevity focus. Read our expert testing experience."
   logo_path: "/images/service-professional-8.jpg"
   hero_image: "/images/service-professional-8.jpg"
@@ -25,8 +25,8 @@ base:
 
 seo:
   keywords: "serenata flowers review, long lasting flowers, flower longevity specialist, extended bloom flowers"
-  date_published: "2025-01-14"
-  date_modified: "2025-01-14"
+  date_published: "2026-01-14"
+  date_modified: "2026-01-14"
 
 summary:
   best_for: "Customers prioritising flower longevity and value through durability"

@@ -3,7 +3,7 @@ lang: de
 base:
   id: "blossoming-gifts"
   name: "Blossoming Gifts"
-  title: "Blossoming Gifts Test 2025 - Beste Budget-Blumenlieferung? | Florize"
+  title: "Blossoming Gifts Test 2026 - Beste Budget-Blumenlieferung? | Florize"
   description: "Vollständiger Blossoming Gifts Test. Budget-freundliche Preise ab £19,99, 7-Tage Frische-Garantie, Briefkasten-Lieferung. Lesen Sie unsere Experten-Testerfahrung & Vergleich."
   logo_path: "/images/service-professional-6.jpg"
   hero_image: "/images/service-professional-6.jpg"
@@ -26,8 +26,8 @@ base:
 
 seo:
   keywords: "blossoming gifts test, günstige blumen uk, budget blumenlieferung, erschwingliche blumen"
-  date_published: "2025-01-19"
-  date_modified: "2025-01-19"
+  date_published: "2026-01-19"
+  date_modified: "2026-01-19"
 
 summary:
   best_for: "Preisbewusste Kunden, die Wert suchen"

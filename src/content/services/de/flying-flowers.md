@@ -3,7 +3,7 @@ lang: de
 base:
   id: "flying-flowers"
   name: "Flying Flowers"
-  title: "Flying Flowers Test 2025 - Preiswerte Zuverlässigkeit Ihr Geld wert? | Florize"
+  title: "Flying Flowers Test 2026 - Preiswerte Zuverlässigkeit Ihr Geld wert? | Florize"
   description: "Vollständiger Flying Flowers Test. Preiswerte Alternative, zuverlässiger Basis-Service, Wertpositionierung. Lesen Sie unsere Experten-Testerfahrung & Wertanalyse."
   logo_path: "/images/service-professional-9.jpg"
   hero_image: "/images/service-professional-9.jpg"
@@ -26,8 +26,8 @@ base:
 
 seo:
   keywords: "flying flowers test, budget blumen uk, günstige blumenlieferung, wert blumen"
-  date_published: "2025-01-14"
-  date_modified: "2025-01-14"
+  date_published: "2026-01-14"
+  date_modified: "2026-01-14"
 
 summary:
   best_for: "Preisbewusste Kunden, die zuverlässige Basis-Blumenlieferung suchen"

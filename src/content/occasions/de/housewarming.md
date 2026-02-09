@@ -3,7 +3,7 @@ lang: de
 base:
   id: "housewarming"
   name: "Einweihungsblumen"
-  title: "Einweihungsblumen 2025 - Geschenke für das neue Zuhause"
+  title: "Einweihungsblumen 2026 - Geschenke für das neue Zuhause"
   description: "Begrüßen Sie Freunde in ihrem neuen Zuhause mit wunderschönen Blumen. Die besten Einweihungssträuße und Lieferung."
   hero_image: "/images/housewarming-flowers.jpg"
   seasonal: false

@@ -3,7 +3,7 @@ lang: de
 base:
   id: "next-flowers"
   name: "Next Flowers"
-  title: "Next Flowers Test 2025 - High Street Wert-Blumenlieferung | Florize"
+  title: "Next Flowers Test 2026 - High Street Wert-Blumenlieferung | Florize"
   description: "Vollständiger Next Flowers Test. High Street Bequemlichkeit, wettbewerbsfähige Preise, landesweite Lieferung. Expertenanalyse des wertorientierten Blumen-Services."
   logo_path: "/images/service-professional-7.jpg"
   hero_image: "/images/service-professional-7.jpg"
@@ -24,8 +24,8 @@ base:
 
 seo:
   keywords: "next flowers test, high street blumen, wert blumenlieferung uk, next lieferung"
-  date_published: "2025-01-14"
-  date_modified: "2025-01-14"
+  date_published: "2026-01-14"
+  date_modified: "2026-01-14"
 
 summary:
   best_for: "High Street Käufer, die zuverlässige, wettbewerbsfähige Lieferung wünschen"

@@ -3,7 +3,7 @@ lang: en
 base:
   id: "graduation"
   name: "Graduation Flowers"
-  title: "Graduation Flowers 2025 - Celebration Bouquets"
+  title: "Graduation Flowers 2026 - Celebration Bouquets"
   description: "Celebrate academic achievement with beautiful flowers. Best graduation bouquets and gift ideas."
   hero_image: "/images/graduation-flowers.jpg"
   seasonal: true
@@ -168,7 +168,7 @@ tabs:
     description: "Sweet treat from Hotel Chocolat or Belgian selections"
     priceRange: "£10-£25"
   - item: "Congratulations Balloons"
-    description: "Festive 'Class of 2025' foil balloons add atmosphere"
+    description: "Festive 'Class of 2026' foil balloons add atmosphere"
     priceRange: "£5-£15"
   - item: "Gift Vouchers"
     description: "Amazon, John Lewis, or experience vouchers for complete gift"

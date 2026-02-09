@@ -3,7 +3,7 @@ lang: de
 base:
   id: "wild-at-heart"
   name: "Wild at Heart"
-  title: "Wild at Heart Bewertung 2025 - Londoner Premium-Kunsthandwerk-Florist | Florize"
+  title: "Wild at Heart Bewertung 2026 - Londoner Premium-Kunsthandwerk-Florist | Florize"
   description: "Umfassende Wild at Heart Bewertung. Londoner handwerkliche Exzellenz, Promi-Klientel, maßgeschneiderte Arrangements. Expertenanalyse der Premium-Floristen-Lieferung."
   logo_path: "/images/service-professional-6.jpg"
   hero_image: "/images/service-professional-6.jpg"
@@ -24,8 +24,8 @@ base:
 
 seo:
   keywords: "wild at heart bewertung, londoner kunsthandwerk florist, promi blumen, maßgeschneiderte arrangements london"
-  date_published: "2025-01-14"
-  date_modified: "2025-01-14"
+  date_published: "2026-01-14"
+  date_modified: "2026-01-14"
 
 summary:
   best_for: "Maßgeschneiderter Luxus-Suchende, die handwerkliche Exzellenz wünschen"

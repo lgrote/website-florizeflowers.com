@@ -1,6 +1,6 @@
 ---
 lang: de
-title: "Blumenlieferung für jeden Anlass - UK Ratgeber 2025 | Florize"
+title: "Blumenlieferung für jeden Anlass - UK Ratgeber 2026 | Florize"
 description: "Perfekte Blumen für jeden Anlass in Großbritannien. Experten-Ratgeber für Geburtstage, Muttertag, Valentinstag, Hochzeiten, Jubiläen und mehr. Finden Sie die idealen Blüten für Ihren besonderen Moment."
 seo:
   keywords: "blumenanlässe, geburtstagsblumen, muttertagsblumen, hochzeitsblumen, beerdigungsblumen, jubiläumsblumen"

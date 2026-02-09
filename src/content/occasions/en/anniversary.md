@@ -3,7 +3,7 @@ lang: en
 base:
   id: "anniversary"
   name: "Anniversary Flowers"
-  title: "Anniversary Flowers Guide 2025 - Best Flower Delivery"
+  title: "Anniversary Flowers Guide 2026 - Best Flower Delivery"
   description: "Expert guide to anniversary flowers. Romantic bouquets, delivery tips, and service recommendations."
   hero_image: "/images/anniversary-flowers.jpg"
   seasonal: false

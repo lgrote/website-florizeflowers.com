@@ -1,6 +1,6 @@
 ---
 lang: en
-title: "Flower Delivery for Every Occasion - UK Guide 2025 | Florize"
+title: "Flower Delivery for Every Occasion - UK Guide 2026 | Florize"
 description: "Perfect flowers for every occasion in the UK. Expert guides for birthdays, Mother's Day, Valentine's, weddings, anniversaries and more. Find the ideal blooms for your special moment."
 seo:
   keywords: "flower occasions, birthday flowers, mother's day flowers, wedding flowers, funeral flowers, anniversary flowers"

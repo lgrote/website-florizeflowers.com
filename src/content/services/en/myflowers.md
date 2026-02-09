@@ -3,7 +3,7 @@ lang: en
 base:
   id: "myflowers"
   name: "MyFlowers"
-  title: "MyFlowers Review 2025 - London's Modern Same-Day Delivery Expert | Florize"
+  title: "MyFlowers Review 2026 - London's Modern Same-Day Delivery Expert | Florize"
   description: "Complete MyFlowers review. Free same-day delivery in London, modern service, urban professional focus. Read our expert testing experience & comparison."
   logo_path: "/images/service-professional-5.jpg"
   hero_image: "/images/service-professional-5.jpg"
@@ -26,8 +26,8 @@ base:
 
 seo:
   keywords: "myflowers review, london flower delivery, same day flowers london, free delivery flowers"
-  date_published: "2025-01-19"
-  date_modified: "2025-01-19"
+  date_published: "2026-01-19"
+  date_modified: "2026-01-19"
 
 summary:
   best_for: "London professionals seeking convenience"

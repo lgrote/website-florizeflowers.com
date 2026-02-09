@@ -8,7 +8,7 @@ seo:
 
 # Terms of Use
 
-**Last updated: October 2025**
+**Last updated: October 2026**
 
 ## 1. Acceptance of Terms
 

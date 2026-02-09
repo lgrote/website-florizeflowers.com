@@ -3,7 +3,7 @@ lang: de
 base:
   id: "anniversary"
   name: "Jahrestagsblumen"
-  title: "Jahrestagsblumen Ratgeber 2025 - Beste Blumenlieferung"
+  title: "Jahrestagsblumen Ratgeber 2026 - Beste Blumenlieferung"
   description: "Expertenratgeber für Jahrestagsblumen. Romantische Sträuße, Liefertipps und Service-Empfehlungen."
   hero_image: "/images/anniversary-flowers.jpg"
   seasonal: false

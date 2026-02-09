@@ -3,7 +3,7 @@ lang: de
 base:
   id: "birthday"
   name: "Geburtstagsblumen"
-  title: "Geburtstagsblumen Ratgeber 2025 - Beste Blumenlieferdienste"
+  title: "Geburtstagsblumen Ratgeber 2026 - Beste Blumenlieferdienste"
   description: "Expertenratgeber für Geburtstagsblumenversand. Beste Services, Blumenempfehlungen und Tipps für die Auswahl des perfekten Geburtstagssträußes."
   hero_image: "/images/birthday-flowers.jpg"
   seasonal: false

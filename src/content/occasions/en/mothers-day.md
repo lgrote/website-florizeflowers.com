@@ -3,11 +3,11 @@ lang: en
 base:
   id: "mothers-day"
   name: "Mother's Day Flowers"
-  title: "Mother's Day Flowers 2025 - Best Delivery Services"
+  title: "Mother's Day Flowers 2026 - Best Delivery Services"
   description: "Expert guide to Mother's Day flowers. Best bouquets, delivery options, and service recommendations."
   hero_image: "/images/mothers-day-flowers.jpg"
   seasonal: true
-  typical_date: "March 30, 2025"
+  typical_date: "March 30, 2026"
 
 seo:
   keywords: "mothers day flowers, flowers for mum, mothers day delivery"
@@ -226,9 +226,9 @@ tabs:
     - "Pair flowers with quality time together (home-cooked meal, day out) for meaningful celebration"
 ---
 
-## Mother's Day 2025 - Essential Information
+## Mother's Day 2026 - Essential Information
 
-**Mother's Day Date**: Sunday, March 30th, 2025
+**Mother's Day Date**: Sunday, March 30th, 2026
 
 Mother's Day is the **busiest day of the year** for UK flower deliveries. Millions of bouquets are ordered, and services experience unprecedented demand. Due to exceptional demand, we **strongly recommend** ordering at least one week in advance (by March 23rd) to guarantee delivery and secure the best flower selection.
 

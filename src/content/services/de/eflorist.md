@@ -3,7 +3,7 @@ lang: de
 base:
   id: "eflorist"
   name: "Eflorist"
-  title: "Eflorist Bewertung 2025 - Vertrauenswürdige UK Blumenlieferung seit 1947 | Florize"
+  title: "Eflorist Bewertung 2026 - Vertrauenswürdige UK Blumenlieferung seit 1947 | Florize"
   description: "Vollständige Eflorist Bewertung. 7-Tage Frischegarantie, Preisgarantie, landesweite Abdeckung. Expertentest dieses etablierten UK Blumenlieferdienstes."
   logo_path: "/images/eflorist-logo.svg"
   hero_image: "/images/eflorist-hero.jpg"
@@ -21,8 +21,8 @@ base:
 
 seo:
   keywords: "eflorist bewertung, teleflorist blumen, uk blumenlieferung, frischegarantie"
-  date_published: "2025-01-16"
-  date_modified: "2025-01-16"
+  date_published: "2026-01-16"
+  date_modified: "2026-01-16"
 
 summary:
   best_for: "Preisbewusste Kunden, die zuverlässige landesweite Lieferung mit Frischegarantie suchen"

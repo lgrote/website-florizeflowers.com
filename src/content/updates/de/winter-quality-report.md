@@ -4,7 +4,7 @@ title: "Winter-Qualitätsbericht"
 description: "Unsere Wintertests zeigten erhebliche Qualitätsunterschiede bei Budget-Services. Prestige Flowers und Flying Flowers hielten während der kälteren Monate konstante Standards aufrecht."
 image: "/images/seasonal/winter-quality.jpg"
 imageAlt: "Winter-Blumenqualitätsbewertung und saisonaler Testbericht"
-publishedDate: "2025-01-05"
+publishedDate: "2026-01-05"
 order: 3
 ---
 

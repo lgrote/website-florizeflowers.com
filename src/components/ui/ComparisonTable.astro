@@ -78,7 +78,10 @@ const servicesWithAffiliates = await Promise.all(
             ))}
           </td>
           <td>
-            <span class="rating-stars">⭐⭐⭐⭐⭐</span>{service.data.base.rating}/5
+            <div class="rating-cell">
+              <span class="rating-stars">⭐⭐⭐⭐⭐</span>
+              <span class="rating-number">{service.data.base.rating}/5</span>
+            </div>
           </td>
           <td>
             <div class="table-cta-group">
@@ -198,7 +201,7 @@ const servicesWithAffiliates = await Promise.all(
     width: 100%;
     border-collapse: collapse;
     background-color: white;
-    min-width: 840px;
+    min-width: 900px;
     font-size: 0.875rem;
     table-layout: fixed;
   }
@@ -206,10 +209,10 @@ const servicesWithAffiliates = await Promise.all(
   /* Optimized column widths for better space distribution */
   .comparison-table th:nth-child(1) { width: 180px; } /* Service */
   .comparison-table th:nth-child(2) { width: 90px; } /* Price Range */
-  .comparison-table th:nth-child(3) { width: 130px; } /* Delivery Options */
-  .comparison-table th:nth-child(4) { width: 160px; } /* Key Features */
-  .comparison-table th:nth-child(5) { width: 110px; } /* Our Rating */
-  .comparison-table th:nth-child(6) { width: 170px; } /* Visit Service */
+  .comparison-table th:nth-child(3) { width: 120px; } /* Delivery Options */
+  .comparison-table th:nth-child(4) { width: 150px; } /* Key Features */
+  .comparison-table th:nth-child(5) { width: 130px; } /* Our Rating */
+  .comparison-table th:nth-child(6) { width: 230px; } /* Visit Service */
 
   .comparison-table th {
     background-color: #4a7c59;
@@ -228,9 +231,13 @@ const servicesWithAffiliates = await Promise.all(
     font-size: 0.875rem;
   }
 
+  .comparison-table td:nth-child(5) {
+    text-align: center;
+  }
+
   .comparison-table td:nth-child(6) {
     padding: 0.75rem 0.5rem;
-    overflow: visible;
+    overflow: hidden;
   }
 
   .comparison-table tr:nth-child(even) {
@@ -285,10 +292,24 @@ const servicesWithAffiliates = await Promise.all(
     margin-top: 2px;
   }
 
+  .rating-cell {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
   .rating-stars {
     color: #d4af37;
-    font-size: 1.1rem;
-    margin-right: 0.5rem;
+    font-size: 1rem;
+    line-height: 1;
+  }
+
+  .rating-number {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #2c2c2c;
+    white-space: nowrap;
   }
 
   .table-cta-group {

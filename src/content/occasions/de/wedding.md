@@ -3,7 +3,7 @@ lang: de
 base:
   id: "wedding"
   name: "Hochzeitsblumen"
-  title: "Hochzeitsblumen Ratgeber 2025 - Experten-Empfehlungen"
+  title: "Hochzeitsblumen Ratgeber 2026 - Experten-Empfehlungen"
   description: "Vollständiger Ratgeber für Hochzeitsblumen. Brautsträuße, Tischdekoration und Floristen-Empfehlungen."
   hero_image: "/images/wedding-flowers.jpg"
   seasonal: false

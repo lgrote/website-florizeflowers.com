@@ -3,7 +3,7 @@ lang: en
 base:
   id: "prestige-flowers"
   name: "Prestige Flowers"
-  title: "Prestige Flowers Review 2025 - Best Budget Flower Delivery? | Florize"
+  title: "Prestige Flowers Review 2026 - Best Budget Flower Delivery? | Florize"
   description: "Complete Prestige Flowers review. Next-day delivery, prices from £19.99, order by 10pm. Read our expert testing experience & value comparison."
   logo_path: "/images/service-professional-2.jpg"
   hero_image: "/images/service-professional-2.jpg"
@@ -20,8 +20,8 @@ base:
 
 seo:
   keywords: "prestige flowers review, budget flowers uk, cheap flower delivery, next day flowers"
-  date_published: "2025-01-14"
-  date_modified: "2025-01-14"
+  date_published: "2026-01-14"
+  date_modified: "2026-01-14"
 
 summary:
   best_for: "Budget-conscious customers wanting reliable next-day delivery"

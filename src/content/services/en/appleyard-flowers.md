@@ -3,7 +3,7 @@ lang: en
 base:
   id: "appleyard-flowers"
   name: "Appleyard Flowers"
-  title: "Appleyard Flowers Review 2025 - Premium London Flower Delivery | Florize"
+  title: "Appleyard Flowers Review 2026 - Premium London Flower Delivery | Florize"
   description: "Complete Appleyard Flowers review. Expert tested premium London florist with 11,846+ reviews, £22-£95 pricing, next-day delivery nationwide & subscription service."
   logo_path: "/images/service-professional-4.jpg"
   hero_image: "/images/service-professional-4.jpg"
@@ -24,8 +24,8 @@ base:
 
 seo:
   keywords: "appleyard flowers review, premium london florist, flower subscription uk, british flower delivery"
-  date_published: "2025-01-18"
-  date_modified: "2025-01-18"
+  date_published: "2026-01-18"
+  date_modified: "2026-01-18"
 
 summary:
   best_for: "Premium quality seekers, subscription lovers, London customers"

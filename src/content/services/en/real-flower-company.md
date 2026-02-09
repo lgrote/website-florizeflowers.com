@@ -3,7 +3,7 @@ lang: en
 base:
   id: "real-flower-company"
   name: "The Real Flower Company"
-  title: "The Real Flower Company Review 2025 - British Heritage Specialist Worth Premium? | Florize"
+  title: "The Real Flower Company Review 2026 - British Heritage Specialist Worth Premium? | Florize"
   description: "Complete Real Flower Company review. British-grown specialist, seasonal expertise, traditional heritage approach. Read our expert testing experience."
   logo_path: "/images/service-professional-3.jpg"
   hero_image: "/images/service-professional-3.jpg"
@@ -26,8 +26,8 @@ base:
 
 seo:
   keywords: "real flower company review, british grown flowers, seasonal flowers uk, heritage florist"
-  date_published: "2025-01-14"
-  date_modified: "2025-01-14"
+  date_published: "2026-01-14"
+  date_modified: "2026-01-14"
 
 summary:
   best_for: "Heritage-conscious customers valuing British provenance and seasonal authenticity"

@@ -3,7 +3,7 @@ lang: de
 base:
   id: "valentines-day"
   name: "Valentinstagsblumen"
-  title: "Valentinstagsblumen 2025 - Romantischer Lieferratgeber"
+  title: "Valentinstagsblumen 2026 - Romantischer Lieferratgeber"
   description: "Expertenratgeber für Valentinsblumen. Romantische Sträuße, Last-Minute-Optionen und beste Services."
   hero_image: "/images/valentines-day-flowers.jpg"
   seasonal: true
@@ -226,9 +226,9 @@ tabs:
   - "Kombinieren Sie mittelpreisige Blumen (£45-£65) mit Pralinen/Champagner unter £100 gesamt"
 ---
 
-## Valentinstag 2025 - Kritische Planung
+## Valentinstag 2026 - Kritische Planung
 
-**Valentinstag**: Freitag, 14. Februar 2025 - der zweitverkehrsreichste Blumenliefertag in Großbritannien nach dem Muttertag. Services erleben außergewöhnliche Nachfrage, Liefertermine füllen sich schnell, und Preise erreichen Spitzenniveau.
+**Valentinstag**: Freitag, 14. Februar 2026 - der zweitverkehrsreichste Blumenliefertag in Großbritannien nach dem Muttertag. Services erleben außergewöhnliche Nachfrage, Liefertermine füllen sich schnell, und Preise erreichen Spitzenniveau.
 
 **Bestellen Sie bis 7. Februar** (eine Woche vorher), um Lieferung zu garantieren, beste Auswahl zu sichern und Spitzenpreis-Zuschläge zu vermeiden. Same-Day-Lieferung am 14. Februar ist extrem begrenzt.
 

@@ -3,7 +3,7 @@ lang: en
 base:
   id: "thank-you"
   name: "Thank You Flowers"
-  title: "Thank You Flowers 2025 - Gratitude Bouquets"
+  title: "Thank You Flowers 2026 - Gratitude Bouquets"
   description: "Express gratitude with beautiful flowers. Best thank you bouquets and delivery services."
   hero_image: "/images/thank-you-flowers.jpg"
   seasonal: false

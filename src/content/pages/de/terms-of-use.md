@@ -8,7 +8,7 @@ seo:
 
 # Nutzungsbedingungen
 
-**Letzte Aktualisierung: Oktober 2025**
+**Letzte Aktualisierung: Oktober 2026**
 
 ## 1. Annahme der Bedingungen
 

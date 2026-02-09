@@ -3,7 +3,7 @@ lang: en
 base:
   id: "wild-at-heart"
   name: "Wild at Heart"
-  title: "Wild at Heart Review 2025 - London Premium Artisanal Florist | Florize"
+  title: "Wild at Heart Review 2026 - London Premium Artisanal Florist | Florize"
   description: "Complete Wild at Heart review. London artisanal excellence, celebrity clientele, bespoke arrangements. Expert analysis of premium florist delivery."
   logo_path: "/images/service-professional-6.jpg"
   hero_image: "/images/service-professional-6.jpg"
@@ -24,8 +24,8 @@ base:
 
 seo:
   keywords: "wild at heart review, london artisanal florist, celebrity flowers, bespoke arrangements london"
-  date_published: "2025-01-14"
-  date_modified: "2025-01-14"
+  date_published: "2026-01-14"
+  date_modified: "2026-01-14"
 
 summary:
   best_for: "Bespoke luxury seekers wanting artisanal craftsmanship excellence"

@@ -3,7 +3,7 @@ lang: en
 base:
   id: "interflora"
   name: "Interflora"
-  title: "Interflora Review 2025 - Is It Worth The Premium Price? | Florize"
+  title: "Interflora Review 2026 - Is It Worth The Premium Price? | Florize"
   description: "Complete Interflora review. Same-day delivery, 40,000+ florists, international coverage. Read our expert testing experience & comparison."
   logo_path: "/images/service-professional-1.jpg"
   hero_image: "/images/service-professional-1.jpg"
@@ -20,8 +20,8 @@ base:
 
 seo:
   keywords: "interflora review, interflora uk, flower delivery, same day flowers"
-  date_published: "2025-01-14"
-  date_modified: "2025-01-14"
+  date_published: "2026-01-14"
+  date_modified: "2026-01-14"
 
 summary:
   best_for: "Important occasions requiring absolute reliability"

@@ -3,7 +3,7 @@ lang: en
 base:
   id: "valentines-day"
   name: "Valentine's Day Flowers"
-  title: "Valentine's Day Flowers 2025 - Romantic Delivery Guide"
+  title: "Valentine's Day Flowers 2026 - Romantic Delivery Guide"
   description: "Expert guide to Valentine's flowers. Romantic bouquets, last-minute options, and best services."
   hero_image: "/images/valentines-day-flowers.jpg"
   seasonal: true
@@ -226,9 +226,9 @@ tabs:
   - "Pair mid-range flowers (£45-£65) with chocolates/champagne under £100 total"
 ---
 
-## Valentine's Day 2025 - Critical Planning
+## Valentine's Day 2026 - Critical Planning
 
-**Valentine's Day**: Friday, February 14th, 2025 - the second busiest flower delivery day in the UK after Mother's Day. Services experience extraordinary demand, delivery slots fill quickly, and prices reach peak levels.
+**Valentine's Day**: Friday, February 14th, 2026 - the second busiest flower delivery day in the UK after Mother's Day. Services experience extraordinary demand, delivery slots fill quickly, and prices reach peak levels.
 
 **Order by February 7th** (one week ahead) to guarantee delivery, secure best selection, and avoid peak pricing surcharges. Same-day delivery on February 14th is extremely limited.
 

@@ -3,7 +3,7 @@ lang: de
 base:
   id: "appleyard-flowers"
   name: "Appleyard Flowers"
-  title: "Appleyard Flowers Bewertung 2025 - Premium London Blumenlieferung | Florize"
+  title: "Appleyard Flowers Bewertung 2026 - Premium London Blumenlieferung | Florize"
   description: "Ausführliche Appleyard Flowers Bewertung. Experten-getestet Premium London Florist mit 11.846+ Bewertungen, £22-£95 Preisgestaltung, Lieferung am nächsten Tag landesweit & Abo-Service."
   logo_path: "/images/service-professional-4.jpg"
   hero_image: "/images/service-professional-4.jpg"
@@ -24,8 +24,8 @@ base:
 
 seo:
   keywords: "appleyard flowers bewertung, premium london florist, blumenabo uk, britische blumenlieferung"
-  date_published: "2025-01-18"
-  date_modified: "2025-01-18"
+  date_published: "2026-01-18"
+  date_modified: "2026-01-18"
 
 summary:
   best_for: "Premium-Qualitätssuchende, Abo-Liebhaber, London-Kunden"

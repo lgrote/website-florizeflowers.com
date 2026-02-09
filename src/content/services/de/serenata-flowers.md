@@ -3,7 +3,7 @@ lang: de
 base:
   id: "serenata-flowers"
   name: "Serenata Flowers"
-  title: "Serenata Flowers Bewertung 2025 - Langlebigkeitsspezialist lohnenswert? | Florize"
+  title: "Serenata Flowers Bewertung 2026 - Langlebigkeitsspezialist lohnenswert? | Florize"
   description: "Umfassende Serenata Flowers Bewertung. Spezialist für verlängerte Blüte, professionelle Blumenpflege-Expertise, 10-Tage-Langlebigkeitsfokus. Lesen Sie unsere Expertentests."
   logo_path: "/images/service-professional-8.jpg"
   hero_image: "/images/service-professional-8.jpg"
@@ -25,8 +25,8 @@ base:
 
 seo:
   keywords: "serenata flowers bewertung, langlebige blumen, blumen langlebigkeit spezialist, verlängerte blüte blumen"
-  date_published: "2025-01-14"
-  date_modified: "2025-01-14"
+  date_published: "2026-01-14"
+  date_modified: "2026-01-14"
 
 summary:
   best_for: "Kunden, die Blumenlanglebigkeit und Wert durch Haltbarkeit priorisieren"

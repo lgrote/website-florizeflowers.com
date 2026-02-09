@@ -3,7 +3,7 @@ lang: en
 base:
   id: "blossoming-gifts"
   name: "Blossoming Gifts"
-  title: "Blossoming Gifts Review 2025 - Best Budget Flower Delivery? | Florize"
+  title: "Blossoming Gifts Review 2026 - Best Budget Flower Delivery? | Florize"
   description: "Complete Blossoming Gifts review. Budget-friendly pricing from £19.99, 7-day freshness guarantee, letterbox delivery. Read our expert testing experience & comparison."
   logo_path: "/images/service-professional-6.jpg"
   hero_image: "/images/service-professional-6.jpg"
@@ -26,8 +26,8 @@ base:
 
 seo:
   keywords: "blossoming gifts review, cheap flowers uk, budget flower delivery, affordable flowers"
-  date_published: "2025-01-19"
-  date_modified: "2025-01-19"
+  date_published: "2026-01-19"
+  date_modified: "2026-01-19"
 
 summary:
   best_for: "Budget-conscious customers seeking value"

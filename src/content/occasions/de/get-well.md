@@ -3,7 +3,7 @@ lang: de
 base:
   id: "get-well"
   name: "Gute Besserung Blumen"
-  title: "Gute Besserung Blumen 2025 - Genesungssträuße"
+  title: "Gute Besserung Blumen 2026 - Genesungssträuße"
   description: "Erhellen Sie die Genesung von jemandem mit aufmerksamen Blumen. Beste Gute-Besserung-Sträuße und Lieferoptionen."
   hero_image: "/images/get-well-flowers.jpg"
   seasonal: false

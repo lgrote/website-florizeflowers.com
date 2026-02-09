@@ -3,7 +3,7 @@ lang: en
 base:
   id: "next-flowers"
   name: "Next Flowers"
-  title: "Next Flowers Review 2025 - High Street Value Flower Delivery | Florize"
+  title: "Next Flowers Review 2026 - High Street Value Flower Delivery | Florize"
   description: "Complete Next Flowers review. High street convenience, competitive pricing, nationwide delivery. Expert analysis of value-focused flower service."
   logo_path: "/images/service-professional-7.jpg"
   hero_image: "/images/service-professional-7.jpg"
@@ -24,8 +24,8 @@ base:
 
 seo:
   keywords: "next flowers review, high street flowers, value flower delivery uk, next delivery"
-  date_published: "2025-01-14"
-  date_modified: "2025-01-14"
+  date_published: "2026-01-14"
+  date_modified: "2026-01-14"
 
 summary:
   best_for: "High street shoppers wanting reliable, competitively priced delivery"

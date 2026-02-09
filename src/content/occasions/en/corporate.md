@@ -3,7 +3,7 @@ lang: en
 base:
   id: "corporate"
   name: "Corporate Flowers"
-  title: "Corporate Flowers 2025 - Business Flower Delivery"
+  title: "Corporate Flowers 2026 - Business Flower Delivery"
   description: "Professional corporate flower services. Office displays, client gifts, and event arrangements."
   hero_image: "/images/corporate-flowers.jpg"
   seasonal: false

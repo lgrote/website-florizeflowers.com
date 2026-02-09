@@ -3,7 +3,7 @@ lang: de
 base:
   id: "interflora"
   name: "Interflora"
-  title: "Interflora Bewertung 2025 - Lohnt sich der Premium-Preis? | Florize"
+  title: "Interflora Bewertung 2026 - Lohnt sich der Premium-Preis? | Florize"
   description: "Ausführliche Interflora Bewertung. Lieferung am selben Tag, 40.000+ Floristen, internationale Abdeckung. Lesen Sie unsere Experten-Testerfahrung & Vergleich."
   logo_path: "/images/service-professional-1.jpg"
   hero_image: "/images/service-professional-1.jpg"
@@ -20,8 +20,8 @@ base:
 
 seo:
   keywords: "interflora bewertung, interflora uk, blumenlieferung, blumen am selben tag"
-  date_published: "2025-01-14"
-  date_modified: "2025-01-14"
+  date_published: "2026-01-14"
+  date_modified: "2026-01-14"
 
 summary:
   best_for: "Wichtige Anlässe, die absolute Zuverlässigkeit erfordern"

@@ -3,7 +3,7 @@ lang: de
 base:
   id: "funeral"
   name: "Trauerblumen"
-  title: "Trauerblumen Ratgeber 2025 - Beileidssträuße"
+  title: "Trauerblumen Ratgeber 2026 - Beileidssträuße"
   description: "Einfühlsamer Ratgeber zu Trauerblumen. Passende Auswahl, Lieferetikette und Service-Empfehlungen."
   hero_image: "/images/funeral-flowers.jpg"
   seasonal: false

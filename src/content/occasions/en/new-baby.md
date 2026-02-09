@@ -3,7 +3,7 @@ lang: en
 base:
   id: "new-baby"
   name: "New Baby Flowers"
-  title: "New Baby Flowers 2025 - Celebration Bouquets"
+  title: "New Baby Flowers 2026 - Celebration Bouquets"
   description: "Expert guide to new baby flowers. Gender-neutral options, gift ideas, and delivery services."
   hero_image: "/images/new-baby-flowers.jpg"
   seasonal: false

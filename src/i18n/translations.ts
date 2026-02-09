@@ -390,7 +390,7 @@ export const translations: Record<SupportedLanguage, Translations> = {
 
     homepage: {
       comparisonHeading:
-        "Top UK Flower Delivery Services - Expert Comparison 2025",
+        "Top UK Flower Delivery Services - Expert Comparison 2026",
       viewAllServices: "View All Service Reviews",
       quickSelectionHeading:
         "Quick Selection Guide - Find Your Perfect Service",
@@ -631,7 +631,7 @@ export const translations: Record<SupportedLanguage, Translations> = {
     },
 
     homepage: {
-      comparisonHeading: "Top Blumenlieferdienste UK - Experten-Vergleich 2025",
+      comparisonHeading: "Top Blumenlieferdienste UK - Experten-Vergleich 2026",
       viewAllServices: "Alle Blumenversender-Bewertungen anzeigen",
       quickSelectionHeading:
         "Schnellauswahlratgeber - Finden Sie Ihren perfekten Service",

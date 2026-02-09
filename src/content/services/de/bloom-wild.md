@@ -3,7 +3,7 @@ lang: de
 base:
   id: "bloom-wild"
   name: "Bloom & Wild"
-  title: "Bloom & Wild Bewertung 2025 - Revolutionäre Briefkastenlieferung | Florize"
+  title: "Bloom & Wild Bewertung 2026 - Revolutionäre Briefkastenlieferung | Florize"
   description: "Ausführliche Bloom & Wild Bewertung. Briefkastenlieferungs-Innovation, B Corp Nachhaltigkeit, verlängerte Blütezeiten. Experten-Test & Vergleich."
   logo_path: "/images/service-professional-2.jpg"
   hero_image: "/images/service-professional-2.jpg"
@@ -20,8 +20,8 @@ base:
 
 seo:
   keywords: "bloom and wild bewertung, briefkastenblumen, nachhaltige blumen, b corp blumen"
-  date_published: "2025-01-14"
-  date_modified: "2025-01-14"
+  date_published: "2026-01-14"
+  date_modified: "2026-01-14"
 
 summary:
   best_for: "Komfort-Suchende, die innovative Briefkastenlieferung wünschen"

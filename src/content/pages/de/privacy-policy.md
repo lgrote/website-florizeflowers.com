@@ -8,7 +8,7 @@ seo:
 
 # Datenschutzerklärung
 
-**Letzte Aktualisierung: Oktober 2025**
+**Letzte Aktualisierung: Oktober 2026**
 
 Florize Flowers ("wir", "unser" oder "uns") verpflichtet sich, Ihre Privatsphäre zu schützen. Diese Datenschutzerklärung erklärt, wie wir Ihre Informationen sammeln, verwenden und schützen, wenn Sie unsere Website florizeflowers.com besuchen.
 

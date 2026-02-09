@@ -3,7 +3,7 @@ lang: en
 base:
   id: "bloom-wild"
   name: "Bloom & Wild"
-  title: "Bloom & Wild Review 2025 - Revolutionary Letterbox Delivery | Florize"
+  title: "Bloom & Wild Review 2026 - Revolutionary Letterbox Delivery | Florize"
   description: "Complete Bloom & Wild review. Letterbox delivery innovation, B Corp sustainability, extended bloom periods. Expert testing & comparison."
   logo_path: "/images/service-professional-2.jpg"
   hero_image: "/images/service-professional-2.jpg"
@@ -20,8 +20,8 @@ base:
 
 seo:
   keywords: "bloom and wild review, letterbox flowers, sustainable flowers, b corp flowers"
-  date_published: "2025-01-14"
-  date_modified: "2025-01-14"
+  date_published: "2026-01-14"
+  date_modified: "2026-01-14"
 
 summary:
   best_for: "Convenience seekers wanting innovative letterbox delivery"

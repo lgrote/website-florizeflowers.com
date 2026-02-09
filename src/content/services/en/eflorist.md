@@ -3,7 +3,7 @@ lang: en
 base:
   id: "eflorist"
   name: "Eflorist"
-  title: "Eflorist Review 2025 - Trusted UK Flower Delivery Since 1947 | Florize"
+  title: "Eflorist Review 2026 - Trusted UK Flower Delivery Since 1947 | Florize"
   description: "Complete Eflorist review. 7-day freshness guarantee, price match promise, nationwide coverage. Expert testing of this established UK flower delivery service."
   logo_path: "/images/eflorist-logo.svg"
   hero_image: "/images/eflorist-hero.jpg"
@@ -21,8 +21,8 @@ base:
 
 seo:
   keywords: "eflorist review, teleflorist flowers, uk flower delivery, freshness guarantee"
-  date_published: "2025-01-16"
-  date_modified: "2025-01-16"
+  date_published: "2026-01-16"
+  date_modified: "2026-01-16"
 
 summary:
   best_for: "Value-conscious customers seeking reliable nationwide delivery with freshness guarantee"

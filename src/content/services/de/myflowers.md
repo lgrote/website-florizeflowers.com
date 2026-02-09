@@ -3,7 +3,7 @@ lang: de
 base:
   id: "myflowers"
   name: "MyFlowers"
-  title: "MyFlowers Test 2025 - Londons Moderner Same-Day Lieferexperte | Florize"
+  title: "MyFlowers Test 2026 - Londons Moderner Same-Day Lieferexperte | Florize"
   description: "Vollständiger MyFlowers Test. Kostenlose Same-Day-Lieferung in London, moderner Service, urbaner Profi-Fokus. Lesen Sie unsere Experten-Testerfahrung & Vergleich."
   logo_path: "/images/service-professional-5.jpg"
   hero_image: "/images/service-professional-5.jpg"
@@ -26,8 +26,8 @@ base:
 
 seo:
   keywords: "myflowers test, london blumenlieferung, same day blumen london, kostenlose lieferung blumen"
-  date_published: "2025-01-19"
-  date_modified: "2025-01-19"
+  date_published: "2026-01-19"
+  date_modified: "2026-01-19"
 
 summary:
   best_for: "Londoner Profis, die Bequemlichkeit suchen"

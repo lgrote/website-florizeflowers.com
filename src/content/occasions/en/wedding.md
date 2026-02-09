@@ -3,7 +3,7 @@ lang: en
 base:
   id: "wedding"
   name: "Wedding Flowers"
-  title: "Wedding Flowers Guide 2025 - Expert Recommendations"
+  title: "Wedding Flowers Guide 2026 - Expert Recommendations"
   description: "Complete guide to wedding flowers. Bridal bouquets, centerpieces, and florist recommendations."
   hero_image: "/images/wedding-flowers.jpg"
   seasonal: false

@@ -3,7 +3,7 @@ lang: en
 base:
   id: "housewarming"
   name: "Housewarming Flowers"
-  title: "Housewarming Flowers 2025 - New Home Gifts"
+  title: "Housewarming Flowers 2026 - New Home Gifts"
   description: "Welcome friends to their new home with beautiful flowers. Best housewarming bouquets and delivery."
   hero_image: "/images/housewarming-flowers.jpg"
   seasonal: false

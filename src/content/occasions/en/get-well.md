@@ -3,7 +3,7 @@ lang: en
 base:
   id: "get-well"
   name: "Get Well Flowers"
-  title: "Get Well Flowers 2025 - Recovery Bouquets"
+  title: "Get Well Flowers 2026 - Recovery Bouquets"
   description: "Brighten someone's recovery with thoughtful flowers. Best get well bouquets and delivery options."
   hero_image: "/images/get-well-flowers.jpg"
   seasonal: false

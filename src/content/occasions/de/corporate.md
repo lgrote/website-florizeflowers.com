@@ -3,7 +3,7 @@ lang: de
 base:
   id: "corporate"
   name: "Firmenblumen"
-  title: "Firmenblumen 2025 - Geschäftsblumenlieferung"
+  title: "Firmenblumen 2026 - Geschäftsblumenlieferung"
   description: "Professionelle Firmenblumenservices. Bürodekorationen, Kundengeschenke und Veranstaltungsarrangements."
   hero_image: "/images/corporate-flowers.jpg"
   seasonal: false

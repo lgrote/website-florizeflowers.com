@@ -8,7 +8,7 @@ seo:
 
 # Privacy Policy
 
-**Last updated: October 2025**
+**Last updated: October 2026**
 
 Florize Flowers ("we", "our", or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, and safeguard your information when you visit our website florizeflowers.com.
 

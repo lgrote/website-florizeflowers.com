@@ -3,7 +3,7 @@ lang: en
 base:
   id: "funeral"
   name: "Funeral Flowers"
-  title: "Funeral Flowers Guide 2025 - Sympathy Arrangements"
+  title: "Funeral Flowers Guide 2026 - Sympathy Arrangements"
   description: "Compassionate guide to funeral flowers. Appropriate choices, delivery etiquette, and service recommendations."
   hero_image: "/images/funeral-flowers.jpg"
   seasonal: false

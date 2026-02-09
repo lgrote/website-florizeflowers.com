@@ -3,7 +3,7 @@ lang: de
 base:
   id: "graduation"
   name: "Abschlussblumen"
-  title: "Abschlussblumen 2025 - Feier-Sträuße"
+  title: "Abschlussblumen 2026 - Feier-Sträuße"
   description: "Feiern Sie akademische Leistungen mit schönen Blumen. Beste Abschlusssträuße und Geschenkideen."
   hero_image: "/images/graduation-flowers.jpg"
   seasonal: true
@@ -168,7 +168,7 @@ tabs:
     description: "Süße Leckerei von Hotel Chocolat oder belgischer Auswahl"
     priceRange: "£10-£25"
   - item: "Glückwunsch-Luftballons"
-    description: "Festliche 'Klasse von 2025' Folienluftballons fügen Atmosphäre hinzu"
+    description: "Festliche 'Klasse von 2026' Folienluftballons fügen Atmosphäre hinzu"
     priceRange: "£5-£15"
   - item: "Geschenkgutscheine"
     description: "Amazon, John Lewis oder Erlebnis-Gutscheine für komplettes Geschenk"
