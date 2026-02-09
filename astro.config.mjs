@@ -1,14 +1,11 @@
 import { defineConfig } from 'astro/config';
-import tailwind from '@astrojs/tailwind';
+import tailwindcss from '@tailwindcss/vite';
 import sitemap from '@astrojs/sitemap';
 import { visualizer } from 'rollup-plugin-visualizer';
 
 export default defineConfig({
   site: 'https://florizeflowers.com',
   integrations: [
-    tailwind({
-      applyBaseStyles: false
-    }),
     sitemap()
   ],
   output: 'static',
@@ -30,6 +27,7 @@ export default defineConfig({
   },
   // Vite configuration for optimized bundling
   vite: {
+    plugins: [tailwindcss()],
     build: {
       // Increase chunk size warning limit
       chunkSizeWarningLimit: 1000,
@@ -69,12 +67,6 @@ export default defineConfig({
             }
             // All other vendor code
             if (id.includes('node_modules')) {
-              // Group small modules together
-              const module = id.split('node_modules/')[1].split('/')[0];
-              // Only create separate chunks for larger dependencies
-              if (['tailwindcss', 'postcss'].includes(module)) {
-                return `vendor-${module}`;
-              }
               return 'vendor';
             }
           },
