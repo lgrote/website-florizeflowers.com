@@ -11,6 +11,7 @@ export interface Props {
   overlayOpacity?: number;
   loading?: 'lazy' | 'eager';
   priority?: boolean;
+  backgroundPosition?: string;
   children?: any;
 }
 
@@ -23,6 +24,7 @@ const {
   overlayOpacity = 0.4,
   loading = 'lazy',
   priority = false,
+  backgroundPosition = 'center',
   children
 } = Astro.props;
 
@@ -37,6 +39,7 @@ const uniqueId = `bg-${Math.random().toString(36).substr(2, 9)}`;
   data-bg-mobile={mobileSrc || src}
   data-loading={loading}
   data-priority={priority}
+  style={`background-position: ${backgroundPosition};`}
   role="img"
   aria-label={alt}
 >

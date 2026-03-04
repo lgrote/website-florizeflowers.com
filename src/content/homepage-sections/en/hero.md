@@ -3,7 +3,7 @@ lang: en
 title: "Find the Perfect UK Flower Delivery Service"
 subtitle: "Expert-tested reviews and comparisons of the UK's best flower delivery services. From budget-friendly to luxury arrangements, we help you choose the perfect florist for every occasion."
 sectionType: "hero"
-backgroundImage: "/images/hero-flowers-bright.jpg"
+backgroundImage: "/images/hero-florist-arranging.jpg"
 primaryCta:
   text: "Compare Services"
   href: "#comparison"

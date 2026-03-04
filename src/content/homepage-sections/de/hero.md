@@ -3,7 +3,7 @@ lang: de
 title: "Finden Sie den perfekten Blumenlieferdienst in Großbritannien"
 subtitle: "Von Experten getestete Bewertungen und Vergleiche der besten Blumenlieferdienste in Großbritannien. Von budgetfreundlichen bis hin zu luxuriösen Arrangements helfen wir Ihnen, den perfekten Floristen für jeden Anlass zu finden."
 sectionType: "hero"
-backgroundImage: "/images/hero-flowers-bright.jpg"
+backgroundImage: "/images/hero-florist-arranging.jpg"
 primaryCta:
   text: "Services vergleichen"
   href: "#comparison"
