@@ -39,6 +39,7 @@ export default defineType({
                 { title: 'Bloom & Wild', value: 'bloom-wild' },
                 { title: 'Blossoming Gifts', value: 'blossoming-gifts' },
                 { title: 'Eflorist', value: 'eflorist' },
+                { title: 'Flower Station', value: 'flower-station' },
                 { title: 'Flying Flowers', value: 'flying-flowers' },
                 { title: 'Flowerbx', value: 'flowerbx' },
                 { title: 'Interflora', value: 'interflora' },
