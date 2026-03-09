@@ -2,6 +2,8 @@
 
 This is an executable plan for Claude to add a new flower delivery service to Florize Flowers. The user only needs to provide the service domain/website.
 
+All content lives in **Sanity CMS**. Service documents are created via the Sanity API using a migration script — no markdown files.
+
 ---
 
 ## User Input Required
@@ -34,139 +36,249 @@ When the user provides a domain, execute the following steps in order:
    - Assign appropriate rating (4.0-4.9 based on market position)
 
 4. **Search for and identify logo/images**
-   - **CRITICAL:** Find the service's logo on their website
-   - Look in header, footer, or about pages
-   - Identify the logo image URL (right-click > Copy Image Address)
-   - Note image specifications:
-     - Direct URL to logo image
-     - Image format (PNG, JPG, SVG preferred)
-     - Approximate dimensions
-   - Look for hero/banner images if available
-   - Check if service already has images in `/public/images/`
-   - Document findings for step 7
+   - Find the service's logo on their website (header, footer, or about pages)
+   - Find hero/banner images if available
+   - Note image URLs and formats for uploading to Sanity
 
-### Phase 2: File Creation
+### Phase 2: Create Service Documents in Sanity
 
-5. **Create English service file**
-   - Path: `src/content/services/en/[slug].md`
-   - Use the template structure from ADDING_A_NEW_SERVICE.md
-   - Fill in all discovered information:
-     - `base.id`: Use the created slug
-     - `base.name`: Official service name
-     - `base.title`: "Service Name Review 2025 - [Key Benefit] | Florize"
-     - `base.description`: Write compelling 150-160 character meta description
-     - `base.logo_path`: Use placeholder or existing image path
-     - `base.rating`: Assign based on market position (4.0-4.9)
-     - `base.price_range`: Based on research (format: "£XX-£XX")
-     - `base.delivery_options`: List 2-3 key delivery options
-     - `base.key_features`: List 2-3 standout features
-     - `base.winner_badge`: If applicable (Best Value, Most Innovative, etc.)
-   - Write complete overview content (2-4 paragraphs)
-   - Create pros and cons (3-5 each with descriptions)
-   - Add SEO keywords
-   - Set date_published and date_modified to today's date
-   - Write main markdown content (minimum 200 words)
+5. **Create migration script**
+   - Path: `scripts/add-service-[slug].mjs`
+   - Uses `@sanity/client` to create documents via API
+   - The script creates both EN and DE documents and links translations
 
-6. **Create German service file**
-   - Path: `src/content/services/de/[slug].md`
-   - Translate ALL content from English version
-   - Keep same: `base.id`, image paths, affiliate URL, dates
-   - Translate: title, description, features, content, pros/cons
-   - Ensure natural German translations, not literal
+   Script structure:
+   ```javascript
+   #!/usr/bin/env node
+   import { createClient } from '@sanity/client';
+   import fs from 'fs';
+   import path from 'path';
 
-7. **Download and handle service images**
-   - **IMPORTANT:** Download actual images from the service website for professional quality
-   - Look for the service logo on their website (usually in header/footer)
-   - Find high-quality hero images or product images
-   - Download steps:
-     - Identify the logo URL from the website
-     - Check image quality and size (minimum 500x500px for logos)
-     - Note: You cannot directly download images, so provide user with:
-       - Image URL found on website
-       - Recommended filename: `[service-slug]-logo.jpg`
-       - Save location: `/public/images/[service-slug]-logo.jpg`
-       - Instructions: "Please download the logo from [URL] and save it to `/public/images/[service-slug]-logo.jpg`"
-   - If user cannot download immediately:
-     - Use placeholder: `service-professional-[1-9].jpg` temporarily
-     - Clearly note in summary that placeholder is used
-     - Provide image URL for later download
-   - Update service files with correct image path:
-     - If downloaded: `/images/[service-slug]-logo.jpg`
-     - If placeholder: `/images/service-professional-X.jpg`
-   - Document image source and any pending downloads in summary
+   const client = createClient({
+     projectId: 'vm53xzke',
+     dataset: 'production',
+     apiVersion: '2024-01-01',
+     useCdn: false,
+     token: process.env.SANITY_API_TOKEN,
+   });
+
+   async function addService() {
+     const slug = '[SERVICE-SLUG]';
+
+     // 1. Upload images to Sanity
+     // const logoAsset = await client.assets.upload('image',
+     //   fs.createReadStream('/path/to/logo.jpg'),
+     //   { filename: `${slug}-logo.jpg` }
+     // );
+     // Use logoAsset._id as _ref in image fields
+
+     // 2. Create English document
+     const enDoc = {
+       _id: `service-en-${slug}`,
+       _type: 'service',
+       language: 'en',
+       base: {
+         id: slug,
+         name: '[Service Name]',
+         title: '[Service Name] Review 2025 - [Key Benefit] | Florize',
+         description: '[150-160 char meta description]',
+         // logo: { _type: 'image', asset: { _ref: logoAsset._id, _type: 'reference' } },
+         rating: 4.5,
+         priceRange: '£XX-£XX',
+         deliveryOptions: ['Next Day', 'Standard'],
+         keyFeatures: ['Feature 1', 'Feature 2'],
+       },
+       seo: {
+         keywords: '[service name] review, flower delivery, ...',
+         datePublished: new Date().toISOString().split('T')[0],
+         dateModified: new Date().toISOString().split('T')[0],
+       },
+       summary: {
+         bestFor: '[Best use case]',
+         delivery: '[Delivery summary]',
+         ratingText: '[Rating explanation]',
+       },
+       overview: {
+         positioning: '[One sentence positioning]',
+       },
+       components: {
+         prosTitle: 'Why We Recommend [Service Name]',
+         consTitle: 'Areas for Improvement',
+         pros: [
+           { _key: 'p1', label: '[Benefit]', description: '[Explanation]' },
+         ],
+         cons: [
+           { _key: 'c1', label: '[Limitation]', description: '[Explanation]' },
+         ],
+         faqs: [
+           { _key: 'f1', question: '[Question]?', answer: '[Answer]' },
+         ],
+       },
+       affiliate: {
+         url: 'https://[service-url]',
+       },
+     };
+
+     // 3. Create German document
+     const deDoc = {
+       _id: `service-de-${slug}`,
+       _type: 'service',
+       language: 'de',
+       base: {
+         ...enDoc.base,
+         title: '[German title]',
+         description: '[German description]',
+         // logo and images are shared — same asset refs
+       },
+       seo: { ...enDoc.seo },
+       summary: {
+         bestFor: '[German best for]',
+         delivery: '[German delivery]',
+         ratingText: '[German rating text]',
+       },
+       overview: {
+         positioning: '[German positioning]',
+       },
+       components: {
+         prosTitle: 'Warum wir [Service Name] empfehlen',
+         consTitle: 'Verbesserungspotential',
+         pros: [
+           { _key: 'p1', label: '[German benefit]', description: '[German explanation]' },
+         ],
+         cons: [
+           { _key: 'c1', label: '[German limitation]', description: '[German explanation]' },
+         ],
+         faqs: [
+           { _key: 'f1', question: '[German question]?', answer: '[German answer]' },
+         ],
+       },
+       affiliate: enDoc.affiliate,
+     };
+
+     await client.createOrReplace(enDoc);
+     console.log(`Created: ${enDoc._id}`);
+     await client.createOrReplace(deDoc);
+     console.log(`Created: ${deDoc._id}`);
+
+     // 4. Create translation metadata
+     const metaDoc = {
+       _id: `translation.metadata.service-${slug}`,
+       _type: 'translation.metadata',
+       schemaTypes: ['service'],
+       translations: [
+         {
+           _key: 'en',
+           value: {
+             _ref: `service-en-${slug}`,
+             _type: 'reference',
+             _weak: true,
+             _strengthenOnPublish: { type: 'service' },
+           },
+         },
+         {
+           _key: 'de',
+           value: {
+             _ref: `service-de-${slug}`,
+             _type: 'reference',
+             _weak: true,
+             _strengthenOnPublish: { type: 'service' },
+           },
+         },
+       ],
+     };
+     await client.createOrReplace(metaDoc);
+     console.log('Created translation metadata');
+
+     console.log('\nDone! New service added.');
+   }
+
+   addService().catch(console.error);
+   ```
+
+6. **Fill in the script with researched content**
+   - All English fields from research
+   - All German translations (natural, not literal)
+   - Image upload code if logo/hero images were found
+   - Proper `_key` values on all array items
+
+7. **Handle images**
+   - If logo/hero image URLs were found:
+     - Download images locally first
+     - Upload to Sanity via `client.assets.upload('image', stream)`
+     - Reference the returned asset ID in image fields
+   - If images can't be downloaded:
+     - Leave image fields empty (logo, heroImage)
+     - Note in summary that images need to be added via Sanity Studio
+   - **No images go in `/public/images/`** — all content images live in Sanity
 
 ### Phase 3: Affiliate Link Setup
 
 8. **Add affiliate link**
    - Prompt user: "Do you have an affiliate link for [Service Name]?"
-   - If yes: Add to Sanity CMS (guide user through Sanity Studio)
-   - If no: Use direct website URL in `affiliate.url` field
-   - Format URL properly (include https://, no trailing slash unless needed)
+   - If yes: Include in the `affiliate.url` field of both documents
+   - If no: Use direct website URL
+   - Optionally add to `florizeConfig` affiliateLinks array in Sanity Studio
 
-### Phase 4: Testing & Validation
+### Phase 4: Run Script & Validate
 
-9. **Validate file syntax**
-   - Read both service files
-   - Check YAML frontmatter is valid
-   - Verify all required fields present
-   - Ensure `base.id` matches filename
+9. **Run the migration script**
+   - Prompt user for `SANITY_API_TOKEN` (or confirm they have it set)
+   - Run: `SANITY_API_TOKEN=xxx node scripts/add-service-[slug].mjs`
+   - Verify output shows successful creation
 
 10. **Build test**
     - Run `npm run build`
     - Check for errors
-    - Verify service pages generate
+    - Verify service pages generate at `/en/services/[slug]` and `/de/services/[slug]`
     - Fix any issues found
 
 11. **Development preview**
     - If dev server not running, start with `npm run dev`
-    - Wait for server to be ready
     - Provide user with URLs to check:
       - English: `http://localhost:4321/en/services/[slug]`
       - German: `http://localhost:4321/de/services/[slug]`
       - Services index: `http://localhost:4321/en/services`
-      - Homepage (if rating is top 5): `http://localhost:4321/en`
 
 12. **Quality check report**
     - Create summary of what was created
     - List any assumptions made
-    - Note any placeholder content or images used
-    - Highlight areas that may need user refinement
+    - Note any missing content (images, body text, content sections)
+    - Highlight areas that may need editing in Sanity Studio
 
 ### Phase 5: Completion
 
 13. **Present summary to user**
-    - Service slug created: `[slug]`
-    - Files created:
-      - ✅ English service file
-      - ✅ German service file
+    - Service slug: `[slug]`
+    - Sanity documents created:
+      - ✅ `service-en-[slug]` (English)
+      - ✅ `service-de-[slug]` (German)
+      - ✅ `translation.metadata.service-[slug]`
     - Rating assigned: X.X/5
     - Price range: £XX-£XX
-    - **Images:**
-      - Logo URL found: [URL from website]
-      - Current image path: [placeholder or downloaded]
-      - **Action needed:** If placeholder used, download logo from [URL] and save to `/public/images/[slug]-logo.jpg`, then update both service files
+    - **Images:** Status (uploaded to Sanity / needs manual upload)
     - Affiliate link: [status]
     - URLs to review: [list]
+    - **Edit in Sanity Studio:** The service can now be edited at the Sanity Studio under Content → Services
 
 14. **Ask for improvements**
     - "Would you like me to:"
-      - Download and replace placeholder images with actual service images?
-      - Add more detailed content?
+      - Add more detailed content via Sanity Studio?
       - Add testing metrics?
       - Add competitor comparisons?
+      - Add content sections (features grid, assessment, pricing guide)?
       - Adjust the rating or positioning?
       - Add FAQ section?
       - Enhance SEO content?
-    - If placeholder image was used, prominently remind about image download
+      - Add to Quick Selection Guide (homepage recommendations)?
 
 15. **Git commit (only if user approves)**
-    - Wait for user confirmation
-    - Stage files: `git add src/content/services/en/[slug].md src/content/services/de/[slug].md`
+    - The migration script itself can be committed
+    - Stage: `git add scripts/add-service-[slug].mjs`
     - Commit with message:
       ```
       Add [Service Name] to service comparison
 
-      - Add English and German service pages
+      - Created EN/DE service documents in Sanity
       - Rating: X.X/5
       - Price range: £XX-£XX
       - [Any notable features]
@@ -227,35 +339,51 @@ Be honest but constructive:
 
 ---
 
-## Error Handling
+## Sanity Schema Reference
 
-If issues occur during execution:
+Service documents use these field groups (tabs in Sanity Studio):
+
+| Group | Key Fields |
+|-------|-----------|
+| **Base Info** | id, name, title, description, logo (image), heroImage (image), rating, priceRange, winnerBadge, deliveryOptions[], keyFeatures[], founded |
+| **SEO** | ogImage, keywords, datePublished, dateModified |
+| **Summary** | bestFor, delivery, ratingText |
+| **Overview** | positioning, content (Portable Text) |
+| **Components** | prosTitle, consTitle, pros[], cons[], faqs[], testingMetrics[], bestForScenarios[], featureComparison |
+| **Affiliate** | url, promoCode (code, description, expiryDate) |
+| **Comparisons** | items[] (competitor, category, description), useCases |
+| **Recommendations** | sections[] (heading, content), cta |
+| **Related** | heading, reviews[] (title, serviceId, description) |
+| **Content** | contentSections[] (11 section types), body (Portable Text) |
+
+All array items require unique `_key` values (e.g., `p1`, `c1`, `f1`).
+
+---
+
+## Error Handling
 
 ### Website Not Accessible
 - Inform user and ask for basic information
 - Request: service name, key features, pricing
 - Proceed with available information
 
-### Build Errors
-- Read error message carefully
+### Script Errors
+- Check Sanity API token is valid
+- Verify document structure matches schema
 - Common fixes:
-  - YAML syntax: Check indentation, quotes, colons
-  - Missing fields: Add required fields
-  - Invalid characters: Escape special characters in strings
-- Fix and retry build
+  - Missing `_key` on array items
+  - Invalid image reference format
+  - Missing required fields (base.id, base.name, base.title, base.description, base.rating, base.priceRange)
 
 ### Translation Issues
 - Use natural language, not literal translation
 - Keep technical terms in English if standard (e.g., "B Corp")
 - Maintain marketing tone appropriate for German market
 
-### Image Not Found
-- Fall back to placeholder: `service-professional-[1-9].jpg`
-- Choose based on service type:
-  - 1-3: Traditional/classic
-  - 4-6: Modern/innovative
-  - 7-9: Luxury/premium
-- Document choice for user
+### Image Upload Issues
+- If upload fails, leave image fields empty
+- User can upload images directly in Sanity Studio (drag & drop)
+- Note missing images in the summary
 
 ---
 
@@ -263,18 +391,16 @@ If issues occur during execution:
 
 Before marking as complete:
 
-- [ ] English service file created with complete content
-- [ ] German service file created with full translation
-- [ ] Both files have valid YAML frontmatter
-- [ ] `base.id` matches filename in both files
+- [ ] English service document created in Sanity
+- [ ] German service document created in Sanity
+- [ ] Translation metadata links EN ↔ DE documents
+- [ ] `base.id` is a valid URL slug
 - [ ] Rating between 4.0-4.9
 - [ ] Price range in correct format
 - [ ] At least 3 pros and 3 cons defined
-- [ ] Overview content written (minimum 150 words)
-- [ ] Main markdown content written (minimum 200 words)
-- [ ] SEO fields completed
-- [ ] Image paths valid
-- [ ] Affiliate URL or website link added
+- [ ] Overview positioning written
+- [ ] SEO fields completed (keywords, dates)
+- [ ] Affiliate URL or website link set
 - [ ] Build test passes successfully
 - [ ] Dev server shows pages correctly
 - [ ] Summary report provided to user
@@ -291,33 +417,33 @@ Claude:
 2. ✓ Found logo at: https://www.petalpost.co.uk/logo.png
 3. ✓ Creating service slug: "petal-post"
 4. ✓ Analyzing service positioning: Mid-range, fast delivery focus
-5. ✓ Creating English service file...
-6. ✓ Creating German service file...
-7. ⚠️  Using placeholder image temporarily: service-professional-4.jpg
-8. ✓ Running build test...
-9. ✓ Build successful!
-10. ✓ Starting dev server...
+5. ✓ Creating migration script: scripts/add-service-petal-post.mjs
+6. ✓ Running script...
+7. ✓ Created: service-en-petal-post
+8. ✓ Created: service-de-petal-post
+9. ✓ Created: translation.metadata.service-petal-post
+10. ✓ Running build test... Build successful!
 
 Summary:
 - Service: Petal Post
 - Slug: petal-post
 - Rating: 4.3/5 (mid-range, reliable service)
 - Price Range: £20-£70
-- Files Created: ✓ en/petal-post.md, ✓ de/petal-post.md
-- Images:
-  - Logo URL: https://www.petalpost.co.uk/logo.png
-  - Current: /images/service-professional-4.jpg (PLACEHOLDER)
-  - **ACTION NEEDED:** Please download logo and save to `/public/images/petal-post-logo.jpg`
-  - After download, update logo_path in both service files to `/images/petal-post-logo.jpg`
+- Sanity Documents:
+  - ✅ service-en-petal-post
+  - ✅ service-de-petal-post
+  - ✅ translation.metadata.service-petal-post
+- Images: Logo uploaded to Sanity
+- Edit in Sanity Studio: Content → Services → Petal Post
 
 Review at:
 - http://localhost:4321/en/services/petal-post
 - http://localhost:4321/de/services/petal-post
 
 Would you like me to:
-1. Add more detailed testing metrics?
+1. Add content sections (features grid, assessment)?
 2. Add competitor comparisons?
-3. Commit these changes?
+3. Commit the migration script?
 ```
 
 ---
@@ -325,10 +451,11 @@ Would you like me to:
 ## Notes for Claude Execution
 
 - **Be proactive**: Don't ask for every detail; make reasonable assumptions based on website research
-- **Be thorough**: Complete all content sections, don't leave placeholders like "TODO" or "Content here"
+- **Be thorough**: Complete all content fields, don't leave placeholders like "TODO"
 - **Be accurate**: Use real information from website research, not made-up data
 - **Be helpful**: Provide clear summary and next steps
-- **Be efficient**: Run steps in parallel where possible (e.g., create both language files simultaneously)
+- **Be efficient**: Create both language documents in a single script run
 - **Be quality-focused**: Write compelling, SEO-friendly content that matches the site's existing tone
+- **Remember**: All content lives in Sanity — never create markdown files in `src/content/`
 
 The goal is to create a complete, publication-ready service addition with minimal user input.
