@@ -1,4 +1,6 @@
 import { createClient } from '@sanity/client';
+import { createImageUrlBuilder } from '@sanity/image-url';
+import type { SanityImageRef } from '../types/sanity';
 
 // Sanity client - conditionally create based on environment
 let sanityClient: any;
@@ -38,6 +40,12 @@ try {
 }
 
 export { sanityClient };
+
+// Image URL builder
+const builder = createImageUrlBuilder(sanityClient);
+export function urlFor(source: SanityImageRef) {
+  return builder.image(source);
+}
 
 // Types for our Sanity documents
 export interface AffiliateBanner {

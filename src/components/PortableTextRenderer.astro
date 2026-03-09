@@ -1,0 +1,20 @@
+---
+import { PortableText } from 'astro-portabletext';
+import type { PortableTextBlock } from '@portabletext/types';
+import SanityImage from './ui/SanityImage.astro';
+
+interface Props {
+  value: PortableTextBlock[] | undefined;
+  class?: string;
+}
+
+const { value, class: className = 'prose-content' } = Astro.props;
+
+if (!value || value.length === 0) {
+  return;
+}
+---
+
+<div class={className}>
+  <PortableText value={value} />
+</div>

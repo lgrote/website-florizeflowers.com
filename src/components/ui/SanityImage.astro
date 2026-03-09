@@ -1,0 +1,56 @@
+---
+import { urlFor } from '../../lib/sanity';
+import type { SanityImageRef } from '../../types/sanity';
+
+interface Props {
+  image: SanityImageRef;
+  alt: string;
+  width?: number;
+  height?: number;
+  class?: string;
+  sizes?: string;
+  loading?: 'lazy' | 'eager';
+}
+
+const {
+  image,
+  alt,
+  width = 800,
+  height,
+  class: className,
+  sizes = '(max-width: 768px) 100vw, 800px',
+  loading = 'lazy',
+} = Astro.props;
+
+if (!image?.asset?._ref) {
+  // Fallback: render nothing if no valid image ref
+  return;
+}
+
+const baseUrl = urlFor(image).width(width);
+const src = height ? baseUrl.height(height).url() : baseUrl.url();
+
+// Generate srcset for responsive images
+const widths = [400, 600, 800, 1200, 1600];
+const srcset = widths
+  .filter(w => w <= width * 2)
+  .map(w => {
+    const url = height
+      ? urlFor(image).width(w).height(Math.round(w * (height / width))).auto('format').quality(80).url()
+      : urlFor(image).width(w).auto('format').quality(80).url();
+    return `${url} ${w}w`;
+  })
+  .join(', ');
+---
+
+<img
+  src={src}
+  srcset={srcset}
+  sizes={sizes}
+  alt={alt}
+  width={width}
+  height={height}
+  class={className}
+  loading={loading}
+  decoding="async"
+/>

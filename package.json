@@ -12,14 +12,19 @@
   "dependencies": {
     "@astrojs/sitemap": "^3.7.0",
     "@sanity/client": "^7.16.0",
+    "@sanity/image-url": "^2.0.3",
     "@tailwindcss/vite": "^4.2.1",
     "astro": "^5.18.0",
+    "astro-portabletext": "^0.13.0",
     "sharp": "^0.34.5",
     "tailwindcss": "^4.2.1"
   },
   "devDependencies": {
+    "@sanity/block-tools": "^3.70.0",
     "@tailwindcss/typography": "^0.5.19",
     "@types/node": "^25.3.3",
+    "gray-matter": "^4.0.3",
+    "jsdom": "^28.1.0",
     "rollup-plugin-visualizer": "^7.0.1",
     "terser": "^5.46.0",
     "typescript": "^5.9.3"

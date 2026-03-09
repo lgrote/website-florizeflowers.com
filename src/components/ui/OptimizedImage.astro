@@ -49,14 +49,19 @@ const actualFetchPriority = priority ? 'high' : fetchpriority;
 
 // Generate densities for high DPI displays
 const densities = [1, 2];
+
+// Detect Sanity CDN URLs — they handle their own transforms and format negotiation.
+// Sanity URLs often contain `rect=x,y,w,h` with commas that break srcset parsing,
+// so we skip <source> generation entirely for Sanity images.
+const isSanityCdn = typeof src === 'string' && src.includes('cdn.sanity.io');
 ---
 
 <picture class={pictureClass}>
-  {/* Generate source sets for modern formats */}
-  {formats.map((fmt) => (
+  {/* Generate source sets for modern formats — skip for Sanity CDN (commas in rect params break srcset) */}
+  {!isSanityCdn && formats.map((fmt) => (
     <source
       type={`image/${fmt}`}
-      srcset={widths.map(w => `${src}?w=${w}&fm=${fmt} ${w}w`).join(', ')}
+      srcset={widths.map(w => `${src}${typeof src === 'string' && src.includes('?') ? '&' : '?'}w=${w}&fm=${fmt} ${w}w`).join(', ')}
       sizes={sizes}
     />
   ))}
