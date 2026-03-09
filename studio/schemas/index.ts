@@ -38,7 +38,6 @@ import service from './documents/service';
 import occasion from './documents/occasion';
 import guide from './documents/guide';
 import page from './documents/page';
-import update from './documents/update';
 import homepageSection from './documents/homepageSection';
 
 export const schemaTypes = [
@@ -83,6 +82,5 @@ export const schemaTypes = [
   occasion,
   guide,
   page,
-  update,
   homepageSection,
 ];

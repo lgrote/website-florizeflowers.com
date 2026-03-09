@@ -10,7 +10,6 @@ import {
   PAGES_BY_LANG,
   HOMEPAGE_SECTION,
   HOMEPAGE_SECTIONS_BY_LANG,
-  UPDATES_BY_LANG,
 } from './sanity-queries';
 import type {
   SanityService,
@@ -18,7 +17,6 @@ import type {
   SanityGuide,
   SanityPage,
   SanityHomepageSection,
-  SanityUpdate,
 } from '../types/sanity';
 
 // --- Services ---
@@ -69,10 +67,4 @@ export async function getHomepageSection(sectionType: string, lang: string): Pro
 
 export async function getHomepageSections(lang: string): Promise<SanityHomepageSection[]> {
   return sanityClient.fetch(HOMEPAGE_SECTIONS_BY_LANG, { lang }) || [];
-}
-
-// --- Updates ---
-
-export async function getUpdates(lang: string): Promise<SanityUpdate[]> {
-  return sanityClient.fetch(UPDATES_BY_LANG, { lang }) || [];
 }

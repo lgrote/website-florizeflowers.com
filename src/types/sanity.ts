@@ -494,6 +494,13 @@ export interface SanityHomepageSection {
   primaryCta?: SanityCtaButton;
   secondaryCta?: SanityCtaButton;
   recommendations?: SanityRecommendationItem[];
+  updates?: Array<{
+    title: string;
+    description: string;
+    image?: SanityImageRef;
+    imageAlt: string;
+    order?: number;
+  }>;
 }
 
 export interface SanityRecommendationItem {
@@ -506,14 +513,3 @@ export interface SanityRecommendationItem {
   column?: 'left' | 'right';
 }
 
-export interface SanityUpdate {
-  _id: string;
-  _type: 'update';
-  language: string;
-  title: string;
-  description: string;
-  image: SanityImageRef;
-  imageAlt: string;
-  publishedDate: string;
-  order?: number;
-}

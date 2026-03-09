@@ -2,7 +2,7 @@
 import ImageCard from '../ui/ImageCard.astro';
 import type { SupportedLanguage } from '../../i18n/config';
 import { t } from '../../i18n/translations';
-import { getUpdates } from '../../lib/sanity-fetchers';
+import { getHomepageSection } from '../../lib/sanity-fetchers';
 import { urlFor } from '../../lib/sanity';
 
 export interface Props {
@@ -18,9 +18,9 @@ const {
 const heading = t(lang, 'homepage.updatesHeading');
 const footer = t(lang, 'homepage.updatesFooter');
 
-// Get updates from Sanity filtered by language and sort by order
-const allUpdates = await getUpdates(lang);
-const updates = allUpdates
+// Get updates from homepage section
+const sectionData = await getHomepageSection('updates', lang);
+const updates = (sectionData?.updates || [])
   .sort((a, b) => (a.order || 999) - (b.order || 999))
   .map(update => ({
     image: update.image ? urlFor(update.image).width(400).height(200).url() : '',

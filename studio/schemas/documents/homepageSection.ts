@@ -24,6 +24,7 @@ export default defineType({
           { title: 'Trust Signals', value: 'trust-signals' },
           { title: 'Quick Selection Guide', value: 'quick-selection' },
           { title: 'SEO', value: 'seo' },
+          { title: 'Updates', value: 'updates' },
           { title: 'Footer', value: 'footer' },
         ],
         layout: 'dropdown',
@@ -136,6 +137,34 @@ export default defineType({
             prepare({ title, column }) {
               return { title: title || 'Untitled', subtitle: column ? `Column: ${column}` : '' };
             },
+          },
+        },
+      ],
+    }),
+    defineField({
+      name: 'updates',
+      title: 'Updates',
+      type: 'array',
+      description: 'Update cards for the Updates section',
+      hidden: ({ parent }) => parent?.sectionType !== 'updates',
+      of: [
+        {
+          type: 'object',
+          fields: [
+            defineField({ name: 'title', title: 'Title', type: 'string', validation: (Rule) => Rule.required() }),
+            defineField({ name: 'description', title: 'Description', type: 'text', validation: (Rule) => Rule.required() }),
+            defineField({
+              name: 'image',
+              title: 'Image',
+              type: 'image',
+              options: { hotspot: true },
+              validation: (Rule) => Rule.required(),
+            }),
+            defineField({ name: 'imageAlt', title: 'Image Alt Text', type: 'string', validation: (Rule) => Rule.required() }),
+            defineField({ name: 'order', title: 'Order', type: 'number' }),
+          ],
+          preview: {
+            select: { title: 'title', media: 'image' },
           },
         },
       ],

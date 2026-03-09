@@ -20,4 +20,3 @@ export const HOMEPAGE_SECTION = `*[_type == "homepageSection" && sectionType == 
 
 export const HOMEPAGE_SECTIONS_BY_LANG = `*[_type == "homepageSection" && language == $lang]`;
 
-export const UPDATES_BY_LANG = `*[_type == "update" && language == $lang] | order(publishedDate desc)`;

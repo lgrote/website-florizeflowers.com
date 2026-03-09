@@ -26,7 +26,6 @@ export default defineConfig({
         "occasion",
         "guide",
         "page",
-        "update",
         "homepageSection",
       ],
     }),

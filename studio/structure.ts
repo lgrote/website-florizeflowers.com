@@ -40,14 +40,6 @@ export const structure: StructureResolver = (S) =>
             .title('Homepage Sections')
             .defaultOrdering([{ field: 'sectionType', direction: 'asc' }])
         ),
-      S.listItem()
-        .title('Updates')
-        .schemaType('update')
-        .child(
-          S.documentTypeList('update')
-            .title('Updates')
-            .defaultOrdering([{ field: 'publishedDate', direction: 'desc' }])
-        ),
       S.divider(),
       S.listItem()
         .title('Configuration')
