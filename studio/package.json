@@ -17,10 +17,12 @@
   ],
   "dependencies": {
     "@sanity/code-input": "^7.0.6",
-    "@sanity/vision": "^5.5.0",
+    "@sanity/document-internationalization": "^5.1.2",
+    "@sanity/vision": "^5.13.0",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
-    "sanity": "^5.5.0",
+    "sanity": "^5.13.0",
+    "sanity-plugin-internationalized-array": "^4.0.5",
     "styled-components": "^6.1.19"
   },
   "devDependencies": {
