@@ -1,27 +1,25 @@
 // Dynamic content rendering utilities
-import type { ContentSection } from '../types/content';
+import type { SanityContentSection } from '../types/sanity';
 
 /**
  * Check if a section should be rendered based on its content
  * @param section - Content section to check
  * @returns true if section has required content, false otherwise
  */
-export function shouldRenderSection(section: ContentSection): boolean {
-  // Don't render empty sections
+export function shouldRenderSection(section: SanityContentSection): boolean {
   if (!section) return false;
 
-  // Check for required content based on type
-  switch (section.type) {
-    case 'features_grid':
+  switch (section._type) {
+    case 'featuresGridSection':
       return Array.isArray(section.items) && section.items.length > 0;
-    case 'pros_cons':
+    case 'prosConsSection':
       return (Array.isArray(section.pros) && section.pros.length > 0) ||
              (Array.isArray(section.cons) && section.cons.length > 0);
-    case 'faq':
+    case 'faqSection':
       return Array.isArray(section.questions) && section.questions.length > 0;
-    case 'tab_content':
+    case 'tabContentSection':
       return Array.isArray(section.tabs) && section.tabs.length > 0;
-    case 'content_prose':
+    case 'contentProseSection':
       return !!section.content;
     default:
       return true;

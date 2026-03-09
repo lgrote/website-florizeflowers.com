@@ -1,7 +1,8 @@
 ---
-import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import PortableTextRenderer from '../../components/PortableTextRenderer.astro';
 import { SUPPORTED_LANGUAGES, type SupportedLanguage } from '../../i18n/config';
+import { getPageBySlug } from '../../lib/sanity-fetchers';
 
 export async function getStaticPaths() {
   return SUPPORTED_LANGUAGES.map((lang) => ({
@@ -11,25 +12,21 @@ export async function getStaticPaths() {
 
 const { lang } = Astro.params as { lang: SupportedLanguage };
 
-// Get privacy policy page content from collection
-const allPages = await getCollection('pages');
-const privacyPage = allPages.find(page => page.id === `${lang}/privacy-policy.md` || page.id === `${lang}/privacy-policy`);
+const privacyPage = await getPageBySlug('privacy-policy', lang);
 
 if (!privacyPage) {
   throw new Error(`Privacy policy page content not found for language: ${lang}`);
 }
-
-const { Content } = await privacyPage.render();
 ---
 
 <BaseLayout
-  title={privacyPage.data.title}
-  description={privacyPage.data.description}
+  title={privacyPage.title}
+  description={privacyPage.description}
 >
   <div class="py-12">
     <div class="container">
       <div class="max-w-3xl mx-auto prose prose-lg">
-        <Content />
+        <PortableTextRenderer value={privacyPage.body} />
       </div>
     </div>
   </div>

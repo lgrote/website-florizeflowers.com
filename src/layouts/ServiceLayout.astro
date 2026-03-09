@@ -2,9 +2,10 @@
 // Service Layout following FindFerries pattern with centralized data preparation
 // Includes all original features: tabs, TOC, sticky elements, and sections
 
-import type { CollectionEntry } from 'astro:content';
+import type { SanityService } from '../types/sanity';
 import BaseLayout from './BaseLayout.astro';
 import BreadcrumbNavigation from '../components/navigation/BreadcrumbNavigation.astro';
+import PortableTextRenderer from '../components/PortableTextRenderer.astro';
 import ServiceHero from '../components/sections/ServiceHero.astro';
 import QuickSummary from '../components/sections/QuickSummary.astro';
 import ServiceOverview from '../components/sections/ServiceOverview.astro';
@@ -25,6 +26,7 @@ import TestingMetrics from '../components/ui/TestingMetrics.astro';
 import TabSection from '../components/ui/TabSection.astro';
 import { getAffiliateLink } from '../utils/affiliateLinks';
 import { generateServiceSchema } from '../utils/seo';
+import { urlFor } from '../lib/sanity';
 import { t } from '../i18n/translations';
 
 interface TOCItem {
@@ -34,28 +36,27 @@ interface TOCItem {
 }
 
 export interface Props {
-  service: CollectionEntry<'services'>;
+  service: SanityService;
 }
 
 const { service } = Astro.props;
-const { Content } = await service.render();
 
 // Get language from service data
-const lang = service.data.lang;
+const lang = service.language as 'en' | 'de';
 
-// Get affiliate link from Sanity (with fallback to content collection)
-const affiliateUrl = await getAffiliateLink(service.data.base.id, lang);
+// Get affiliate link from Sanity (with fallback)
+const affiliateUrl = await getAffiliateLink(service.base.id, lang);
 
 // Breadcrumb items
 const breadcrumbItems = [
   { label: t(lang, 'layout.home'), href: `/${lang}` },
   { label: t(lang, 'layout.services'), href: `/${lang}/services` },
-  { label: `${service.data.base.name} ${t(lang, 'layout.review')}` },
+  { label: `${service.base.name} ${t(lang, 'layout.review')}` },
 ];
 
 // Generate structured data for SEO
 const serviceSchema = generateServiceSchema({
-  ...service.data,
+  ...service,
   affiliate_url: affiliateUrl
 });
 
@@ -63,7 +64,7 @@ const serviceSchema = generateServiceSchema({
 const tocItems: TOCItem[] = [];
 
 // Service Overview
-if (service.data.overview?.positioning && service.data.overview?.content) {
+if (service.overview?.positioning && service.overview?.content) {
   tocItems.push({
     id: 'overview',
     text: t(lang, 'layout.serviceOverview'),
@@ -72,7 +73,7 @@ if (service.data.overview?.positioning && service.data.overview?.content) {
 }
 
 // Best For Scenarios
-if (service.data.components?.best_for_scenarios && service.data.components.best_for_scenarios.length > 0) {
+if (service.components?.bestForScenarios && service.components.bestForScenarios.length > 0) {
   tocItems.push({
     id: 'perfect-for',
     text: t(lang, 'layout.perfectFor'),
@@ -81,7 +82,7 @@ if (service.data.components?.best_for_scenarios && service.data.components.best_
 }
 
 // Testing Metrics
-if (service.data.components?.testing_metrics && service.data.components.testing_metrics.length > 0) {
+if (service.components?.testingMetrics && service.components.testingMetrics.length > 0) {
   tocItems.push({
     id: 'testing-metrics',
     text: t(lang, 'layout.testingResults'),
@@ -116,9 +117,9 @@ tocItems.push({
 ---
 
 <BaseLayout
-  title={service.data.base.title}
-  description={service.data.base.description}
-  keywords={service.data.seo?.keywords}
+  title={service.base.title}
+  description={service.base.description}
+  keywords={service.seo?.keywords}
   showBreadcrumbs={true}
   structuredData={serviceSchema}
 >
@@ -129,70 +130,70 @@ tocItems.push({
 
   <!-- Hero Section -->
   <ServiceHero
-    title={`${service.data.base.name} ${t(lang, 'layout.review')} 2026: ${service.data.base.winner_badge || t(lang, 'layout.expertAnalysis')}`}
-    subtitle={service.data.base.description}
-    rating={service.data.base.rating}
-    badge={service.data.base.winner_badge}
-    backgroundImage={service.data.base.hero_image}
+    title={`${service.base.name} ${t(lang, 'layout.review')} 2026: ${service.base.winnerBadge || t(lang, 'layout.expertAnalysis')}`}
+    subtitle={service.base.description}
+    rating={service.base.rating}
+    badge={service.base.winnerBadge}
+    backgroundImage={service.base.heroImage ? urlFor(service.base.heroImage).width(1600).url() : undefined}
   />
 
   <article>
     <div class="container">
       <!-- Quick Summary -->
       <QuickSummary
-        bestFor={service.data.summary?.best_for || t(lang, 'layout.qualityDelivery')}
-        priceRange={service.data.base.price_range}
-        delivery={service.data.summary?.delivery || service.data.base.delivery_options.join(', ')}
-        rating={service.data.summary?.rating_text || `${service.data.base.rating}/5`}
-        serviceName={service.data.base.name}
+        bestFor={service.summary?.bestFor || t(lang, 'layout.qualityDelivery')}
+        priceRange={service.base.priceRange}
+        delivery={service.summary?.delivery || service.base.deliveryOptions.join(', ')}
+        rating={service.summary?.ratingText || `${service.base.rating}/5`}
+        serviceName={service.base.name}
         affiliateUrl={affiliateUrl}
         lang={lang}
       />
 
       <!-- Review Byline -->
       <ReviewByline
-        datePublished={service.data.seo?.date_published}
-        dateModified={service.data.seo?.date_modified}
+        datePublished={service.seo?.datePublished}
+        dateModified={service.seo?.dateModified}
         expertTested={true}
       />
 
       <!-- Promo Code (if exists) -->
-      {service.data.components?.promo_code && (
+      {service.affiliate?.promoCode && (
         <PromoCode
-          code={service.data.components.promo_code.code}
-          description={service.data.components.promo_code.description}
-          expiryDate={service.data.components.promo_code.expiry_date}
-          serviceName={service.data.base.name}
+          code={service.affiliate.promoCode.code}
+          description={service.affiliate.promoCode.description}
+          expiryDate={service.affiliate.promoCode.expiryDate}
+          serviceName={service.base.name}
           affiliateUrl={affiliateUrl}
         />
       )}
 
       <!-- Service Overview (if structured data exists) -->
-      {service.data.overview?.positioning && service.data.overview?.content && (
+      {service.overview?.positioning && service.overview?.content && (
         <section id="overview">
           <ServiceOverview
-            serviceName={service.data.base.name}
-            positioning={service.data.overview.positioning}
-            content={service.data.overview.content}
+            serviceName={service.base.name}
+            positioning={service.overview.positioning}
+            content={service.overview.content}
           />
         </section>
       )}
 
       <!-- Best For Scenarios (if exists) -->
-      {service.data.components?.best_for_scenarios && service.data.components.best_for_scenarios.length > 0 && (
+      {service.components?.bestForScenarios && service.components.bestForScenarios.length > 0 && (
         <section class="content-section" id="perfect-for">
           <BestForCards
-            scenarios={service.data.components.best_for_scenarios}
+            scenarios={service.components.bestForScenarios}
             title={t(lang, 'layout.perfectFor')}
           />
         </section>
       )}
 
       <!-- Testing Metrics Dashboard (if data exists) - Prominently displayed -->
-      {service.data.components?.testing_metrics && service.data.components.testing_metrics.length > 0 && (
+      {service.components?.testingMetrics && service.components.testingMetrics.length > 0 && (
         <section class="content-section" id="testing-metrics">
           <TestingMetrics
-            metrics={service.data.components.testing_metrics}
+            metrics={service.components.testingMetrics}
             title={t(lang, 'layout.testingResults')}
           />
         </section>
@@ -210,7 +211,7 @@ tocItems.push({
           <div class="tab-panel active" role="tabpanel" data-tab-panel="review" id="tab-review">
             <article class="tab-content-wrapper">
               <div class="prose-content">
-                <Content />
+                {service.body && <PortableTextRenderer value={service.body} />}
               </div>
             </article>
           </div>
@@ -219,17 +220,17 @@ tocItems.push({
           <div class="tab-panel" role="tabpanel" data-tab-panel="quick-ref" id="tab-quick-ref">
             <div class="tab-content-wrapper">
               {/* Pros & Cons */}
-              {service.data.components?.pros && service.data.components?.cons && (
+              {service.components?.pros && service.components?.cons && (
                 <ProsConsGrid
-                  serviceName={service.data.base.name}
-                  prosTitle={service.data.components.pros_title || t(lang, 'layout.strengths')}
-                  consTitle={service.data.components.cons_title || t(lang, 'layout.considerations')}
-                  pros={service.data.components.pros}
-                  cons={service.data.components.cons}
+                  serviceName={service.base.name}
+                  prosTitle={service.components.prosTitle || t(lang, 'layout.strengths')}
+                  consTitle={service.components.consTitle || t(lang, 'layout.considerations')}
+                  pros={service.components.pros}
+                  cons={service.components.cons}
                 />
               )}
 
-              {!service.data.components?.pros && !service.data.components?.cons && (
+              {!service.components?.pros && !service.components?.cons && (
                 <p class="empty-tab-message">{t(lang, 'layout.prosConsComingSoon')}</p>
               )}
             </div>
@@ -239,33 +240,33 @@ tocItems.push({
           <div class="tab-panel" role="tabpanel" data-tab-panel="comparisons" id="tab-comparisons">
             <div class="tab-content-wrapper">
               {/* Feature Comparison */}
-              {service.data.components?.feature_comparison && (
+              {service.components?.featureComparison && (
                 <div class="comparison-section">
                   <VSComparison
-                    service1Name={service.data.base.name}
-                    service2Name={service.data.components.feature_comparison.competitor_name}
-                    features={service.data.components.feature_comparison.features.map(f => ({
+                    service1Name={service.base.name}
+                    service2Name={service.components.featureComparison.competitorName}
+                    features={service.components.featureComparison.features.map(f => ({
                       feature: f.feature,
-                      service1: f.service_value,
-                      service2: f.competitor_value
+                      service1: f.serviceValue,
+                      service2: f.competitorValue
                     }))}
-                    winner={service.data.components.feature_comparison.winner === 'service' ? 1 : service.data.components.feature_comparison.winner === 'competitor' ? 2 : undefined}
+                    winner={service.components.featureComparison.winner === 'service' ? 1 : service.components.featureComparison.winner === 'competitor' ? 2 : undefined}
                   />
                 </div>
               )}
 
               {/* Competitive Comparison */}
-              {service.data.comparisons?.items && service.data.comparisons.items.length > 0 && (
+              {service.comparisons?.items && service.comparisons.items.length > 0 && (
                 <div class="comparison-section">
                   <ComparisonSection
-                    serviceName={service.data.base.name}
-                    comparisons={service.data.comparisons.items}
-                    useCases={service.data.comparisons.use_cases}
+                    serviceName={service.base.name}
+                    comparisons={service.comparisons.items}
+                    useCases={service.comparisons.useCases}
                   />
                 </div>
               )}
 
-              {!service.data.components?.feature_comparison && (!service.data.comparisons?.items || service.data.comparisons.items.length === 0) && (
+              {!service.components?.featureComparison && (!service.comparisons?.items || service.comparisons.items.length === 0) && (
                 <p class="empty-tab-message">{t(lang, 'layout.comparisonComingSoon')}</p>
               )}
             </div>
@@ -275,37 +276,37 @@ tocItems.push({
           <div class="tab-panel" role="tabpanel" data-tab-panel="faqs" id="tab-faqs">
             <div class="tab-content-wrapper">
               {/* FAQs */}
-              {service.data.components?.faqs && service.data.components.faqs.length > 0 && (
+              {service.components?.faqs && service.components.faqs.length > 0 && (
                 <div class="faqs-wrapper">
-                  <AccordionFAQ items={service.data.components.faqs} />
+                  <AccordionFAQ items={service.components.faqs} />
                 </div>
               )}
 
               {/* Final Recommendation */}
-              {service.data.recommendations?.sections && service.data.recommendations.sections.length > 0 && (
+              {service.recommendations?.sections && service.recommendations.sections.length > 0 && (
                 <div class="recommendation-wrapper">
                   <FinalRecommendation
-                    serviceName={service.data.base.name}
-                    rating={service.data.base.rating}
-                    ratingLabel={service.data.base.winner_badge || 'Expert Tested'}
-                    sections={service.data.recommendations.sections}
+                    serviceName={service.base.name}
+                    rating={service.base.rating}
+                    ratingLabel={service.base.winnerBadge || 'Expert Tested'}
+                    sections={service.recommendations.sections}
                     affiliateUrl={affiliateUrl}
-                    ctaText={service.data.recommendations.cta || `Visit ${service.data.base.name}`}
+                    ctaText={service.recommendations.cta || `Visit ${service.base.name}`}
                   />
                 </div>
               )}
 
               {/* Related Reviews */}
-              {service.data.related?.reviews && service.data.related.reviews.length > 0 && (
+              {service.related?.reviews && service.related.reviews.length > 0 && (
                 <div class="related-wrapper">
                   <RelatedReviews
-                    heading={service.data.related.heading || t(lang, 'layout.compareOtherServices')}
-                    reviews={service.data.related.reviews}
+                    heading={service.related.heading || t(lang, 'layout.compareOtherServices')}
+                    reviews={service.related.reviews}
                   />
                 </div>
               )}
 
-              {!service.data.components?.faqs && !service.data.recommendations?.sections && !service.data.related?.reviews && (
+              {!service.components?.faqs && !service.recommendations?.sections && !service.related?.reviews && (
                 <p class="empty-tab-message">{t(lang, 'layout.additionalInfoComingSoon')}</p>
               )}
             </div>
@@ -316,8 +317,8 @@ tocItems.push({
       <!-- Affiliate Banner Section -->
       <div class="max-w-4xl mx-auto">
         <AffiliateBannerSection
-          serviceId={service.data.base.id}
-          serviceName={service.data.base.name}
+          serviceId={service.base.id}
+          serviceName={service.base.name}
           affiliateUrl={affiliateUrl}
           lang={lang}
         />
@@ -327,9 +328,9 @@ tocItems.push({
 
   <!-- Sticky CTA Bar -->
   <StickyCTA
-    serviceName={service.data.base.name}
+    serviceName={service.base.name}
     affiliateUrl={affiliateUrl}
-    rating={service.data.base.rating}
+    rating={service.base.rating}
     lang={lang}
   />
 

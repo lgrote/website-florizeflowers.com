@@ -1,7 +1,8 @@
 ---
-import { getCollection } from 'astro:content';
 import ImageCard from '../ui/ImageCard.astro';
 import type { SupportedLanguage } from '../../i18n/config';
+import { getHomepageSection } from '../../lib/sanity-fetchers';
+import { urlFor } from '../../lib/sanity';
 
 export interface Props {
   className?: string;
@@ -13,14 +14,11 @@ const {
   lang = 'en' as SupportedLanguage
 } = Astro.props;
 
-const allSections = await getCollection('homepage-sections');
-const methodologyData = allSections.find(section =>
-  section.data.sectionType === 'methodology' && section.data.lang === lang
-);
+const methodologyData = await getHomepageSection('methodology', lang);
 
-const methodologyCards = methodologyData?.data.cards || [];
-const sectionTitle = methodologyData?.data.title || 'Our Methodology';
-const footerText = methodologyData?.data.footerText;
+const methodologyCards = methodologyData?.cards || [];
+const sectionTitle = methodologyData?.title || 'Our Methodology';
+const footerText = methodologyData?.footerText;
 ---
 
 <section class={`section-padding bg-cream-white ${className}`} aria-labelledby="methodology-heading">
@@ -33,8 +31,8 @@ const footerText = methodologyData?.data.footerText;
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-8">
         {methodologyCards.map((card) => (
           <ImageCard
-            image={card.image}
-            imageAlt={card.imageAlt}
+            image={card.image ? urlFor(card.image).width(400).height(200).url() : ''}
+            imageAlt={card.imageAlt || card.title}
             title={card.title}
             description={card.description}
           />

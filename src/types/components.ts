@@ -1,7 +1,7 @@
 // Component prop type definitions
 // Ensures type safety across all components
 
-import type { CollectionEntry } from 'astro:content';
+import type { SanityService, SanityOccasion } from './sanity';
 import type { FlowerService, FlowerOccasion, TestingMetric, PromoCode } from './flower';
 
 // Navigation component props
@@ -53,13 +53,13 @@ export interface CardProps {
 }
 
 export interface ServiceCardProps {
-  service: CollectionEntry<'services'>;
+  service: SanityService;
   featured?: boolean;
   showFullDescription?: boolean;
 }
 
 export interface OccasionCardProps {
-  occasion: CollectionEntry<'occasions'>;
+  occasion: SanityOccasion;
   featured?: boolean;
 }
 
@@ -94,7 +94,7 @@ export interface RatingStarsProps {
 
 // Comparison component props
 export interface ComparisonTableProps {
-  services: CollectionEntry<'services'>[];
+  services: SanityService[];
   features?: string[];
   highlightBest?: boolean;
   maxServices?: number;
@@ -223,13 +223,13 @@ export interface BaseLayoutProps {
 }
 
 export interface ServiceLayoutProps extends BaseLayoutProps {
-  service: CollectionEntry<'services'>;
+  service: SanityService;
   showTOC?: boolean;
   showProgress?: boolean;
 }
 
 export interface OccasionLayoutProps extends BaseLayoutProps {
-  occasion: CollectionEntry<'occasions'>;
+  occasion: SanityOccasion;
 }
 
 // Utility component props
@@ -280,6 +280,6 @@ export interface RelatedReviewsProps {
 export interface AffiliateBannerProps {
   title?: string;
   description?: string;
-  services?: CollectionEntry<'services'>[];
+  services?: SanityService[];
   variant?: 'default' | 'compact' | 'featured';
 }

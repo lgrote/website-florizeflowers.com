@@ -1,7 +1,7 @@
 ---
-import { getCollection } from 'astro:content';
 import Card from '../ui/Card.astro';
 import type { SupportedLanguage } from '../../i18n/config';
+import { getHomepageSection } from '../../lib/sanity-fetchers';
 
 export interface Props {
   title?: string;
@@ -21,14 +21,11 @@ const {
   lang = 'en' as SupportedLanguage
 } = Astro.props;
 
-// Read from collection if props are not provided
-const allSections = await getCollection('homepage-sections');
-const trustSignalsData = allSections.find(section =>
-  section.data.sectionType === 'trust-signals' && section.data.lang === lang
-);
+// Read from Sanity if props are not provided
+const trustSignalsData = await getHomepageSection('trust-signals', lang);
 
-const sectionTitle = title || trustSignalsData?.data.title || 'Why Trust Us';
-const defaultSignals = signals || trustSignalsData?.data.cards || [];
+const sectionTitle = title || trustSignalsData?.title || 'Why Trust Us';
+const defaultSignals = signals || trustSignalsData?.cards || [];
 ---
 
 <section class={`section-padding bg-cream-white ${className}`}>

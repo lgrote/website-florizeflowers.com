@@ -1,20 +1,18 @@
 ---
 // Service page using the FindFerries-pattern layout with centralized data preparation
-import { getCollection } from 'astro:content';
+import { getServices } from '../../../lib/sanity-fetchers';
 import ServiceLayout from '../../../layouts/ServiceLayout.astro';
 import { SUPPORTED_LANGUAGES } from '../../../i18n/config';
 
 export async function getStaticPaths() {
-  const allServices = await getCollection('services');
-
   // Generate paths for each language
-  return SUPPORTED_LANGUAGES.flatMap((lang) => {
-    const services = allServices.filter(service => service.data.lang === lang);
+  return (await Promise.all(SUPPORTED_LANGUAGES.map(async (lang) => {
+    const services = await getServices(lang);
     return services.map((service) => ({
-      params: { lang, service: service.data.base.id },
+      params: { lang, service: service.base.id },
       props: { service },
     }));
-  });
+  }))).flat();
 }
 
 const { service } = Astro.props;

@@ -1,12 +1,12 @@
 ---
 import ComparisonTable from '../ui/ComparisonTable.astro';
 import Button from '../ui/Button.astro';
-import type { CollectionEntry } from 'astro:content';
+import type { SanityService } from '../../types/sanity';
 import type { SupportedLanguage } from '../../i18n/config';
 import { t } from '../../i18n/translations';
 
 export interface Props {
-  services: CollectionEntry<'services'>[];
+  services: SanityService[];
   heading?: string;
   maxServices?: number;
   showViewAllButton?: boolean;

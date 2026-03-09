@@ -1,25 +1,25 @@
 ---
 // Guide Layout - Simple layout for guide content
-import type { CollectionEntry } from 'astro:content';
+import type { SanityGuide } from '../types/sanity';
 import BaseLayout from './BaseLayout.astro';
 import BreadcrumbNavigation from '../components/navigation/BreadcrumbNavigation.astro';
+import PortableTextRenderer from '../components/PortableTextRenderer.astro';
 import { t } from '../i18n/translations';
 
 export interface Props {
-  guide: CollectionEntry<'guides'>;
+  guide: SanityGuide;
 }
 
 const { guide } = Astro.props;
-const { Content } = await guide.render();
 
 // Get language from guide data
-const lang = guide.data.lang;
+const lang = guide.language as 'en' | 'de';
 
 // Breadcrumb items
 const breadcrumbItems = [
   { label: t(lang, 'layout.home'), href: `/${lang}` },
   { label: t(lang, 'layout.guides'), href: `/${lang}/guides` },
-  { label: guide.data.title },
+  { label: guide.title },
 ];
 
 // Get category label
@@ -38,8 +38,8 @@ const getCategoryLabel = (category: string) => {
 ---
 
 <BaseLayout
-  title={`${guide.data.title} - ${t(lang, 'layout.guides')}`}
-  description={guide.data.description}
+  title={`${guide.title} - ${t(lang, 'layout.guides')}`}
+  description={guide.description}
   showBreadcrumbs={true}
 >
   <BreadcrumbNavigation slot="breadcrumbs" items={breadcrumbItems} />
@@ -49,18 +49,18 @@ const getCategoryLabel = (category: string) => {
       <!-- Guide Header -->
       <header class="guide-header">
         <div class="guide-category">
-          {getCategoryLabel(guide.data.category)}
+          {getCategoryLabel(guide.category)}
         </div>
-        <h1 class="guide-title">{guide.data.title}</h1>
-        <p class="guide-description">{guide.data.description}</p>
+        <h1 class="guide-title">{guide.title}</h1>
+        <p class="guide-description">{guide.description}</p>
       </header>
 
       <!-- Key Tips (if available) -->
-      {guide.data.tips && guide.data.tips.length > 0 && (
+      {guide.tips && guide.tips.length > 0 && (
         <aside class="key-tips">
           <h2 class="tips-heading">{t(lang, 'layout.keyTips')}</h2>
           <ul class="tips-list">
-            {guide.data.tips.map((tip) => (
+            {guide.tips.map((tip) => (
               <li class="tip-item">{tip}</li>
             ))}
           </ul>
@@ -69,7 +69,7 @@ const getCategoryLabel = (category: string) => {
 
       <!-- Guide Content -->
       <div class="guide-content prose-content">
-        <Content />
+        {guide.body && <PortableTextRenderer value={guide.body} />}
       </div>
 
       <!-- Back to Guides -->

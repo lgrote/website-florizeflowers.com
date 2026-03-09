@@ -1,8 +1,9 @@
 ---
-import { getCollection } from 'astro:content';
 import ImageCard from '../ui/ImageCard.astro';
 import type { SupportedLanguage } from '../../i18n/config';
 import { t } from '../../i18n/translations';
+import { getUpdates } from '../../lib/sanity-fetchers';
+import { urlFor } from '../../lib/sanity';
 
 export interface Props {
   className?: string;
@@ -17,16 +18,15 @@ const {
 const heading = t(lang, 'homepage.updatesHeading');
 const footer = t(lang, 'homepage.updatesFooter');
 
-// Get updates from collection filtered by language and sort by order
-const updatesCollection = await getCollection('updates');
-const updates = updatesCollection
-  .filter(update => update.data.lang === lang)
-  .sort((a, b) => (a.data.order || 999) - (b.data.order || 999))
+// Get updates from Sanity filtered by language and sort by order
+const allUpdates = await getUpdates(lang);
+const updates = allUpdates
+  .sort((a, b) => (a.order || 999) - (b.order || 999))
   .map(update => ({
-    image: update.data.image,
-    imageAlt: update.data.imageAlt,
-    title: update.data.title,
-    description: update.data.description
+    image: update.image ? urlFor(update.image).width(400).height(200).url() : '',
+    imageAlt: update.imageAlt,
+    title: update.title,
+    description: update.description
   }));
 ---
 

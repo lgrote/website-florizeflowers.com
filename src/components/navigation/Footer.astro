@@ -1,32 +1,27 @@
 ---
-import { getCollection } from 'astro:content';
 import type { SupportedLanguage } from '../../i18n/config';
 import { getLanguageFromUrl } from '../../i18n/utils';
 import { t } from '../../i18n/translations';
 import ImprintModal from '../ui/ImprintModal.astro';
+import { getServices, getOccasions, getHomepageSection } from '../../lib/sanity-fetchers';
 
 // Get current language
 const lang: SupportedLanguage = Astro.currentLocale as SupportedLanguage || getLanguageFromUrl(Astro.url);
 
 // Auto-generate top services for footer (top 3)
-const allServices = await getCollection('services');
-const services = allServices.filter(service => service.data.lang === lang);
-const topServices = services
-  .sort((a, b) => (b.data.base.rating || 0) - (a.data.base.rating || 0))
+const services = await getServices(lang);
+const topServices = [...services]
+  .sort((a, b) => (b.base.rating || 0) - (a.base.rating || 0))
   .slice(0, 3);
 
 // Auto-generate top occasions for footer (top 3)
-const allOccasions = await getCollection('occasions');
-const occasions = allOccasions.filter(occasion => occasion.data.lang === lang);
-const topOccasions = occasions
-  .sort((a, b) => a.data.base.name.localeCompare(b.data.base.name))
+const occasions = await getOccasions(lang);
+const topOccasions = [...occasions]
+  .sort((a, b) => a.base.name.localeCompare(b.base.name))
   .slice(0, 3);
 
 // Get footer content
-const allFooterData = await getCollection('homepage-sections');
-const footerData = allFooterData.find(section =>
-  section.data.sectionType === 'footer' && section.data.lang === lang
-);
+const footerData = await getHomepageSection('footer', lang);
 ---
 
 <footer class="bg-charcoal text-white py-12 mt-16">
@@ -37,8 +32,8 @@ const footerData = allFooterData.find(section =>
         <ul class="space-y-2">
           {topServices.map(service => (
             <li>
-              <a href={`/${lang}/services/${service.data.base.id}`} class="hover:text-bloom-pink transition-colors">
-                {service.data.base.name} {t(lang, 'nav.review')}
+              <a href={`/${lang}/services/${service.base.id}`} class="hover:text-bloom-pink transition-colors">
+                {service.base.name} {t(lang, 'nav.review')}
               </a>
             </li>
           ))}
@@ -50,8 +45,8 @@ const footerData = allFooterData.find(section =>
         <ul class="space-y-2">
           {topOccasions.map(occasion => (
             <li>
-              <a href={`/${lang}/occasions/${occasion.data.base.id}`} class="hover:text-bloom-pink transition-colors">
-                {occasion.data.base.name} {t(lang, 'nav.flowers')}
+              <a href={`/${lang}/occasions/${occasion.base.id}`} class="hover:text-bloom-pink transition-colors">
+                {occasion.base.name} {t(lang, 'nav.flowers')}
               </a>
             </li>
           ))}
@@ -79,7 +74,7 @@ const footerData = allFooterData.find(section =>
           class="h-8 w-auto mx-auto"
         />
       </div>
-      <p>&copy; 2026 Florize Flowers. {t(lang, 'footer.allRightsReserved')}{footerData?.data.description ? ` | ${footerData.data.description}` : ''}</p>
+      <p>&copy; 2026 Florize Flowers. {t(lang, 'footer.allRightsReserved')}{footerData?.description ? ` | ${footerData.description}` : ''}</p>
     </div>
   </div>
 </footer>

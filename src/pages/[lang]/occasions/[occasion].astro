@@ -1,20 +1,17 @@
 ---
 // Occasion page using the FindFerries-pattern layout with centralized data preparation
-import { getCollection } from 'astro:content';
+import { getOccasions } from '../../../lib/sanity-fetchers';
 import OccasionLayout from '../../../layouts/OccasionLayout.astro';
 import { SUPPORTED_LANGUAGES } from '../../../i18n/config';
 
 export async function getStaticPaths() {
-  const allOccasions = await getCollection('occasions');
-
-  // Generate paths for each language
-  return SUPPORTED_LANGUAGES.flatMap((lang) => {
-    const occasions = allOccasions.filter(occasion => occasion.data.lang === lang);
+  return (await Promise.all(SUPPORTED_LANGUAGES.map(async (lang) => {
+    const occasions = await getOccasions(lang);
     return occasions.map((occasion) => ({
-      params: { lang, occasion: occasion.data.base.id },
+      params: { lang, occasion: occasion.base.id },
       props: { occasion },
     }));
-  });
+  }))).flat();
 }
 
 const { occasion } = Astro.props;

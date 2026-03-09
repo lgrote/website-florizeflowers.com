@@ -1,8 +1,9 @@
 ---
-import { getCollection } from 'astro:content';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import ServiceCard from '../../../components/ui/ServiceCard.astro';
 import { SUPPORTED_LANGUAGES, type SupportedLanguage } from '../../../i18n/config';
+import { getPageBySlug } from '../../../lib/sanity-fetchers';
+import { getServices } from '../../../lib/sanity-fetchers';
 
 export async function getStaticPaths() {
   return SUPPORTED_LANGUAGES.map((lang) => ({
@@ -12,23 +13,21 @@ export async function getStaticPaths() {
 
 const { lang } = Astro.params as { lang: SupportedLanguage };
 
-// Get page content from collection
-const allPages = await getCollection('pages');
-const pageData = allPages.find(page => page.id === `${lang}/services-index.md` || page.id === `${lang}/services-index`);
+// Get page content from Sanity
+const pageData = await getPageBySlug('services-index', lang);
 
-const allServices = await getCollection('services');
-const services = allServices.filter(service => service.data.lang === lang);
-const sortedServices = services.sort((a, b) => b.data.base.rating - a.data.base.rating);
+const services = await getServices(lang);
+const sortedServices = [...services].sort((a, b) => b.base.rating - a.base.rating);
 ---
 
 <BaseLayout
-  title={pageData?.data.title || 'Services'}
-  description={pageData?.data.description || ''}
+  title={pageData?.title || 'Services'}
+  description={pageData?.description || ''}
 >
   <div class="py-12">
     <div class="container">
       <h1 class="text-4xl md:text-5xl font-bold text-florize-green mb-8 text-center">
-        {pageData?.data.intro?.heading || 'All Services'}
+        {pageData?.intro?.heading || 'All Services'}
       </h1>
 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">

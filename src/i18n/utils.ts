@@ -4,7 +4,6 @@
  */
 
 import { SUPPORTED_LANGUAGES, DEFAULT_LANGUAGE, type SupportedLanguage } from './config';
-import type { CollectionEntry } from 'astro:content';
 
 /**
  * Get language from URL pathname
@@ -60,16 +59,16 @@ export function getAlternateLinks(currentPath: string, baseUrl: string): Array<{
 }
 
 /**
- * Filter collection entries by language
- * @param entries - Collection entries
+ * Filter Sanity documents by language
+ * @param entries - Sanity documents with language field
  * @param lang - Language code
  * @returns Filtered entries
  */
-export function getLocalizedCollection<T extends CollectionEntry<any>>(
+export function getLocalizedCollection<T extends { language: string }>(
   entries: T[],
   lang: SupportedLanguage
 ): T[] {
-  return entries.filter(entry => entry.data.lang === lang);
+  return entries.filter(entry => entry.language === lang);
 }
 
 /**

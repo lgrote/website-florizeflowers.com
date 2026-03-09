@@ -1,11 +1,13 @@
 ---
-import { getCollection } from 'astro:content';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import BreadcrumbNavigation from '../../../components/navigation/BreadcrumbNavigation.astro';
 import HeroSection from '../../../components/sections/HeroSection.astro';
 import Card from '../../../components/ui/Card.astro';
+import PortableTextRenderer from '../../../components/PortableTextRenderer.astro';
 import { SUPPORTED_LANGUAGES, type SupportedLanguage } from '../../../i18n/config';
 import { t } from '../../../i18n/translations';
+import { getPageBySlug, getGuides } from '../../../lib/sanity-fetchers';
+import { urlFor } from '../../../lib/sanity';
 
 export async function getStaticPaths() {
   return SUPPORTED_LANGUAGES.map((lang) => ({
@@ -15,22 +17,20 @@ export async function getStaticPaths() {
 
 const { lang } = Astro.params as { lang: SupportedLanguage };
 
-// Get page content from collection
-const allPages = await getCollection('pages');
-const pageData = allPages.find(page => page.id === `${lang}/guides-index.md` || page.id === `${lang}/guides-index`);
+// Get page content from Sanity
+const pageData = await getPageBySlug('guides-index', lang);
 
-// Get guides from collection
-const allGuides = await getCollection('guides');
-const guides = allGuides.filter(guide => guide.data.lang === lang);
+// Get guides from Sanity
+const guides = await getGuides(lang);
 const benefitGuides = guides
-  .filter(g => g.data.category === 'benefit')
-  .sort((a, b) => (a.data.order || 999) - (b.data.order || 999));
+  .filter(g => g.category === 'benefit')
+  .sort((a, b) => (a.order || 999) - (b.order || 999));
 const essentialGuides = guides
-  .filter(g => g.data.category === 'essential')
-  .sort((a, b) => (a.data.order || 999) - (b.data.order || 999));
+  .filter(g => g.category === 'essential')
+  .sort((a, b) => (a.order || 999) - (b.order || 999));
 const quickTips = guides
-  .filter(g => g.data.category === 'quick-tip')
-  .sort((a, b) => (a.data.order || 999) - (b.data.order || 999));
+  .filter(g => g.category === 'quick-tip')
+  .sort((a, b) => (a.order || 999) - (b.order || 999));
 
 // Breadcrumb items
 const breadcrumbItems = [
@@ -40,34 +40,34 @@ const breadcrumbItems = [
 ---
 
 <BaseLayout
-  title={pageData.data.title}
-  description={pageData.data.description}
+  title={pageData.title}
+  description={pageData.description}
   showBreadcrumbs={true}
 >
   <BreadcrumbNavigation slot="breadcrumbs" items={breadcrumbItems} />
   <!-- Hero Section -->
   <HeroSection
-    title={pageData.data.hero!.title}
-    subtitle={pageData.data.hero!.subtitle}
-    primaryCta={pageData.data.hero!.primaryCta}
-    secondaryCta={pageData.data.hero!.secondaryCta}
-    backgroundImage={pageData.data.hero!.backgroundImage}
+    title={pageData.hero!.title}
+    subtitle={pageData.hero!.subtitle}
+    primaryCta={pageData.hero!.primaryCta}
+    secondaryCta={pageData.hero!.secondaryCta}
+    backgroundImage={pageData.hero!.backgroundImage ? urlFor(pageData.hero!.backgroundImage).url() : undefined}
   />
 
   <!-- Guides Overview -->
   <section class="section-padding">
     <div class="container">
-      <h2 class="text-3xl font-bold text-florize-green mb-6 text-center">{pageData.data.intro!.heading}</h2>
+      <h2 class="text-3xl font-bold text-florize-green mb-6 text-center">{pageData.intro!.heading}</h2>
       <p class="text-lg text-gray-700 mb-8 max-w-4xl mx-auto text-center">
-        {pageData.data.intro!.paragraph}
+        {pageData.intro!.paragraph}
       </p>
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-8">
         {benefitGuides.map((guide) => (
-          <Card className="text-center" href={`/${lang}/guides/${guide.data.base.id}`}>
-            <h3 class="text-xl font-bold text-florize-green mb-3">{guide.data.title}</h3>
+          <Card className="text-center" href={`/${lang}/guides/${guide.base.id}`}>
+            <h3 class="text-xl font-bold text-florize-green mb-3">{guide.title}</h3>
             <p class="text-gray-700">
-              {guide.data.description}
+              {guide.description}
             </p>
           </Card>
         ))}
@@ -85,14 +85,14 @@ const breadcrumbItems = [
 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {essentialGuides.map((guide) => (
-          <Card href={`/${lang}/guides/${guide.data.base.id}`}>
-            <h3 class="text-xl font-bold text-florize-green mb-3">{guide.data.title}</h3>
+          <Card href={`/${lang}/guides/${guide.base.id}`}>
+            <h3 class="text-xl font-bold text-florize-green mb-3">{guide.title}</h3>
             <p class="text-gray-700 mb-4">
-              {guide.data.description}
+              {guide.description}
             </p>
-            {guide.data.tips && (
+            {guide.tips && (
               <ul class="text-sm text-gray-600 space-y-2">
-                {guide.data.tips.map((tip) => (
+                {guide.tips.map((tip) => (
                   <li>• {tip}</li>
                 ))}
               </ul>
@@ -109,17 +109,14 @@ const breadcrumbItems = [
       <h2 class="text-3xl font-bold text-florize-green mb-6 text-center">Quick Tips & Best Practices</h2>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-        {quickTips.map(async (guide) => {
-          const { Content } = await guide.render();
-          return (
-            <Card href={`/${lang}/guides/${guide.data.base.id}`}>
-              <h3 class="text-xl font-bold text-florize-green mb-3">{guide.data.title}</h3>
-              <div class="text-gray-700 space-y-3">
-                <Content />
-              </div>
-            </Card>
-          );
-        })}
+        {quickTips.map((guide) => (
+          <Card href={`/${lang}/guides/${guide.base.id}`}>
+            <h3 class="text-xl font-bold text-florize-green mb-3">{guide.title}</h3>
+            <div class="text-gray-700 space-y-3">
+              <PortableTextRenderer value={guide.body} />
+            </div>
+          </Card>
+        ))}
       </div>
     </div>
   </section>

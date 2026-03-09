@@ -1,6 +1,6 @@
 ---
-import { getCollection } from 'astro:content';
 import type { SupportedLanguage } from '../../i18n/config';
+import { getHomepageSection } from '../../lib/sanity-fetchers';
 
 export interface Props {
   heading?: string;
@@ -14,14 +14,11 @@ const {
   lang = 'en' as SupportedLanguage
 } = Astro.props;
 
-// Read from collection if props are not provided
-const allSections = await getCollection('homepage-sections');
-const introductionData = allSections.find(section =>
-  section.data.sectionType === 'introduction' && section.data.lang === lang
-);
+// Read from Sanity if props are not provided
+const introductionData = await getHomepageSection('introduction', lang);
 
-const sectionHeading = heading || introductionData?.data.title || 'About Us';
-const sectionParagraphs = paragraphs || introductionData?.data.paragraphs || [];
+const sectionHeading = heading || introductionData?.title || 'About Us';
+const sectionParagraphs = paragraphs || introductionData?.paragraphs || [];
 ---
 
 <section id="about" class="section-padding">

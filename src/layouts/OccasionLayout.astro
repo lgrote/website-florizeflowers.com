@@ -2,10 +2,12 @@
 // Occasion Layout following FindFerries pattern with centralized data preparation
 // Includes all original features: tabs, visual components, and sections
 
-import type { CollectionEntry } from 'astro:content';
+import type { SanityOccasion } from '../types/sanity';
 import BaseLayout from './BaseLayout.astro';
 import BreadcrumbNavigation from '../components/navigation/BreadcrumbNavigation.astro';
+import PortableTextRenderer from '../components/PortableTextRenderer.astro';
 import HeroSection from '../components/sections/HeroSection.astro';
+import SanityImage from '../components/ui/SanityImage.astro';
 import InfoGrid from '../components/ui/InfoGrid.astro';
 import CalloutBox from '../components/ui/CalloutBox.astro';
 import FeatureList from '../components/ui/FeatureList.astro';
@@ -18,6 +20,7 @@ import TabSection from '../components/ui/TabSection.astro';
 import StickyTOC from '../components/ui/StickyTOC.astro';
 import ReadingProgress from '../components/ui/ReadingProgress.astro';
 import AccordionFAQ from '../components/ui/AccordionFAQ.astro';
+import { urlFor } from '../lib/sanity';
 import { t } from '../i18n/translations';
 
 interface TOCItem {
@@ -27,60 +30,44 @@ interface TOCItem {
 }
 
 export interface Props {
-  occasion: CollectionEntry<'occasions'>;
+  occasion: SanityOccasion;
 }
 
 const { occasion } = Astro.props;
-const { Content } = await occasion.render();
 
 // Get language from occasion data
-const lang = occasion.data.lang;
+const lang = occasion.language as 'en' | 'de';
 
 // Breadcrumb items
 const breadcrumbItems = [
   { label: t(lang, 'layout.home'), href: `/${lang}` },
   { label: t(lang, 'layout.occasions'), href: `/${lang}/occasions` },
-  { label: occasion.data.base.name },
+  { label: occasion.base.name },
 ];
 
-// Determine background image based on occasion
-const occasionImages: Record<string, string> = {
-  'mothers-day': '/images/mothers-day-flowers-professional.jpg',
-  'valentines-day': '/images/valentines-day-flowers.jpg',
-  'birthday': '/images/birthday-flowers.jpg',
-  'anniversary': '/images/anniversary-flowers.jpg',
-  'wedding': '/images/wedding-flowers.jpg',
-  'funeral': '/images/funeral-flowers.jpg',
-  'new-baby': '/images/new-baby-flowers.jpg',
-  'graduation': '/images/graduation-flowers.jpg',
-  'get-well': '/images/get-well-flowers.jpg',
-  'thank-you': '/images/thank-you-flowers.jpg',
-  'housewarming': '/images/housewarming-flowers.jpg',
-  'corporate': '/images/corporate-flowers.jpg',
-};
-
-const backgroundImage = occasionImages[occasion.data.base.id] || '/images/hero-flowers-bright.jpg';
+// Use Sanity hero image
+const backgroundImage = occasion.base.heroImage ? urlFor(occasion.base.heroImage).width(1600).url() : '/images/hero-flowers-bright.jpg';
 
 // Prepare budget guide items for InfoGrid
-const budgetItems = occasion.data.recommendations.budget_guide ? [
+const budgetItems = occasion.recommendations.budgetGuide ? [
   {
     title: t(lang, 'layout.budgetFriendlyLabel'),
-    content: occasion.data.recommendations.budget_guide.budget_friendly
+    content: occasion.recommendations.budgetGuide.budgetFriendly
   },
   {
     title: t(lang, 'layout.midRangeLabel'),
-    content: occasion.data.recommendations.budget_guide.mid_range
+    content: occasion.recommendations.budgetGuide.midRange
   },
   {
     title: t(lang, 'layout.luxuryLabel'),
-    content: occasion.data.recommendations.budget_guide.luxury
+    content: occasion.recommendations.budgetGuide.luxury
   }
 ] : [];
 
 // Generate Table of Contents based on available sections
 const tocItems: TOCItem[] = [];
 
-if (occasion.data.components?.stats && occasion.data.components.stats.length > 0) {
+if (occasion.components?.stats && occasion.components.stats.length > 0) {
   tocItems.push({
     id: 'at-a-glance',
     text: t(lang, 'layout.atAGlance'),
@@ -88,7 +75,7 @@ if (occasion.data.components?.stats && occasion.data.components.stats.length > 0
   });
 }
 
-if (occasion.data.components?.flower_recommendations && occasion.data.components.flower_recommendations.length > 0) {
+if (occasion.components?.flowerRecommendations && occasion.components.flowerRecommendations.length > 0) {
   tocItems.push({
     id: 'flower-recommendations',
     text: t(lang, 'layout.flowerRecommendations'),
@@ -96,7 +83,7 @@ if (occasion.data.components?.flower_recommendations && occasion.data.components
   });
 }
 
-if (occasion.data.components?.color_meanings && occasion.data.components.color_meanings.length > 0) {
+if (occasion.components?.colorMeanings && occasion.components.colorMeanings.length > 0) {
   tocItems.push({
     id: 'color-meanings',
     text: t(lang, 'layout.flowerColorMeanings'),
@@ -104,7 +91,7 @@ if (occasion.data.components?.color_meanings && occasion.data.components.color_m
   });
 }
 
-if (occasion.data.components?.seasonal_guide && occasion.data.components.seasonal_guide.length > 0) {
+if (occasion.components?.seasonalGuide && occasion.components.seasonalGuide.length > 0) {
   tocItems.push({
     id: 'seasonal-guide',
     text: t(lang, 'layout.seasonalGuide'),
@@ -113,12 +100,14 @@ if (occasion.data.components?.seasonal_guide && occasion.data.components.seasona
 }
 
 // Generate structured data for SEO
+const heroImageUrl = occasion.base.heroImage ? urlFor(occasion.base.heroImage).width(1200).url() : undefined;
+
 const occasionStructuredData = {
   '@context': 'https://schema.org',
   '@type': 'Article',
-  headline: occasion.data.base.title,
-  description: occasion.data.base.description,
-  image: occasion.data.base.hero_image,
+  headline: occasion.base.title,
+  description: occasion.base.description,
+  image: heroImageUrl,
   datePublished: new Date().toISOString(),
   dateModified: new Date().toISOString(),
   author: {
@@ -135,7 +124,7 @@ const occasionStructuredData = {
   },
   mainEntityOfPage: {
     '@type': 'WebPage',
-    '@id': `https://florizeflowers.com/occasions/${occasion.data.base.id}`
+    '@id': `https://florizeflowers.com/occasions/${occasion.base.id}`
   }
 };
 
@@ -143,16 +132,16 @@ const occasionStructuredData = {
 const howToStructuredData = {
   '@context': 'https://schema.org',
   '@type': 'HowTo',
-  name: `How to Choose Flowers for ${occasion.data.base.name}`,
-  description: occasion.data.base.description,
-  image: occasion.data.base.hero_image,
+  name: `How to Choose Flowers for ${occasion.base.name}`,
+  description: occasion.base.description,
+  image: heroImageUrl,
   totalTime: 'PT10M',
-  estimatedCost: occasion.data.recommendations.budget_guide ? {
+  estimatedCost: occasion.recommendations.budgetGuide ? {
     '@type': 'MonetaryAmount',
     currency: 'GBP',
-    value: occasion.data.recommendations.budget_guide.mid_range
+    value: occasion.recommendations.budgetGuide.midRange
   } : undefined,
-  supply: occasion.data.recommendations.flowers?.map(flower => ({
+  supply: occasion.recommendations.flowers?.map(flower => ({
     '@type': 'HowToSupply',
     name: flower.flower
   })),
@@ -165,7 +154,7 @@ const howToStructuredData = {
     {
       '@type': 'HowToStep',
       name: 'Choose appropriate flowers',
-      text: `Select from recommended flowers: ${occasion.data.recommendations.flowers?.map(f => f.flower).join(', ')}`
+      text: `Select from recommended flowers: ${occasion.recommendations.flowers?.map(f => f.flower).join(', ')}`
     },
     {
       '@type': 'HowToStep',
@@ -185,9 +174,9 @@ const structuredData = [occasionStructuredData, howToStructuredData];
 ---
 
 <BaseLayout
-  title={occasion.data.base.title}
-  description={occasion.data.base.description}
-  keywords={occasion.data.seo?.keywords}
+  title={occasion.base.title}
+  description={occasion.base.description}
+  keywords={occasion.seo?.keywords}
   showBreadcrumbs={true}
   structuredData={structuredData}
 >
@@ -198,8 +187,8 @@ const structuredData = [occasionStructuredData, howToStructuredData];
 
   <!-- Hero Section -->
   <HeroSection
-    title={occasion.data.base.name}
-    subtitle={occasion.data.base.description}
+    title={occasion.base.name}
+    subtitle={occasion.base.description}
     backgroundImage={backgroundImage}
   />
 
@@ -214,11 +203,11 @@ const structuredData = [occasionStructuredData, howToStructuredData];
       )}
 
       <!-- Recommended Flowers (if exists) -->
-      {occasion.data.recommendations.flowers && occasion.data.recommendations.flowers.length > 0 && (
+      {occasion.recommendations.flowers && occasion.recommendations.flowers.length > 0 && (
         <section class="content-section bg-light">
           <h2>{t(lang, 'layout.recommendedFlowers')}</h2>
           <div class="recommended-flowers-grid">
-            {occasion.data.recommendations.flowers.map((flower) => (
+            {occasion.recommendations.flowers.map((flower) => (
               <div class="flower-recommendation">
                 <h3>{flower.flower}</h3>
                 <p>{flower.reason}</p>
@@ -229,38 +218,38 @@ const structuredData = [occasionStructuredData, howToStructuredData];
       )}
 
       <!-- Stats (if exists) -->
-      {occasion.data.components?.stats && occasion.data.components.stats.length > 0 && (
+      {occasion.components?.stats && occasion.components.stats.length > 0 && (
         <section id="at-a-glance" class="content-section">
           <TestingMetrics
-            metrics={occasion.data.components.stats}
-            title={`${occasion.data.base.name} ${t(lang, 'layout.atAGlance')}`}
+            metrics={occasion.components.stats}
+            title={`${occasion.base.name} ${t(lang, 'layout.atAGlance')}`}
           />
         </section>
       )}
 
       <!-- Flower Recommendations (if exists) -->
-      {occasion.data.components?.flower_recommendations && occasion.data.components.flower_recommendations.length > 0 && (
+      {occasion.components?.flowerRecommendations && occasion.components.flowerRecommendations.length > 0 && (
         <section id="flower-recommendations" class="content-section">
           <FlowerRecommendationCards
-            recommendations={occasion.data.components.flower_recommendations}
+            recommendations={occasion.components.flowerRecommendations}
           />
         </section>
       )}
 
       <!-- Color Psychology (if exists) -->
-      {occasion.data.components?.color_meanings && occasion.data.components.color_meanings.length > 0 && (
+      {occasion.components?.colorMeanings && occasion.components.colorMeanings.length > 0 && (
         <section id="color-meanings" class="content-section">
           <ColorPsychology
-            colors={occasion.data.components.color_meanings}
+            colors={occasion.components.colorMeanings}
           />
         </section>
       )}
 
       <!-- Seasonal Guide (if exists) -->
-      {occasion.data.components?.seasonal_guide && occasion.data.components.seasonal_guide.length > 0 && (
+      {occasion.components?.seasonalGuide && occasion.components.seasonalGuide.length > 0 && (
         <section id="seasonal-guide" class="content-section">
           <SeasonalCalendar
-            seasons={occasion.data.components.seasonal_guide}
+            seasons={occasion.components.seasonalGuide}
           />
         </section>
       )}
@@ -277,7 +266,7 @@ const structuredData = [occasionStructuredData, howToStructuredData];
           <div class="tab-panel active" role="tabpanel" data-tab-panel="guide">
             <article class="tab-content-wrapper">
               <div class="prose-content">
-                <Content />
+                {occasion.body && <PortableTextRenderer value={occasion.body} />}
               </div>
             </article>
           </div>
@@ -285,11 +274,11 @@ const structuredData = [occasionStructuredData, howToStructuredData];
           <!-- Tab 2: Top Services -->
           <div class="tab-panel" role="tabpanel" data-tab-panel="services">
             <div class="tab-content-wrapper">
-              {occasion.data.components?.service_features && occasion.data.components.service_features.length > 0 ? (
+              {occasion.components?.serviceFeatures && occasion.components.serviceFeatures.length > 0 ? (
                 <>
-                  <h2>{t(lang, 'layout.topServicesFor')} {occasion.data.base.name}</h2>
+                  <h2>{t(lang, 'layout.topServicesFor')} {occasion.base.name}</h2>
                   <FeatureList
-                    features={occasion.data.components.service_features}
+                    features={occasion.components.serviceFeatures}
                     columns={2}
                   />
                 </>
@@ -302,18 +291,18 @@ const structuredData = [occasionStructuredData, howToStructuredData];
           <!-- Tab 3: Planning Timeline -->
           <div class="tab-panel" role="tabpanel" data-tab-panel="timeline">
             <div class="tab-content-wrapper">
-              {occasion.data.components?.delivery_timeline && occasion.data.components.delivery_timeline.length > 0 && (
+              {occasion.components?.deliveryTimeline && occasion.components.deliveryTimeline.length > 0 && (
                 <TimelineCard
                   title={t(lang, 'layout.orderPlanningTimeline')}
-                  steps={occasion.data.components.delivery_timeline}
+                  steps={occasion.components.deliveryTimeline}
                 />
               )}
 
-              {occasion.data.tabs?.delivery_locations && occasion.data.tabs.delivery_locations.length > 0 && (
+              {occasion.tabs?.deliveryLocations && occasion.tabs.deliveryLocations.length > 0 && (
                 <div class="delivery-locations">
                   <h2>{t(lang, 'layout.deliveryLocationTips')}</h2>
                   <div class="locations-grid">
-                    {occasion.data.tabs.delivery_locations.map((location) => (
+                    {occasion.tabs.deliveryLocations.map((location) => (
                       <div class="location-card">
                         <h3>{location.location}</h3>
                         <ul>
@@ -327,7 +316,7 @@ const structuredData = [occasionStructuredData, howToStructuredData];
                 </div>
               )}
 
-              {!occasion.data.components?.delivery_timeline && !occasion.data.tabs?.delivery_locations && (
+              {!occasion.components?.deliveryTimeline && !occasion.tabs?.deliveryLocations && (
                 <p class="empty-tab-message">{t(lang, 'layout.noPlanningTimeline')}</p>
               )}
             </div>
@@ -337,11 +326,11 @@ const structuredData = [occasionStructuredData, howToStructuredData];
           <div class="tab-panel" role="tabpanel" data-tab-panel="tips">
             <div class="tab-content-wrapper">
               {/* Gift Enhancements */}
-              {occasion.data.tabs?.gift_enhancements && occasion.data.tabs.gift_enhancements.length > 0 && (
+              {occasion.tabs?.giftEnhancements && occasion.tabs.giftEnhancements.length > 0 && (
                 <div class="gift-enhancements">
                   <h2>{t(lang, 'layout.additionalGiftEnhancements')}</h2>
                   <div class="enhancements-grid">
-                    {occasion.data.tabs.gift_enhancements.map((item) => (
+                    {occasion.tabs.giftEnhancements.map((item) => (
                       <div class="enhancement-card">
                         <h4>{item.item}</h4>
                         <p class="description">{item.description}</p>
@@ -353,11 +342,11 @@ const structuredData = [occasionStructuredData, howToStructuredData];
               )}
 
               {/* Card Messages */}
-              {occasion.data.tabs?.card_messages && occasion.data.tabs.card_messages.length > 0 && (
+              {occasion.tabs?.cardMessages && occasion.tabs.cardMessages.length > 0 && (
                 <div class="card-messages">
                   <h2>{t(lang, 'layout.personalizedCardMessages')}</h2>
                   <div class="messages-grid">
-                    {occasion.data.tabs.card_messages.map((msg) => (
+                    {occasion.tabs.cardMessages.map((msg) => (
                       <div class="message-card">
                         <h4>{t(lang, 'layout.for')} {msg.recipient}</h4>
                         <p class="message-text">"{msg.message}"</p>
@@ -368,11 +357,11 @@ const structuredData = [occasionStructuredData, howToStructuredData];
               )}
 
               {/* Special Scenarios */}
-              {occasion.data.tabs?.special_scenarios && occasion.data.tabs.special_scenarios.length > 0 && (
+              {occasion.tabs?.specialScenarios && occasion.tabs.specialScenarios.length > 0 && (
                 <div class="special-scenarios">
                   <h2>{t(lang, 'layout.specialScenarios')}</h2>
                   <div class="scenarios-grid">
-                    {occasion.data.tabs.special_scenarios.map((scenario) => (
+                    {occasion.tabs.specialScenarios.map((scenario) => (
                       <div class="scenario-card">
                         {scenario.icon && <div class="scenario-icon">{scenario.icon}</div>}
                         <h4>{scenario.title}</h4>
@@ -388,11 +377,11 @@ const structuredData = [occasionStructuredData, howToStructuredData];
               )}
 
               {/* Cost Saving Tips */}
-              {occasion.data.tabs?.cost_saving_tips && occasion.data.tabs.cost_saving_tips.length > 0 && (
+              {occasion.tabs?.costSavingTips && occasion.tabs.costSavingTips.length > 0 && (
                 <div class="cost-saving">
                   <h2>{t(lang, 'layout.costSavingTips')}</h2>
                   <ul class="cost-tips-list">
-                    {occasion.data.tabs.cost_saving_tips.map((tip) => (
+                    {occasion.tabs.costSavingTips.map((tip) => (
                       <li>{tip}</li>
                     ))}
                   </ul>
@@ -400,17 +389,17 @@ const structuredData = [occasionStructuredData, howToStructuredData];
               )}
 
               {/* Callouts */}
-              {occasion.data.components?.callouts && occasion.data.components.callouts.length > 0 && occasion.data.components.callouts.map((callout) => (
+              {occasion.components?.callouts && occasion.components.callouts.length > 0 && occasion.components.callouts.map((callout) => (
                 <CalloutBox variant={callout.variant} title={callout.title}>
                   <div set:html={callout.content} />
                 </CalloutBox>
               ))}
 
               {/* FAQs */}
-              {occasion.data.components?.faqs && occasion.data.components.faqs.length > 0 && (
+              {occasion.components?.faqs && occasion.components.faqs.length > 0 && (
                 <div class="faqs-wrapper">
                   <h2>{t(lang, 'layout.frequentlyAskedQuestions')}</h2>
-                  <AccordionFAQ items={occasion.data.components.faqs} />
+                  <AccordionFAQ items={occasion.components.faqs} />
                 </div>
               )}
             </div>

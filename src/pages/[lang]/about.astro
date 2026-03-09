@@ -1,9 +1,10 @@
 ---
-import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import BreadcrumbNavigation from '../../components/navigation/BreadcrumbNavigation.astro';
+import PortableTextRenderer from '../../components/PortableTextRenderer.astro';
 import { SUPPORTED_LANGUAGES, type SupportedLanguage } from '../../i18n/config';
 import { t } from '../../i18n/translations';
+import { getPageBySlug } from '../../lib/sanity-fetchers';
 
 export async function getStaticPaths() {
   return SUPPORTED_LANGUAGES.map((lang) => ({
@@ -13,16 +14,12 @@ export async function getStaticPaths() {
 
 const { lang } = Astro.params as { lang: SupportedLanguage };
 
-// Get about page content from collection
-const allPages = await getCollection('pages');
-// Collection IDs include .md extension
-const aboutPage = allPages.find(page => page.id === `${lang}/about.md` || page.id === `${lang}/about`);
+// Get about page content from Sanity
+const aboutPage = await getPageBySlug('about', lang);
 
 if (!aboutPage) {
-  throw new Error(`About page content not found for language: ${lang}. URL: ${Astro.url.pathname}. Available IDs: ${allPages.map(p => p.id).join(', ')}`);
+  throw new Error(`About page content not found for language: ${lang}. URL: ${Astro.url.pathname}`);
 }
-
-const { Content } = await aboutPage.render();
 
 const aboutText = t(lang, 'pages.about');
 const aboutFlorizeText = t(lang, 'pages.aboutFlorize');
@@ -35,8 +32,8 @@ const breadcrumbItems = [
 ---
 
 <BaseLayout
-  title={aboutPage.data.title}
-  description={aboutPage.data.description}
+  title={aboutPage.title}
+  description={aboutPage.description}
   showBreadcrumbs={true}
 >
   <BreadcrumbNavigation slot="breadcrumbs" items={breadcrumbItems} />
@@ -48,7 +45,7 @@ const breadcrumbItems = [
         </h1>
 
         <div class="prose prose-lg max-w-none">
-          <Content />
+          <PortableTextRenderer value={aboutPage.body} />
         </div>
       </div>
     </div>

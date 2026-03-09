@@ -14,12 +14,12 @@ export function generateServiceSchema(service: any): object {
     itemReviewed: {
       "@type": "Service",
       "@context": "https://schema.org",
-      name: service.base?.name || service.service_name,
-      description: service.base?.description || service.description,
+      name: service.base?.name,
+      description: service.base?.description,
       url: service.affiliate?.url || service.affiliate_url || "#",
       category: "Flower Delivery Service",
       areaServed: "United Kingdom",
-      priceRange: service.base?.price_range || service.price_range || "££-£££",
+      priceRange: service.base?.priceRange || "££-£££",
     },
     author: {
       "@type": "Organization",
@@ -28,15 +28,15 @@ export function generateServiceSchema(service: any): object {
     },
     reviewRating: {
       "@type": "Rating",
-      ratingValue: (service.base?.rating || service.rating)?.toString() || "4.5",
+      ratingValue: service.base?.rating?.toString() || "4.5",
       bestRating: "5",
       worstRating: "1",
     },
-    reviewBody: service.base?.description || service.description,
+    reviewBody: service.base?.description,
     datePublished:
-      service.seo?.date_published || service.date_published || new Date().toISOString().split("T")[0],
+      service.seo?.datePublished || new Date().toISOString().split("T")[0],
     dateModified:
-      service.seo?.date_modified || service.date_modified || new Date().toISOString().split("T")[0],
+      service.seo?.dateModified || new Date().toISOString().split("T")[0],
   };
 }
 

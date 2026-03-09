@@ -6,282 +6,149 @@
  * type safety and handling optional groups gracefully.
  */
 
-import type { CollectionEntry } from 'astro:content';
-
-type Service = CollectionEntry<'services'>['data'];
-type Occasion = CollectionEntry<'occasions'>['data'];
+import type { SanityService, SanityOccasion, SanityContentSection } from '../types/sanity';
 
 // ============================================================================
 // SERVICE ACCESSORS
 // ============================================================================
 
-/**
- * Get service base information
- */
-export function getServiceBase(service: Service) {
+export function getServiceBase(service: SanityService) {
   return service.base;
 }
 
-/**
- * Get service ID
- */
-export function getServiceId(service: Service): string {
+export function getServiceId(service: SanityService): string {
   return service.base.id;
 }
 
-/**
- * Get service name
- */
-export function getServiceName(service: Service): string {
+export function getServiceName(service: SanityService): string {
   return service.base.name;
 }
 
-/**
- * Get service title (for page titles)
- */
-export function getServiceTitle(service: Service): string {
+export function getServiceTitle(service: SanityService): string {
   return service.base.title;
 }
 
-/**
- * Get service description
- */
-export function getServiceDescription(service: Service): string {
+export function getServiceDescription(service: SanityService): string {
   return service.base.description;
 }
 
-/**
- * Get service rating
- */
-export function getServiceRating(service: Service): number {
+export function getServiceRating(service: SanityService): number {
   return service.base.rating;
 }
 
-/**
- * Get service price range
- */
-export function getServicePriceRange(service: Service): string {
-  return service.base.price_range;
+export function getServicePriceRange(service: SanityService): string {
+  return service.base.priceRange;
 }
 
-/**
- * Get service logo path
- */
-export function getServiceLogo(service: Service): string {
-  return service.base.logo_path;
+export function getServiceDeliveryOptions(service: SanityService): string[] {
+  return service.base.deliveryOptions;
 }
 
-/**
- * Get service hero image
- */
-export function getServiceHeroImage(service: Service): string | undefined {
-  return service.base.hero_image;
+export function getServiceKeyFeatures(service: SanityService): string[] {
+  return service.base.keyFeatures;
 }
 
-/**
- * Get service delivery options
- */
-export function getServiceDeliveryOptions(service: Service): string[] {
-  return service.base.delivery_options;
-}
-
-/**
- * Get service key features
- */
-export function getServiceKeyFeatures(service: Service): string[] {
-  return service.base.key_features;
-}
-
-/**
- * Get service SEO data (with fallbacks)
- */
-export function getServiceSEO(service: Service) {
+export function getServiceSEO(service: SanityService) {
   return service.seo || {};
 }
 
-/**
- * Get service summary data
- */
-export function getServiceSummary(service: Service) {
+export function getServiceSummary(service: SanityService) {
   return service.summary || {};
 }
 
-/**
- * Get service components data
- */
-export function getServiceComponents(service: Service) {
+export function getServiceComponents(service: SanityService) {
   return service.components || {};
 }
 
-/**
- * Get service affiliate data
- */
-export function getServiceAffiliate(service: Service) {
+export function getServiceAffiliate(service: SanityService) {
   return service.affiliate || {};
 }
 
-/**
- * Get service affiliate URL
- */
-export function getServiceAffiliateUrl(service: Service): string | undefined {
+export function getServiceAffiliateUrl(service: SanityService): string | undefined {
   return service.affiliate?.url;
 }
 
-/**
- * Get service FAQs
- */
-export function getServiceFAQs(service: Service) {
+export function getServiceFAQs(service: SanityService) {
   return service.components?.faqs || [];
 }
 
-/**
- * Get service pros
- */
-export function getServicePros(service: Service) {
+export function getServicePros(service: SanityService) {
   return service.components?.pros || [];
 }
 
-/**
- * Get service cons
- */
-export function getServiceCons(service: Service) {
+export function getServiceCons(service: SanityService) {
   return service.components?.cons || [];
 }
 
-/**
- * Get service testing metrics
- */
-export function getServiceTestingMetrics(service: Service) {
-  return service.components?.testing_metrics || [];
+export function getServiceTestingMetrics(service: SanityService) {
+  return service.components?.testingMetrics || [];
 }
 
 // ============================================================================
 // OCCASION ACCESSORS
 // ============================================================================
 
-/**
- * Get occasion base information
- */
-export function getOccasionBase(occasion: Occasion) {
+export function getOccasionBase(occasion: SanityOccasion) {
   return occasion.base;
 }
 
-/**
- * Get occasion ID
- */
-export function getOccasionId(occasion: Occasion): string {
+export function getOccasionId(occasion: SanityOccasion): string {
   return occasion.base.id;
 }
 
-/**
- * Get occasion name
- */
-export function getOccasionName(occasion: Occasion): string {
+export function getOccasionName(occasion: SanityOccasion): string {
   return occasion.base.name;
 }
 
-/**
- * Get occasion title (for page titles)
- */
-export function getOccasionTitle(occasion: Occasion): string {
+export function getOccasionTitle(occasion: SanityOccasion): string {
   return occasion.base.title;
 }
 
-/**
- * Get occasion description
- */
-export function getOccasionDescription(occasion: Occasion): string {
+export function getOccasionDescription(occasion: SanityOccasion): string {
   return occasion.base.description;
 }
 
-/**
- * Get occasion hero image
- */
-export function getOccasionHeroImage(occasion: Occasion): string {
-  return occasion.base.hero_image;
-}
-
-/**
- * Get whether occasion is seasonal
- */
-export function isOccasionSeasonal(occasion: Occasion): boolean {
+export function isOccasionSeasonal(occasion: SanityOccasion): boolean {
   return occasion.base.seasonal;
 }
 
-/**
- * Get occasion SEO data (with fallbacks)
- */
-export function getOccasionSEO(occasion: Occasion) {
+export function getOccasionSEO(occasion: SanityOccasion) {
   return occasion.seo || {};
 }
 
-/**
- * Get occasion recommendations
- */
-export function getOccasionRecommendations(occasion: Occasion) {
+export function getOccasionRecommendations(occasion: SanityOccasion) {
   return occasion.recommendations;
 }
 
-/**
- * Get recommended services for occasion
- */
-export function getOccasionRecommendedServices(occasion: Occasion): string[] {
+export function getOccasionRecommendedServices(occasion: SanityOccasion): string[] {
   return occasion.recommendations.services;
 }
 
-/**
- * Get recommended flowers for occasion
- */
-export function getOccasionRecommendedFlowers(occasion: Occasion) {
+export function getOccasionRecommendedFlowers(occasion: SanityOccasion) {
   return occasion.recommendations.flowers;
 }
 
-/**
- * Get occasion components data
- */
-export function getOccasionComponents(occasion: Occasion) {
+export function getOccasionComponents(occasion: SanityOccasion) {
   return occasion.components || {};
 }
 
-/**
- * Get occasion FAQs
- */
-export function getOccasionFAQs(occasion: Occasion) {
+export function getOccasionFAQs(occasion: SanityOccasion) {
   return occasion.components?.faqs || [];
 }
 
-/**
- * Get occasion tabs data
- */
-export function getOccasionTabs(occasion: Occasion) {
+export function getOccasionTabs(occasion: SanityOccasion) {
   return occasion.tabs || {};
 }
 
 // ============================================================================
-// SHARED ACCESSORS (works for both services and occasions)
+// SHARED ACCESSORS
 // ============================================================================
 
-/**
- * Get content sections (dynamic FindFerries-style sections)
- */
-export function getContentSections(content: Service | Occasion) {
-  return content.content_sections || [];
+export function getContentSections(content: SanityService | SanityOccasion): SanityContentSection[] {
+  return content.contentSections || [];
 }
 
-/**
- * Get OG image with fallback
- */
-export function getOGImage(content: Service | Occasion, fallback: string = '/images/florize-og-image.png'): string {
-  if ('seo' in content && content.seo?.og_image) {
-    return content.seo.og_image;
-  }
-  return fallback;
-}
-
-/**
- * Get keywords with fallback
- */
-export function getKeywords(content: Service | Occasion): string | undefined {
+export function getKeywords(content: SanityService | SanityOccasion): string | undefined {
   if ('seo' in content && content.seo?.keywords) {
     return content.seo.keywords;
   }

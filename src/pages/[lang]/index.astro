@@ -1,5 +1,4 @@
 ---
-import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import HeroSection from "../../components/sections/HeroSection.astro";
 import IntroductionSection from "../../components/sections/IntroductionSection.astro";
@@ -14,6 +13,9 @@ import {
     generateWebSiteSchema,
 } from "../../utils/seo";
 import { SUPPORTED_LANGUAGES, type SupportedLanguage } from "../../i18n/config";
+import { getServices } from "../../lib/sanity-fetchers";
+import { getHomepageSection } from "../../lib/sanity-fetchers";
+import { urlFor } from "../../lib/sanity";
 
 export async function getStaticPaths() {
     return SUPPORTED_LANGUAGES.map((lang) => ({
@@ -24,19 +26,11 @@ export async function getStaticPaths() {
 const { lang } = Astro.params as { lang: SupportedLanguage };
 
 // Get all services for current language
-const allServices = await getCollection("services");
-const services = allServices.filter((service) => service.data.lang === lang);
+const services = await getServices(lang);
 
 // Get homepage sections content for current language
-const allSections = await getCollection("homepage-sections");
-const heroData = allSections.find(
-    (section) =>
-        section.data.sectionType === "hero" && section.data.lang === lang,
-);
-const seoData = allSections.find(
-    (section) =>
-        section.data.sectionType === "seo" && section.data.lang === lang,
-);
+const heroData = await getHomepageSection('hero', lang);
+const seoData = await getHomepageSection('seo', lang);
 
 // Generate structured data for homepage
 const siteUrl = Astro.site?.toString() || "https://florizeflowers.com";
@@ -45,13 +39,13 @@ const websiteSchema = generateWebSiteSchema(siteUrl);
 
 // Use SEO data from content or fallback to English defaults
 const pageTitle =
-    seoData?.data.title ||
+    seoData?.title ||
     "Best Flower Delivery UK 2026 - Expert Comparison & Reviews | Florize";
 const pageDescription =
-    seoData?.data.description ||
+    seoData?.description ||
     "Compare top UK flower delivery services. Expert tested reviews, pricing comparison & recommendations for every occasion. Find your perfect florist today.";
 const pageKeywords =
-    seoData?.data.keywords ||
+    seoData?.keywords ||
     "flower delivery uk, best florist uk, flower comparison, interflora, bloom and wild";
 ---
 
@@ -65,11 +59,11 @@ const pageKeywords =
     {
         heroData && (
             <HeroSection
-                title={heroData.data.title}
-                subtitle={heroData.data.subtitle}
-                primaryCta={heroData.data.primaryCta}
-                secondaryCta={heroData.data.secondaryCta}
-                backgroundImage={heroData.data.backgroundImage}
+                title={heroData.title}
+                subtitle={heroData.subtitle}
+                primaryCta={heroData.primaryCta}
+                secondaryCta={heroData.secondaryCta}
+                backgroundImage={heroData.backgroundImage ? urlFor(heroData.backgroundImage).url() : undefined}
             />
         )
     }

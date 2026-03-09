@@ -1,8 +1,11 @@
 ---
+import type { PortableTextBlock } from '@portabletext/types';
+import PortableTextRenderer from '../PortableTextRenderer.astro';
+
 export interface Props {
   serviceName: string;
   positioning: string;
-  content: string; // Can contain HTML
+  content: PortableTextBlock[] | string;
 }
 
 const {
@@ -10,12 +13,20 @@ const {
   positioning,
   content
 } = Astro.props;
+
+const isPortableText = Array.isArray(content);
 ---
 
 <section class="content-section">
   <h2>{serviceName} Overview: {positioning}</h2>
 
-  <div class="overview-content" set:html={content} />
+  <div class="overview-content">
+    {isPortableText ? (
+      <PortableTextRenderer value={content as PortableTextBlock[]} />
+    ) : (
+      <div set:html={content} />
+    )}
+  </div>
 </section>
 
 <style>

@@ -1,8 +1,8 @@
 ---
-import { getCollection } from 'astro:content';
 import Button from '../ui/Button.astro';
 import type { SupportedLanguage } from '../../i18n/config';
 import { t } from '../../i18n/translations';
+import { getHomepageSection } from '../../lib/sanity-fetchers';
 
 export interface Props {
   className?: string;
@@ -20,15 +20,15 @@ const occasionsTitle = t(lang, 'homepage.bestForOccasions');
 const occasionsText = t(lang, 'homepage.bestForOccasionsText');
 const occasionsButton = t(lang, 'homepage.viewOccasionGuides');
 
-// Get recommendations from collection filtered by language
-const allRecommendations = await getCollection('recommendations');
-const recommendations = allRecommendations.filter(r => r.data.lang === lang);
+// Get recommendations from homepage section
+const sectionData = await getHomepageSection('quick-selection', lang);
+const recommendations = sectionData?.recommendations || [];
 const leftRecommendations = recommendations
-  .filter(r => r.data.column === 'left')
-  .sort((a, b) => (a.data.order || 999) - (b.data.order || 999));
+  .filter(r => r.column === 'left')
+  .sort((a, b) => (a.order || 999) - (b.order || 999));
 const rightRecommendations = recommendations
-  .filter(r => r.data.column === 'right')
-  .sort((a, b) => (a.data.order || 999) - (b.data.order || 999));
+  .filter(r => r.column === 'right')
+  .sort((a, b) => (a.order || 999) - (b.order || 999));
 ---
 
 <section class={`section-padding ${className}`} aria-labelledby="selection-heading">
@@ -46,9 +46,9 @@ const rightRecommendations = recommendations
         <div class="space-y-6">
           {leftRecommendations.map((rec) => (
             <div>
-              <h3 class="text-xl font-bold text-florize-green mb-3">{rec.data.title}</h3>
-              <p class="text-gray-700 mb-3" set:html={rec.data.description} />
-              <Button href={`/${lang}/services/${rec.data.serviceId}`} variant="secondary" size="md" text={rec.data.ctaText} />
+              <h3 class="text-xl font-bold text-florize-green mb-3">{rec.title}</h3>
+              <p class="text-gray-700 mb-3" set:html={rec.description} />
+              <Button href={`/${lang}/services/${rec.serviceId}`} variant="secondary" size="md" text={rec.ctaText} />
             </div>
           ))}
         </div>
@@ -57,9 +57,9 @@ const rightRecommendations = recommendations
         <div class="space-y-6">
           {rightRecommendations.map((rec) => (
             <div>
-              <h3 class="text-xl font-bold text-florize-green mb-3">{rec.data.title}</h3>
-              <p class="text-gray-700 mb-3" set:html={rec.data.description} />
-              <Button href={`/${lang}/services/${rec.data.serviceId}`} variant="secondary" size="md" text={rec.data.ctaText} />
+              <h3 class="text-xl font-bold text-florize-green mb-3">{rec.title}</h3>
+              <p class="text-gray-700 mb-3" set:html={rec.description} />
+              <Button href={`/${lang}/services/${rec.serviceId}`} variant="secondary" size="md" text={rec.ctaText} />
             </div>
           ))}
 

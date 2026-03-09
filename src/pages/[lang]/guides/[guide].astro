@@ -1,20 +1,17 @@
 ---
 // Guide detail page
-import { getCollection } from 'astro:content';
+import { getGuides } from '../../../lib/sanity-fetchers';
 import GuideLayout from '../../../layouts/GuideLayout.astro';
 import { SUPPORTED_LANGUAGES } from '../../../i18n/config';
 
 export async function getStaticPaths() {
-  const allGuides = await getCollection('guides');
-
-  // Generate paths for each language
-  return SUPPORTED_LANGUAGES.flatMap((lang) => {
-    const guides = allGuides.filter(guide => guide.data.lang === lang);
+  return (await Promise.all(SUPPORTED_LANGUAGES.map(async (lang) => {
+    const guides = await getGuides(lang);
     return guides.map((guide) => ({
-      params: { lang, guide: guide.data.base.id },
+      params: { lang, guide: guide.base.id },
       props: { guide },
     }));
-  });
+  }))).flat();
 }
 
 const { guide } = Astro.props;
