@@ -5,13 +5,13 @@ steps:
     args:
       - "-c"
       - |
-        BUILD_IDS=$(gcloud builds list \
+        BUILD_IDS=$$(gcloud builds list \
           --project=$PROJECT_ID \
           --filter="id!=$BUILD_ID AND status=WORKING" \
           --format="value(id)")
-        for BID in $BUILD_IDS; do
-          echo "Cancelling build $BID"
-          gcloud builds cancel "$BID" --project=$PROJECT_ID || true
+        for BID in $$BUILD_IDS; do
+          echo "Cancelling build $$BID"
+          gcloud builds cancel "$$BID" --project=$PROJECT_ID || true
         done
     id: "cancel-previous-builds"
 
