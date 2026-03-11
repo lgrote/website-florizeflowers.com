@@ -631,7 +631,7 @@ export const translations: Record<SupportedLanguage, Translations> = {
     },
 
     homepage: {
-      comparisonHeading: "Top Blumenlieferdienste UK - Experten-Vergleich 2026",
+      comparisonHeading: "Top Blumenlieferdienste - Experten-Vergleich 2026",
       viewAllServices: "Alle Blumenversender-Bewertungen anzeigen",
       quickSelectionHeading:
         "Schnellauswahlratgeber - Finden Sie Ihren perfekten Service",
@@ -649,7 +649,7 @@ export const translations: Record<SupportedLanguage, Translations> = {
     affiliate: {
       partnersTitle: "Unsere Blumenpartner",
       partnersSubtitle:
-        "Vertrauenswürdige Blumenlieferdienste in ganz Großbritannien",
+        "Vertrauenswürdige Online-Blumenlieferdienste",
       disclosure:
         "Wir können eine Provision verdienen, wenn Sie über unsere Partnerlinks bestellen. Dies hilft, Florize Flowers kostenlos zu halten.",
       learnMore: "Mehr erfahren",

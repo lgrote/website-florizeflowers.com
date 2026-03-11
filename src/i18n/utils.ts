@@ -90,17 +90,17 @@ export function formatDate(date: string | Date, lang: SupportedLanguage): string
 
 /**
  * Format currency based on locale
- * Note: Keep UK pricing (£) for both languages, but format differently
- * @param amount - Amount in GBP
+ * @param amount - Amount in local currency
  * @param lang - Language code
  * @returns Formatted currency string
  */
 export function formatCurrency(amount: number, lang: SupportedLanguage): string {
   const locale = lang === 'de' ? 'de-DE' : 'en-GB';
+  const currency = lang === 'de' ? 'EUR' : 'GBP';
 
   return new Intl.NumberFormat(locale, {
     style: 'currency',
-    currency: 'GBP',
+    currency,
   }).format(amount);
 }
 
