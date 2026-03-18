@@ -2,35 +2,31 @@
 /**
  * Root redirect page - detects user's language and redirects to appropriate locale
  * This page redirects immediately to /en/ or /de/ based on browser language
- *
- * NOTE: Without Astro's i18n config, this page is served as-is (not overridden)
  */
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { DEFAULT_LANGUAGE } from "../i18n/config";
+
 export const prerender = true;
 ---
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Florize Flowers - Redirecting...</title>
-  <meta http-equiv="refresh" content="0;url=/en/">
-  <script type="module">
-    // Detect browser language and redirect
+<BaseLayout
+    title="Florize Flowers - Redirecting..."
+    description="Redirecting to your language."
+    lang={DEFAULT_LANGUAGE}
+>
+    <div class="flex items-center justify-center min-h-[60vh]">
+        <div class="text-center p-8">
+            <p class="text-gray-500 text-lg">Redirecting to your language...</p>
+            <p class="text-gray-400 text-sm mt-6">
+                If you are not redirected automatically,
+                <a href="/en/" class="text-pink-600 underline">click here for English</a>
+                or <a href="/de/" class="text-pink-600 underline">hier für Deutsch</a>.
+            </p>
+        </div>
+    </div>
+</BaseLayout>
+
+<script>
     const lang = (navigator.language || "en").toLowerCase().startsWith("de") ? "de" : "en";
     location.replace(`/${lang}/${location.search}${location.hash}`);
-  </script>
-</head>
-<body>
-  <div style="display: flex; align-items: center; justify-content: center; min-height: 100vh; font-family: system-ui, -apple-system, sans-serif; background: linear-gradient(135deg, #fce7f3 0%, #dbeafe 100%);">
-    <div style="text-align: center; padding: 2rem;">
-      <h1 style="color: #be185d; margin-bottom: 1rem; font-size: 2rem; font-weight: 600;">🌸 Florize Flowers</h1>
-      <p style="color: #6b7280; font-size: 1.125rem;">Redirecting to your language...</p>
-      <p style="color: #9ca3af; font-size: 0.875rem; margin-top: 1.5rem;">
-        If you are not redirected automatically, <a href="/en/" style="color: #db2777; text-decoration: underline;">click here for English</a>
-        or <a href="/de/" style="color: #db2777; text-decoration: underline;">hier für Deutsch</a>.
-      </p>
-    </div>
-  </div>
-</body>
-</html>
+</script>
