@@ -46,6 +46,14 @@ async function addService() {
   });
   console.log(`Logo uploaded: ${logoAsset._id}`);
 
+  console.log('Uploading hero image...');
+  const heroStream = fs.createReadStream(path.join(__dirname, 'blumenshop-hero.jpg'));
+  const heroAsset = await client.assets.upload('image', heroStream, {
+    filename: 'blumenshop-hero.jpg',
+    contentType: 'image/jpeg',
+  });
+  console.log(`Hero image uploaded: ${heroAsset._id}`);
+
   // --- German Document ---
   const deDoc = {
     _id: `service-de-${slug}`,
@@ -58,6 +66,7 @@ async function addService() {
       description:
         'Blumenshop.de im Test: 7-Tage-Frischegarantie, Lieferung zum Wunschtermin, gratis Grußkarte oder Videobotschaft. Mehrfach ausgezeichneter Blumenversand.',
       logo: { _type: 'image', asset: { _ref: logoAsset._id, _type: 'reference' } },
+      heroImage: { _type: 'image', asset: { _ref: heroAsset._id, _type: 'reference' } },
       rating: 4.6,
       priceRange: '€19,95–€49,95',
       deliveryOptions: ['Standardversand (1-2 Werktage)', 'Expresslieferung zum Wunschtermin', 'Versand nach DE, BE & NL'],
@@ -83,7 +92,7 @@ async function addService() {
     },
     overview: {
       positioning:
-        'Blumenshop.de ist ein mehrfach ausgezeichneter Blumenversand, der frische Sträuße direkt vom Züchter zum Wunschtermin liefert. Durch regionale Bindereien und kurze Transportwege bleiben die Blumen besonders frisch — die 7-Tage-Frischegarantie unterstreicht diesen Qualitätsanspruch. Auszeichnungen wie der Deutschland Test 2025 als bester Online-Blumenhändler und der DtGV-Testsieg 2024 belegen die Marktposition.',
+        'Mehrfach ausgezeichneter Blumenversand mit Wunschtermin-Lieferung',
       content: [
         block(
           'Blumenshop.de zählt zu den bekanntesten deutschen Online-Blumenversendern und überzeugt seit Jahren mit einer Kombination aus Frische, Termintreue und persönlicher Note. Der Anbieter liefert Sträuße zum exakt gewünschten Wunschtermin nach Deutschland, Belgien und in die Niederlande — ein Service, der besonders bei Geburtstagen, Jahrestagen und Trauerfeiern entscheidend ist.',
