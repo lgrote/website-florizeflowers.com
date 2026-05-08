@@ -68,6 +68,7 @@ async function addService() {
       logo: { _type: 'image', asset: { _ref: logoAsset._id, _type: 'reference' } },
       heroImage: { _type: 'image', asset: { _ref: heroAsset._id, _type: 'reference' } },
       rating: 4.6,
+      winnerBadge: 'Testsieger 2025',
       priceRange: '€19,95–€49,95',
       deliveryOptions: ['Standardversand (1-2 Werktage)', 'Expresslieferung zum Wunschtermin', 'Versand nach DE, BE & NL'],
       keyFeatures: [
