@@ -38,6 +38,7 @@ export default defineType({
                 { title: 'Appleyard Flowers', value: 'appleyard-flowers' },
                 { title: 'Bloom & Wild', value: 'bloom-wild' },
                 { title: 'Blossoming Gifts', value: 'blossoming-gifts' },
+                { title: 'Blumenshop.de', value: 'blumenshop' },
                 { title: 'Eflorist', value: 'eflorist' },
                 { title: 'FloraPrima', value: 'floraprima' },
                 { title: 'Flower Station', value: 'flower-station' },
