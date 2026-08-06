@@ -17,7 +17,7 @@ const pageData = await getPageBySlug('sitemap', lang);
 const services = await getServices(lang);
 const occasions = await getOccasions(lang);
 
-const sortedServices = [...services].sort((a, b) => b.base.rating - a.base.rating);
+const sortedServices = [...services].sort((a, b) => b.base.rating - a.base.rating || a.base.name.localeCompare(b.base.name));
 const sortedOccasions = [...occasions].sort((a, b) => a.base.name.localeCompare(b.base.name));
 ---
 

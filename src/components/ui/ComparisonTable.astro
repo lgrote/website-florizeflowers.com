@@ -19,7 +19,7 @@ const lang: SupportedLanguage = propLang || (Astro.currentLocale as SupportedLan
 
 // Sort by rating and limit
 const topServices = [...services]
-  .sort((a, b) => b.base.rating - a.base.rating)
+  .sort((a, b) => b.base.rating - a.base.rating || a.base.name.localeCompare(b.base.name))
   .slice(0, maxServices);
 
 // Fetch affiliate links for all services (with locale awareness)

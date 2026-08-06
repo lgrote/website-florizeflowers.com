@@ -67,7 +67,8 @@ async function addService() {
         'Blume2000 im Test: Über 50 Jahre Erfahrung, rund 250 Filialen, 7-Tage-Frische-Garantie und taggleiche Blitzlieferung in vielen Städten. Blumenversand ab 19,99 €.',
       logo: { _type: 'image', asset: { _ref: logoAsset._id, _type: 'reference' } },
       heroImage: { _type: 'image', asset: { _ref: heroAsset._id, _type: 'reference' } },
-      rating: 4.7,
+      rating: 4.9,
+      winnerBadge: 'Schnellste Lieferung',
       priceRange: '€19,99–€44,99',
       deliveryOptions: [
         'DHL Standardversand (nächster Werktag möglich)',
@@ -205,7 +206,7 @@ async function addService() {
         competitorName: 'Blumenshop.de',
         winner: 'service',
         features: [
-          { _key: 'fc0', feature: 'Bewertung', serviceValue: '4,7/5', competitorValue: '4,6/5' },
+          { _key: 'fc0', feature: 'Bewertung', serviceValue: '4,9/5', competitorValue: '4,6/5' },
           { _key: 'fc1', feature: 'Frischegarantie', serviceValue: '7-Tage-Garantie', competitorValue: '7-Tage-Garantie' },
           { _key: 'fc2', feature: 'Taggleiche Lieferung', serviceValue: 'Blitzlieferung in vielen Städten', competitorValue: 'Nicht verfügbar' },
           { _key: 'fc3', feature: 'Filialnetz', serviceValue: '~250 Filialen', competitorValue: 'Nur online' },
@@ -362,7 +363,7 @@ async function addService() {
 
       block('Gesamtbewertung', 'h2'),
       block(
-        'Blume2000 erhält eine Bewertung von 4,7/5. Die Kombination aus taggleicher Blitzlieferung, schnellem Standardversand, 7-Tage-Frische-Garantie und über 50 Jahren Markengeschichte macht den Anbieter zu einer der besten Optionen für Blumenversand innerhalb Deutschlands. Abstriche gibt es beim fehlenden internationalen Versand und der nur gegen Aufpreis garantierten Wunschtermin-Lieferung — innerhalb Deutschlands ist Blume2000 jedoch eine klare Empfehlung.',
+        'Blume2000 erhält eine Bewertung von 4,9/5. Die Kombination aus taggleicher Blitzlieferung, schnellem Standardversand, 7-Tage-Frische-Garantie und über 50 Jahren Markengeschichte macht den Anbieter zu einer der besten Optionen für Blumenversand innerhalb Deutschlands. Abstriche gibt es beim fehlenden internationalen Versand und der nur gegen Aufpreis garantierten Wunschtermin-Lieferung — innerhalb Deutschlands ist Blume2000 jedoch eine klare Empfehlung.',
       ),
     ],
   };

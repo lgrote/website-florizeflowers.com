@@ -17,7 +17,7 @@ const { lang } = Astro.params as { lang: SupportedLanguage };
 const pageData = await getPageBySlug('services-index', lang);
 
 const services = await getServices(lang);
-const sortedServices = [...services].sort((a, b) => b.base.rating - a.base.rating);
+const sortedServices = [...services].sort((a, b) => b.base.rating - a.base.rating || a.base.name.localeCompare(b.base.name));
 ---
 
 <BaseLayout

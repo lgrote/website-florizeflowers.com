@@ -1,6 +1,6 @@
 // GROQ queries for fetching content from Sanity CMS
 
-export const SERVICES_BY_LANG = `*[_type == "service" && language == $lang] | order(base.rating desc)`;
+export const SERVICES_BY_LANG = `*[_type == "service" && language == $lang] | order(base.rating desc, base.name asc)`;
 
 export const SERVICE_BY_ID = `*[_type == "service" && base.id == $id && language == $lang][0]`;
 
