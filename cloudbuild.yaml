@@ -69,7 +69,10 @@ steps:
     args:
       - "-c"
       - |
-        gsutil -m setmeta -h "Cache-Control:public, max-age=31536000, immutable" -r "gs://${_BUCKET_NAME}/**/*.{js,css,jpg,jpeg,png,gif,svg,webp,woff,woff2,ttf,eot,ico}" || echo "No static assets found, skipping cache headers"
+        # gsutil wildcards don't support brace expansion — one pass per extension.
+        for ext in js css jpg jpeg png gif svg webp avif woff woff2 ttf eot ico; do
+          gsutil -m setmeta -h "Cache-Control:public, max-age=31536000, immutable" "gs://${_BUCKET_NAME}/*.$$ext" "gs://${_BUCKET_NAME}/**/*.$$ext" 2>/dev/null || echo "No *.$$ext files, skipping"
+        done
     id: "set-static-cache"
     waitFor: ["deploy-to-gcs"]
 
