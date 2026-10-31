@@ -24,7 +24,6 @@ export interface Translations {
     termsOfUse: string;
     affiliateDisclosure: string;
     sitemap: string;
-    imprint: string;
   };
 
   // Buttons & CTAs
@@ -250,12 +249,6 @@ export interface Translations {
     shareThisPage: string;
     printPage: string;
   };
-
-  // Modal
-  modal: {
-    close: string;
-    imprintTitle: string;
-  };
 }
 
 export const translations: Record<SupportedLanguage, Translations> = {
@@ -277,7 +270,6 @@ export const translations: Record<SupportedLanguage, Translations> = {
       termsOfUse: "Terms of Use",
       affiliateDisclosure: "Affiliate Disclosure",
       sitemap: "Sitemap",
-      imprint: "Imprint",
     },
 
     buttons: {
@@ -494,11 +486,6 @@ export const translations: Record<SupportedLanguage, Translations> = {
       shareThisPage: "Share this page",
       printPage: "Print page",
     },
-
-    modal: {
-      close: "Close",
-      imprintTitle: "Company Information",
-    },
   },
 
   de: {
@@ -519,7 +506,6 @@ export const translations: Record<SupportedLanguage, Translations> = {
       termsOfUse: "Nutzungsbedingungen",
       affiliateDisclosure: "Affiliate-Offenlegung",
       sitemap: "Sitemap",
-      imprint: "Impressum",
     },
 
     buttons: {
@@ -735,11 +721,6 @@ export const translations: Record<SupportedLanguage, Translations> = {
       backToTop: "Nach oben",
       shareThisPage: "Diese Seite teilen",
       printPage: "Seite drucken",
-    },
-
-    modal: {
-      close: "Schließen",
-      imprintTitle: "Impressum",
     },
   },
 };

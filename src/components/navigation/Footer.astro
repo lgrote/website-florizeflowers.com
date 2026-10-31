@@ -2,7 +2,6 @@
 import type { SupportedLanguage } from '../../i18n/config';
 import { getLanguageFromUrl } from '../../i18n/utils';
 import { t } from '../../i18n/translations';
-import ImprintModal from '../ui/ImprintModal.astro';
 import { getServices, getOccasions, getHomepageSection } from '../../lib/sanity-fetchers';
 
 // Get current language
@@ -61,7 +60,6 @@ const footerData = await getHomepageSection('footer', lang);
           <li><a href={`/${lang}/privacy-policy`} class="hover:text-bloom-pink transition-colors">{t(lang, 'nav.privacyPolicy')}</a></li>
           <li><a href={`/${lang}/terms-of-use`} class="hover:text-bloom-pink transition-colors">{t(lang, 'nav.termsOfUse')}</a></li>
           <li><a href={`/${lang}/affiliate-disclosure`} class="hover:text-bloom-pink transition-colors">{t(lang, 'nav.affiliateDisclosure')}</a></li>
-          <li><a href="#" id="open-imprint-modal" class="hover:text-bloom-pink transition-colors">{t(lang, 'nav.imprint')}</a></li>
           <li><a href={`/${lang}/sitemap-page`} class="hover:text-bloom-pink transition-colors">{t(lang, 'nav.sitemap')}</a></li>
         </ul>
       </div>
@@ -79,4 +77,3 @@ const footerData = await getHomepageSection('footer', lang);
   </div>
 </footer>
 
-<ImprintModal lang={lang} />
